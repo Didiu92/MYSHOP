@@ -1,0 +1,28 @@
+[90m= [39m[34;4mApp\Models\Product[39;24m {#6181
+    [34mid[39m: [35m1[39m,
+    [34mname[39m: "[32mPulsera amatistas[39m",
+    [34mdescription[39m: "[32mPulsera doble cadena oro amatistas[39m",
+    [34mprice[39m: "[32m129.99[39m",
+    [34mcategory_id[39m: [35m1[39m,
+    [34moffer_id[39m: [35m1[39m,
+    [34mcreated_at[39m: "[32m2026-01-12 11:39:43[39m",
+    [34mupdated_at[39m: "[32m2026-01-12 11:39:43[39m",
+    [34mcategory[39m: [34;4mApp\Models\Category[39;24m {#6225
+      [34mid[39m: [35m1[39m,
+      [34mname[39m: "[32mAnillos[39m",
+      [34mslug[39m: "[32manillos[39m",
+      [34mdescription[39m: "[32mAnillos de oro, plata y diamantes para ocasiones especiales[39m",
+      [34mcreated_at[39m: "[32m2026-01-12 11:39:43[39m",
+      [34mupdated_at[39m: "[32m2026-01-12 11:39:43[39m",
+    },
+    [34moffer[39m: [34;4mApp\Models\Offer[39;24m {#6184
+      [34mid[39m: [35m1[39m,
+      [34mname[39m: "[32mBlack Friday Joyería[39m",
+      [34mslug[39m: "[32mblack-friday-joyeria[39m",
+      [34mdiscount_percentage[39m: [35m25[39m,
+      [34mdescription[39m: "[32mGran descuento en toda la colección de joyas. Oferta válida hasta el 30 de noviembre.[39m",
+      [34mcreated_at[39m: "[32m2026-01-12 11:39:43[39m",
+      [34mupdated_at[39m: "[32m2026-01-12 11:39:43[39m",
+    },
+  }
+
