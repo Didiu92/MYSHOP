@@ -5,16 +5,30 @@
             <span class="text-lg">
                 -{{ $product->offer->discount_percentage }}%
             </span>
-    </div>
+        </div>
     @endif
-    
-    <div class="h-48 bg-gray-200 flex items-center justify-center {{ $product->offer ? 'bg-gradient-to-br from-orange-50 to-red-50' : '' }}">
-        <span class="text-4xl">📦</span>
-</div>
+
+    <!-- Slot opcional para botón adicional en esquina superior izquierda (ej: eliminar de wishlist) -->
+    @isset($topAction)
+        <div class="absolute top-2 left-2 z-10">
+            {{ $topAction }}
+        </div>
+    @endisset
+
+    <div class="h-48 bg-gray-200 flex items-center justify-center overflow-hidden {{ $product->offer ? 'bg-gradient-to-br from-orange-50 to-red-50' : '' }}">
+        @if(!empty($product->image))
+            <img src="{{ asset('storage/' . $product->image) }}" 
+                 alt="{{ $product->name }}" 
+                 class="w-full h-full object-cover">
+        @else
+            <span class="text-4xl">📦</span>
+        @endif
+    </div>
+
     <div class="p-6">
         <h4 class="text-xl font-bold mb-2 text-gray-900">{{ $product->name }}</h4>
-        <p class="text-gray-600 mb-4">{{ $product->description }}</p>
-        
+        <p class="text-gray-600 mb-4">{{ Str::limit($product->description, 80) }}</p>
+
         <!-- Badge de oferta adicional (nombre de la oferta) -->
         @if($product->offer)
             <div class="mb-4">
@@ -23,20 +37,28 @@
                 </span>
             </div>
         @endif
-        
-        <div class="flex items-center justify-between flex-wrap gap-2">
-            <div class="flex flex-col">
-                @if($product->offer)
+
+        <!-- Precio -->
+        <div class="mb-4">
+            @if($product->offer)
+                <div class="flex items-baseline gap-2">
                     <span class="text-sm text-gray-400 line-through">€{{ number_format($product->price, 2) }}</span>
                     <span class="text-2xl font-bold text-orange-600">€{{ number_format($product->final_price, 2) }}</span>
-                @else
-                    <span class="text-2xl font-bold text-primary-600">€{{ number_format($product->price, 2) }}</span>
-                @endif
-            </div>
+                </div>
+            @else
+                <span class="text-2xl font-bold text-primary-600">€{{ number_format($product->final_price, 2) }}</span>
+            @endif
+        </div>
+
+        <!-- Acciones personalizables mediante slot -->
+        @isset($actions)
+            {{ $actions }}
+        @else
+            <!-- Acción por defecto: Ver Detalles -->
             <a href="{{ route('products.show', $product->id) }}" 
-               class="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition">
+               class="block text-center bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition">
                 Ver Detalles
             </a>
-        </div>
+        @endisset
     </div>
 </div>
