@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.public')
 
 @section('title', 'Joyería Aristocats - Joyas Exclusivas')
 

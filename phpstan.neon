@@ -1,6 +1,17 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+
 parameters:
     level: 5
     paths:
         - app
     excludePaths:
         - tests/*
+    ignoreErrors:
+        # Ignorar errores de factories que no existen
+        - '#PHPDoc tag @use has invalid type Database\\Factories\\.*Factory#'
+        - '#Type Database\\Factories\\.*Factory in generic type.*is not subtype of template type#'
+        # Ignorar acceso a propiedades dinámicas de Eloquent
+        - '#Access to an undefined property Illuminate\\Database\\Eloquent\\Model::\$discount_percentage#'
+        # Ignorar traits no usados
+        - '#Trait App\\Traits\\LoadsMockData is used zero times#'

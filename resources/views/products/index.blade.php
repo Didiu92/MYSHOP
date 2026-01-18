@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.public')
 @section('title', 'Todos los Productos - Mi Tienda')
 @push('styles')
  <style>
