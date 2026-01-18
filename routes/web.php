@@ -6,6 +6,7 @@ use App\Http\Controllers\OfferController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\WishlistController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -49,11 +50,16 @@ Route::middleware('auth')->group(function () {
 // ===========================================
 // RUTAS DE ADMINISTRACIÓN (Protegidas)
 // ===========================================
+
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
  // Rutas de gestión de productos
  Route::get('/products', [ProductController::class, 'adminIndex'])->name('products.index');
  Route::resource('products', ProductController::class)->except(['index', 'show']);
- // NOTA: Las rutas de wishlist se añadirán en FASE 11
+     // Rutas para la lista de deseos (Wishlist) ← AÑADIR ESTAS LÍNEAS
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('/wishlist/{id}', [WishlistController::class, 'store'])->name('wishlist.store');
+    Route::delete('/wishlist/{id}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
 });
 // Las rutas de autenticación (login, register, etc.) se incluyen desde aquí
 require __DIR__.'/auth.php';
+
