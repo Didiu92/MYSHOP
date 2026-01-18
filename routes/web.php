@@ -23,7 +23,7 @@ Route::get('/contact', function () {
 // Rutas de categorías (solo lectura)
 Route::resource('categories', CategoryController::class)->only(['index', 'show']);
 // Rutas de productos (solo lectura)
-Route::get('/products-on-sale', [ProductController::class, 'onSale'])->name('products.on-sale'
+Route::get('/products-on-sale', [ProductController::class, 'onSale'])->name('products.on-sale');
 Route::resource('products', ProductController::class)->only(['index', 'show']);
 // Rutas de ofertas (solo lectura)
 Route::resource('offers', OfferController::class)->only(['index', 'show']);
