@@ -27,10 +27,12 @@ Route::get('/products-on-sale', [ProductController::class, 'onSale'])->name('pro
 Route::resource('products', ProductController::class)->only(['index', 'show']);
 // Rutas de ofertas (solo lectura)
 Route::resource('offers', OfferController::class)->only(['index', 'show']);
-// Rutas básicas del carrito de compras
-// NOTA: Las rutas avanzadas (update, destroy, checkout) se añadirán en FASE 10
+// Rutas del carrito de compras (ahora completas)
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
+Route::put('/cart/{id}', [CartController::class, 'update'])->name('cart.update');
+Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
+Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 // ===========================================
 // RUTAS DE USUARIO AUTENTICADO (Breeze)
 // ===========================================
