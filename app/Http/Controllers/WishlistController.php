@@ -14,6 +14,7 @@ class WishlistController extends Controller
      */
     public function index(): View
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         $wishlistProducts = $user->products()->with(['category', 'offer'])->get();
         
@@ -27,6 +28,7 @@ class WishlistController extends Controller
      */
     public function store(string $id): RedirectResponse
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         $product = Product::findOrFail($id);
         
@@ -46,6 +48,7 @@ class WishlistController extends Controller
      */
     public function destroy(string $id): RedirectResponse
     {
+        /** @var \App\Models\User $user */
         $user = Auth::user();
         $user->products()->detach($id);
         

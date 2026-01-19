@@ -48,14 +48,15 @@ Route::middleware('auth')->group(function () {
  Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 // ===========================================
-// RUTAS DE ADMINISTRACIÓN (Protegidas)
+// RUTAS DE ADMINISTRACIÓN (Protegidas + Logging)
 // ===========================================
 
-Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
- // Rutas de gestión de productos
- Route::get('/products', [ProductController::class, 'adminIndex'])->name('products.index');
- Route::resource('products', ProductController::class)->except(['index', 'show']);
-     // Rutas para la lista de deseos (Wishlist) ← AÑADIR ESTAS LÍNEAS
+Route::middleware(['auth', 'log.activity'])->prefix('admin')->name('admin.')->group(function () {
+    // Rutas de gestión de productos
+    Route::get('/products', [ProductController::class, 'adminIndex'])->name('products.index');
+    Route::resource('products', ProductController::class)->except(['index', 'show']);
+    
+    // Rutas para la lista de deseos (Wishlist)
     Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
     Route::post('/wishlist/{id}', [WishlistController::class, 'store'])->name('wishlist.store');
     Route::delete('/wishlist/{id}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
