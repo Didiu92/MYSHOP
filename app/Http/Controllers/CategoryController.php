@@ -6,6 +6,8 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -16,6 +18,40 @@ class CategoryController extends Controller
     {
         $categories = Category::all();
         return view('categories.index', ['categories' => $categories]);
+    }
+
+    /**
+     * Admin: listado de categorías.
+     */
+    public function adminIndex(): View
+    {
+        $categories = Category::latest()->get();
+        return view('admin.categories.index', compact('categories'));
+    }
+
+    /**
+     * Admin: formulario de creación.
+     */
+    public function create(): View
+    {
+        return view('admin.categories.create');
+    }
+
+    /**
+     * Admin: guardar nueva categoría.
+     */
+    public function store(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name',
+            'description' => 'nullable|string|max:1000',
+        ]);
+
+        $data['slug'] = Str::slug($data['name']);
+
+        Category::create($data);
+
+        return redirect()->route('admin.categories.index')->with('success', 'Categoría creada correctamente');
     }
 
     /**
@@ -37,5 +73,39 @@ class CategoryController extends Controller
         $categoryProducts = $category->products()->with(['offer'])->get();
 
         return view('categories.show', compact('category', 'categoryProducts'));
+    }
+
+    /**
+     * Admin: formulario de edición.
+     */
+    public function edit(Category $category): View
+    {
+        return view('admin.categories.edit', compact('category'));
+    }
+
+    /**
+     * Admin: actualizar categoría.
+     */
+    public function update(Request $request, Category $category): RedirectResponse
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
+            'description' => 'nullable|string|max:1000',
+        ]);
+
+        $data['slug'] = Str::slug($data['name']);
+
+        $category->update($data);
+
+        return redirect()->route('admin.categories.index')->with('success', 'Categoría actualizada correctamente');
+    }
+
+    /**
+     * Admin: eliminar categoría.
+     */
+    public function destroy(Category $category): RedirectResponse
+    {
+        $category->delete();
+        return redirect()->route('admin.categories.index')->with('success', 'Categoría eliminada');
     }
 }

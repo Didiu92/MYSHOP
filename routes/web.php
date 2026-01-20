@@ -7,6 +7,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -65,6 +66,17 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 Route::middleware(['auth', 'admin', 'log.activity'])->prefix('admin')->name('admin.')->group(function () {
     // Rutas de gestión de productos
     Route::resource('products', ProductController::class)->except(['index', 'show']);
+
+    // Categorías
+    Route::get('/categories', [CategoryController::class, 'adminIndex'])->name('categories.index');
+    Route::resource('categories', CategoryController::class)->except(['index', 'show']);
+
+    // Ofertas
+    Route::get('/offers', [OfferController::class, 'adminIndex'])->name('offers.index');
+    Route::resource('offers', OfferController::class)->except(['index', 'show']);
+
+    // Usuarios
+    Route::resource('users', AdminUserController::class);
 });
 // Las rutas de autenticación (login, register, etc.) se incluyen desde aquí
 require __DIR__.'/auth.php';
