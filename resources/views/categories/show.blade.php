@@ -5,8 +5,8 @@
 @section('content')
     <div class="container mx-auto px-6 py-8">
         <div class="mb-8">
-            <h1 class="text-3xl font-bold text-gray-900 mb-4">{{ $category->name }}</h1>
-            <p class="text-gray-600 mb-4">{{ $category->description }}</p>
+            <h1 class="text-3xl font-bold text-gold mb-4">{{ $category->name }}</h1>
+            <p class="text-silver mb-4">{{ $category->description }}</p>
             <a href="{{ route('categories.index') }}" 
                class="text-primary-600 hover:text-primary-700 transition">
                 ← Volver a Categorías

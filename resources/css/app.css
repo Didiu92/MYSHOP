@@ -1,3 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+	html { scroll-behavior: smooth; }
+	body { @apply bg-ebony text-silver antialiased; }
+	h1, h2, h3, h4, h5, h6 { @apply font-display text-gold tracking-tight; }
+	a { @apply text-gold hover:text-copper transition-colors; }
+}
+
+@layer components {
+	/* Primary button with gold accent; red buttons remain as-is */
+	.btn-primary { 
+		@apply inline-flex items-center rounded-md bg-gold text-ebony px-4 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-gold transition-all duration-300;
+		box-shadow: 0 4px 6px rgba(212, 175, 55, 0.3);
+	}
+	
+	.btn-primary:hover {
+		@apply text-ebony;
+		background: linear-gradient(135deg, #D4AF37 0%, #B8941F 100%);
+		box-shadow: 0 6px 12px rgba(212, 175, 55, 0.5);
+		transform: translateY(-2px);
+	}
+
+	/* Subtle card surface suitable for product tiles */
+	.card { @apply bg-graphite/60 backdrop-blur-sm border border-gold/20 rounded-lg shadow; }
+
+	/* Accent badge for categories or promos */
+	.badge { @apply inline-block rounded-full border border-gold/40 text-gold px-2 py-1 text-xs; }
+}
+
+@layer base {
+	/* Form controls tuned for dark theme */
+	input, textarea, select { @apply bg-graphite text-silver placeholder-silver/70 border border-gold/30 focus:border-gold focus:ring-gold; }
+}

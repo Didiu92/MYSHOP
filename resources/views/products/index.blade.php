@@ -12,8 +12,8 @@
 @section('content')
  <div class="container mx-auto px-6 py-8">
  <div class="mb-8">
- <h1 class="text-3xl font-bold text-gray-900 mb-4">Todos los Productos</h1>
- <p class="text-gray-600">Descubre nuestra amplia gama de productos de
+ <h1 class="text-3xl font-bold text-gold mb-4">Todos los Productos</h1>
+ <p class="text-silver">Descubre nuestra amplia gama de productos de
 calidad.</p>
  </div>
  <div class="product-grid">

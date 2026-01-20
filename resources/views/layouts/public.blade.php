@@ -2,8 +2,9 @@
 <html lang="es">
 <head>
     @include('partials.head')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="bg-gray-50">
+<body class="bg-ebony text-silver">
     <!-- Header usando partial -->
     @include('partials.header')
 

@@ -1,10 +1,10 @@
 <!-- Carrito de Compras -->
-<header class="bg-white shadow-lg relative">
+<header class="bg-graphite shadow-lg relative border-b border-gold/20">
     <div class="container mx-auto px-6 py-4">
         <div class="flex items-center justify-between">
             <!-- Logo -->
             <div class="flex items-center space-x-4">
-            <a href="{{ route('welcome') }}" class="text-2xl font-bold text-primary-600">
+            <a href="{{ route('welcome') }}" class="text-2xl font-bold text-gold hover:text-copper transition">
                     🛍️ Mi Tienda
                 </a>
             </div>
@@ -19,7 +19,7 @@
             @endphp
             <div class="flex items-center space-x-4">
             <a href="{{ route('cart.index') }}" 
-                class="text-gray-700 hover:text-primary-600 transition">
+                class="text-silver hover:text-gold transition">
                     🛒 Carrito ( {{ $totalQuantity }} )
             </a>
             </div>

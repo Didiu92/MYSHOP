@@ -7,14 +7,14 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
+            <div class="card overflow-hidden sm:rounded-lg">
+                <div class="p-6">
                     @if($wishlistProducts->isEmpty())
                         <div class="text-center py-12">
                             <div class="text-6xl mb-4">💔</div>
-                            <h3 class="text-2xl font-bold text-gray-800 mb-2">Tu lista de deseos está vacía</h3>
-                            <p class="text-gray-600 mb-6">Explora nuestros productos y guarda tus favoritos</p>
-                            <a href="{{ route('products.index') }}" class="inline-block bg-primary-600 text-white px-6 py-3 rounded-lg hover:bg-primary-700 transition">
+                            <h3 class="text-2xl font-bold text-gold mb-2">Tu lista de deseos está vacía</h3>
+                            <p class="text-silver mb-6">Explora nuestros productos y guarda tus favoritos</p>
+                            <a href="{{ route('products.index') }}" class="inline-block btn-primary">
                                 Explorar Productos
                             </a>
                         </div>
@@ -39,11 +39,11 @@
                                             <form action="{{ route('cart.store') }}" method="POST" class="flex-1">
                                                 @csrf
                                                 <input type="hidden" name="product_id" value="{{ $product->id }}">
-                                                <button type="submit" class="w-full bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition">
+                                                <button type="submit" class="w-full btn-primary">
                                                     🛒 Añadir al Carrito
                                                 </button>
                                             </form>
-                                            <a href="{{ route('products.show', $product->id) }}" class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition">
+                                            <a href="{{ route('products.show', $product->id) }}" class="border border-gold/30 text-silver px-4 py-2 rounded-lg hover:bg-graphite transition">
                                                 Ver
                                             </a>
                                         </div>
