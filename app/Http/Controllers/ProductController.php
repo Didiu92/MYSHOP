@@ -31,10 +31,64 @@ class ProductController extends Controller
             });
         }
         
+        // Filtro por categoría
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->input('category'));
+        }
+        
+        // Filtro por oferta
+        if ($request->filled('has_offer')) {
+            if ($request->input('has_offer') === 'yes') {
+                $query->whereNotNull('offer_id');
+            } elseif ($request->input('has_offer') === 'no') {
+                $query->whereNull('offer_id');
+            }
+        }
+        
+        // Filtro por rango de precio
+        if ($request->filled('price_min')) {
+            $query->where('price', '>=', (float)$request->input('price_min'));
+        }
+        
+        if ($request->filled('price_max')) {
+            $query->where('price', '<=', (float)$request->input('price_max'));
+        }
+        
+        // Ordenamiento
+        $sortBy = $request->input('sort_by', '');
+        switch ($sortBy) {
+            case 'name_asc':
+                $query->orderBy('name', 'asc');
+                break;
+            case 'name_desc':
+                $query->orderBy('name', 'desc');
+                break;
+            case 'price_asc':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'price_desc':
+                $query->orderBy('price', 'desc');
+                break;
+            case 'oldest':
+                $query->orderBy('created_at', 'asc');
+                break;
+            default:
+                $query->orderBy('created_at', 'desc'); // Por defecto, más recientes primero
+                break;
+        }
+        
         $products = $query->get();
         $search = $request->input('search', '');
+        $category = $request->input('category', '');
+        $hasOffer = $request->input('has_offer', '');
+        $priceMin = $request->input('price_min', '');
+        $priceMax = $request->input('price_max', '');
+        $sortBy = $request->input('sort_by', '');
         
-        return view('products.index', compact('products', 'search'));
+        // Obtener todas las categorías para el filtro
+        $categories = Category::all();
+        
+        return view('products.index', compact('products', 'search', 'category', 'hasOffer', 'priceMin', 'priceMax', 'categories', 'sortBy'));
     }
 
     /**

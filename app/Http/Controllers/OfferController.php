@@ -18,11 +18,14 @@ class OfferController extends Controller
     {
         $query = Offer::query();
         
-        // Búsqueda por nombre o descripción
+        // Búsqueda por nombre, descripción o porcentaje de descuento
         if ($request->filled('search')) {
             $search = $request->input('search');
-            $query->where('name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhere('discount_percentage', 'like', "%{$search}%");
+            });
         }
         
         $offers = $query->get();
