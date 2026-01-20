@@ -5,7 +5,15 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-12" x-data="{ 
+        previewImage: null,
+        previewFile(event) {
+            const file = event.target.files[0];
+            if (file) {
+                this.previewImage = URL.createObjectURL(file);
+            }
+        }
+    }">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
@@ -33,7 +41,21 @@
                         {{-- Imagen del Producto --}}
                         <div>
                             <label for="image" class="block text-sm font-medium text-gray-700">Imagen del Producto</label>
-                            <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/jpg,image/webp" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 @error('image') border-red-500 @enderror">
+                            
+                            {{-- Vista previa --}}
+                            <div x-show="previewImage" x-cloak class="my-3">
+                                <p class="text-xs text-green-600 font-medium mb-1">Vista previa:</p>
+                                <img :src="previewImage" 
+                                     alt="Vista previa"
+                                     class="h-32 w-32 object-cover rounded-md border-2 border-green-500">
+                            </div>
+                            
+                            <input type="file" 
+                                   id="image" 
+                                   name="image" 
+                                   accept="image/jpeg,image/png,image/jpg,image/webp" 
+                                   @change="previewFile($event)"
+                                   class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 @error('image') border-red-500 @enderror">
                             <p class="mt-1 text-xs text-gray-500">Formatos permitidos: JPG, PNG, WEBP. Tamaño máximo: 2MB</p>
                             @error('image')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>

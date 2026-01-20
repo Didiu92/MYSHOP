@@ -27,7 +27,14 @@
             @auth
                 <div x-data="{ open: false }" class="relative">
                     <button @click="open = !open" class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-silver bg-graphite hover:text-gold focus:outline-none transition">
-                        <div>{{ Auth::user()->name }}</div>
+                        <div class="flex flex-col items-start">
+                            <span class="text-sm">{{ Auth::user()->name }}</span>
+                            @if(Auth::user()->isAdmin())
+                                <span class="mt-1 px-2 py-0.5 text-xs font-semibold rounded bg-gold text-black">Administrador</span>
+                            @else
+                                <span class="mt-1 px-2 py-0.5 text-xs font-semibold rounded bg-gray-400 text-black">Invitado</span>
+                            @endif
+                        </div>
                         <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                         </svg>
