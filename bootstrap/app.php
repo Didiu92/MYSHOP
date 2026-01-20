@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         // Registrar middleware con alias
         $middleware->alias([
             'log.activity' => \App\Http\Middleware\LogUserActivity::class,
+            'admin' => \App\Http\Middleware\IsAdmin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -22,7 +22,7 @@
                     <x-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')">
                         {{ __('Productos') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('admin.wishlist.index')" :active="request()->routeIs('admin.wishlist.*')">
+                    <x-nav-link :href="route('wishlist.index')" :active="request()->routeIs('wishlist.*')">
                         {{ __('❤️ Lista de Deseos') }}
                     </x-nav-link>
                 </div>
@@ -87,7 +87,7 @@
             <x-responsive-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')">
                 {{ __('Productos') }}
             </x-responsive-nav-link>
-            <x-responsive-nav-link :href="route('admin.wishlist.index')" :active="request()->routeIs('admin.wishlist.*')">
+            <x-responsive-nav-link :href="route('wishlist.index')" :active="request()->routeIs('wishlist.*')">
                 {{ __('❤️ Lista de Deseos') }}
             </x-responsive-nav-link>
         </div>

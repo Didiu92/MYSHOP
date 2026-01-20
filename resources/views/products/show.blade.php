@@ -67,9 +67,9 @@
 
     {{-- Botón de Wishlist (solo para usuarios autenticados) --}}
     @auth
-        <form action="{{ route('admin.wishlist.store', $product->id) }}" method="POST">
+        <form action="{{ route('wishlist.store', $product->id) }}" method="POST">
             @csrf
-            <button type="submit" class="border-2 border-red-500 text-red-500 px-6 py-3 rounded-lg hover:bg-red-500 hover:text-white transition">
+                <button type="submit" class="border-2 border-red-500 text-red-500 px-6 py-3 rounded-lg hover:bg-red-500 hover:text-white transition">
                 ❤️ Guardar en Favoritos
             </button>
         </form>

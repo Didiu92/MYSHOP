@@ -11,8 +11,11 @@ descuentos.</p>
  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
  @forelse($offers as $offer)
  <div class="card p-6 border-l-4 border-copper">
- <h3 class="text-xl font-bold text-gold mb-2">{{  
-$offer['name'] }}</h3>
+ <h3 class="text-xl font-bold text-gold mb-2">
+    <a href="{{ route('offers.show', $offer['id']) }}" class="hover:underline">
+        {{  $offer['name'] }}
+    </a>
+ </h3>
  <p class="text-silver mb-4">{{ $offer['description'] }}</p>
  <div class="text-2xl font-bold text-copper mb-4">
  {{ $offer['discount_percentage'] }}% de descuento

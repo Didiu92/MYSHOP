@@ -26,15 +26,19 @@
     </div>
 
     <div class="p-6">
-        <h4 class="text-xl font-bold mb-2 text-gold">{{ $product->name }}</h4>
+        <h4 class="text-xl font-bold mb-2 text-gold">
+            <a href="{{ route('products.show', $product->id) }}" class="hover:underline">
+                {{ $product->name }}
+            </a>
+        </h4>
         <p class="text-silver mb-4">{{ Str::limit($product->description, 80) }}</p>
 
         <!-- Badge de oferta adicional (nombre de la oferta) -->
         @if($product->offer)
             <div class="mb-4">
-                <span class="inline-block bg-copper/20 text-copper text-xs px-3 py-1 rounded-full font-semibold border border-copper/40">
+                <a href="{{ route('offers.show', $product->offer->id) }}" class="inline-block bg-copper/20 text-copper text-xs px-3 py-1 rounded-full font-semibold border border-copper/40 hover:underline">
                     🏷️ {{ $product->offer->name }}
-                </span>
+                </a>
             </div>
         @endif
 

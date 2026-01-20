@@ -4,12 +4,16 @@
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Gestión de Productos') }}
         </h2>
+            @if(auth()->user()?->isAdmin())
             <a href="{{ route('admin.products.create') }}" class="inline-flex items-center px-4 py-2 border rounded-md font-semibold text-xs uppercase hover:bg-gray-100 transition">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                 </svg>
                 Crear Nuevo Producto
             </a>
+            @else
+                <span class="text-sm text-gray-500">Vista solo lectura</span>
+            @endif
         </div>
     </x-slot>
 
@@ -42,7 +46,11 @@
                                         @endif
                                     </td>
                                     <td class="px-6 py-4">
-                                        <div class="text-sm font-medium text-gray-900">{{ $product->name }}</div>
+                                        <div class="text-sm font-medium text-gray-900">
+                                            <a href="{{ route('products.show', $product->id) }}" class="hover:underline">
+                                                {{ $product->name }}
+                                            </a>
+                                        </div>
                                         <div class="text-sm text-gray-500">{{ Str::limit($product->description, 50) }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
@@ -59,20 +67,24 @@
                                         @endif
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="{{ route('admin.products.edit', $product) }}" 
-                                           class="text-indigo-600 hover:text-indigo-900 mr-4">
-                                            Editar
-                                        </a>
-                                        <form action="{{ route('admin.products.destroy', $product) }}" 
-                                              method="POST" 
-                                              class="inline-block" 
-                                              onsubmit="return confirm('¿Estás seguro de que deseas eliminar este producto?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-red-600 hover:text-red-900">
-                                                Eliminar
-                                            </button>
-                                        </form>
+                                        @if(auth()->user()?->isAdmin())
+                                            <a href="{{ route('admin.products.edit', $product) }}" 
+                                               class="text-indigo-600 hover:text-indigo-900 mr-4">
+                                                Editar
+                                            </a>
+                                            <form action="{{ route('admin.products.destroy', $product) }}" 
+                                                  method="POST" 
+                                                  class="inline-block" 
+                                                  onsubmit="return confirm('¿Estás seguro de que deseas eliminar este producto?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="text-red-600 hover:text-red-900">
+                                                    Eliminar
+                                                </button>
+                                            </form>
+                                        @else
+                                            <span class="text-gray-400 text-sm">Solo lectura</span>
+                                        @endif
                                     </td>
                                 </tr>
                             @empty

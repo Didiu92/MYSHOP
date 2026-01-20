@@ -24,7 +24,7 @@
                                 <x-product-card :product="$product" class="">
                                     {{-- Slot para botón de eliminar en esquina superior izquierda --}}
                                     <x-slot name="topAction">
-                                        <form action="{{ route('admin.wishlist.destroy', $product->id) }}" method="POST">
+                                            <form action="{{ route('wishlist.destroy', $product->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="text-2xl hover:scale-125 transition-transform" title="Eliminar de favoritos">
