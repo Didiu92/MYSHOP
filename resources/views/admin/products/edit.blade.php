@@ -5,7 +5,12 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
+    <div class="py-12" x-data="{ 
+        lightboxImage: null,
+        openLightbox(image) {
+            this.lightboxImage = image;
+        }
+    }">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
@@ -36,8 +41,12 @@
                             <label for="image" class="block text-sm font-medium text-gray-700">Imagen del Producto</label>
                             @if ($product->image)
                                 <div class="my-2">
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="Imagen actual" class="h-24 w-24 object-cover rounded-md">
-                                    <p class="text-xs text-gray-500 mt-1">Imagen actual. Sube una nueva para reemplazarla.</p>
+                                    <img src="{{ asset('storage/' . $product->image) }}" 
+                                         alt="Imagen actual"
+                                         @click="openLightbox('{{ asset('storage/' . $product->image) }}')"
+                                         class="h-24 w-24 object-cover rounded-md cursor-pointer hover:opacity-80 transition"
+                                         style="cursor: pointer;">
+                                    <p class="text-xs text-gray-500 mt-1">Imagen actual. Sube una nueva para reemplazarla. (Click para ampliar)</p>
                                 </div>
                             @endif
                             <input type="file" id="image" name="image" accept="image/jpeg,image/png,image/jpg,image/webp" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 @error('image') border-red-500 @enderror">
@@ -101,5 +110,29 @@
                 </div>
             </div>
         </div>
+
+        <!-- Lightbox Modal -->
+        <div x-show="lightboxImage" 
+             x-cloak
+             @click="lightboxImage = null"
+             class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 p-4"
+             style="display: none; animation: fadeIn 0.2s ease-in;">
+            <div class="relative bg-white rounded-lg shadow-2xl p-4 max-w-2xl" @click.stop>
+                <button @click="lightboxImage = null" 
+                        class="absolute -top-4 -right-4 text-white bg-red-600 rounded-full w-10 h-10 flex items-center justify-center hover:bg-red-700 transition font-bold text-2xl shadow-lg">
+                    ✕
+                </button>
+                <img :src="lightboxImage" 
+                     alt="Imagen ampliada"
+                     class="w-full max-h-screen object-contain">
+            </div>
+        </div>
+
+        <style>
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+        </style>
     </div>
 </x-app-layout>

@@ -1,4 +1,9 @@
-<x-app-layout>
+<x-app-layout x-data="{ 
+    lightboxImage: null,
+    openLightbox(image) {
+        this.lightboxImage = image;
+    }
+}">
     <x-slot name="header">
         <div class="flex justify-between items-center">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
@@ -37,8 +42,10 @@
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if($product->image)
                                             <img src="{{ asset('storage/' . $product->image) }}" 
-                                                 alt="{{ $product->name }}" 
-                                                 class="h-16 w-16 object-cover rounded-md shadow-sm">
+                                                 alt="{{ $product->name }}"
+                                                 @click="openLightbox('{{ asset('storage/' . $product->image) }}')"
+                                                 class="h-16 w-16 object-cover rounded-md shadow-sm cursor-pointer hover:opacity-80 transition"
+                                                 style="cursor: pointer;">
                                         @else
                                             <div class="h-16 w-16 bg-gray-100 flex items-center justify-center rounded-md text-4xl">
                                                 📦
@@ -102,4 +109,29 @@
             </div>
         </div>
     </div>
+
+    <!-- Lightbox Modal -->
+    <div x-show="lightboxImage" 
+         x-cloak
+         @click="lightboxImage = null"
+         class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 p-4"
+         style="animation: fadeIn 0.2s ease-in;">
+        <div class="relative bg-white rounded-lg shadow-2xl p-4 max-w-2xl" @click.stop>
+            <button @click="lightboxImage = null" 
+                    class="absolute -top-4 -right-4 text-white bg-red-600 rounded-full w-10 h-10 flex items-center justify-center hover:bg-red-700 transition font-bold text-2xl shadow-lg">
+                ✕
+            </button>
+            <img :src="lightboxImage" 
+                 alt="Imagen ampliada"
+                 class="w-full max-h-screen object-contain">
+        </div>
+    </div>
+
+    <style>
+        [x-cloak] { display: none !important; }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
 </x-app-layout>
