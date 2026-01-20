@@ -1,7 +1,7 @@
 <nav class="hidden md:flex space-x-8">
  <a href="{{ route('welcome') }}"
  class="text-silver hover:text-gold transition {{ request()->routeIs('welcome') ? 'text-gold font-semibold' : '' }}">
- Inicio
+ Tienda
  </a>
  <a href="{{ route('products.index') }}"
  class="text-silver hover:text-gold transition {{ request()->routeIs('products.*') ? 'text-gold font-semibold' : '' }}">
@@ -20,9 +20,9 @@
  Contacto
  </a>
  @auth
- <a href="{{ route('dashboard') }}"
- class="text-silver hover:text-gold transition {{ request()->routeIs('dashboard') ? 'text-gold font-semibold' : '' }}">
- Dashboard
+ <a href="{{ route('wishlist.index') }}"
+ class="text-silver hover:text-gold transition {{ request()->routeIs('wishlist.*') ? 'text-gold font-semibold' : '' }}">
+ ❤️ Wishlist
  </a>
  @endauth
  @guest

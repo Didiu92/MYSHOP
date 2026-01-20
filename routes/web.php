@@ -39,10 +39,6 @@ Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checko
 // RUTAS DE USUARIO AUTENTICADO (Breeze)
 // ===========================================
 Route::middleware('auth')->group(function () {
- // Dashboard
- Route::get('/dashboard', function () {
- return view('dashboard');
- })->name('dashboard');
  // Perfil de usuario
  Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
  Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
