@@ -14,10 +14,21 @@ class CategoryController extends Controller
     /**
      * Show all categories
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $categories = Category::all();
-        return view('categories.index', ['categories' => $categories]);
+        $query = Category::query();
+        
+        // Búsqueda por nombre o descripción
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+        }
+        
+        $categories = $query->get();
+        $search = $request->input('search', '');
+        
+        return view('categories.index', compact('categories', 'search'));
     }
 
     /**

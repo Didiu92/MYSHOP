@@ -14,10 +14,21 @@ class OfferController extends Controller
     /**
      * Show all offers
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $offers = Offer::all();
-        return view('offers.index', ['offers' => $offers]);
+        $query = Offer::query();
+        
+        // Búsqueda por nombre o descripción
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+        }
+        
+        $offers = $query->get();
+        $search = $request->input('search', '');
+        
+        return view('offers.index', compact('offers', 'search'));
     }
 
     /**

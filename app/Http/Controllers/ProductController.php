@@ -15,10 +15,26 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $products = Product::with(['category', 'offer'])->get();
-        return view('products.index', ['products' => $products]);
+        $query = Product::with(['category', 'offer']);
+        
+        // Búsqueda por nombre, descripción o categoría
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhereHas('category', function ($catQuery) use ($search) {
+                      $catQuery->where('name', 'like', "%{$search}%");
+                  });
+            });
+        }
+        
+        $products = $query->get();
+        $search = $request->input('search', '');
+        
+        return view('products.index', compact('products', 'search'));
     }
 
     /**
