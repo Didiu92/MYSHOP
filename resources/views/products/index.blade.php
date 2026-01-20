@@ -85,13 +85,16 @@
  <p class="text-silver mb-4">Descubre nuestra amplia gama de productos de calidad.</p>
  
  <!-- Formulario de búsqueda y filtros -->
- <form action="{{ route('products.index') }}" method="GET" x-data="{ priceMin: {{ $priceMin ?: '0' }}, priceMax: {{ $priceMax ?: '500' }} }">
+ <form action="{{ route('products.index') }}" method="GET" id="filterForm" x-data="{ 
+ priceMin: {{ $priceMin ?: '0' }}, 
+ priceMax: {{ $priceMax ?: '500' }}
+ }">
  <!-- Filtros en una línea -->
  <div class="flex gap-2 mb-6 flex-wrap items-end">
  <!-- Filtro por categoría -->
  <div class="flex-1 min-w-[120px]">
  <label class="block text-xs font-medium text-silver mb-1">Categoría</label>
- <select name="category" class="w-full px-2 py-1.5 text-sm bg-ebony border border-gray-600 rounded text-silver focus:ring-2 focus:ring-gold focus:border-transparent transition">
+ <select name="category" onchange="document.getElementById('filterForm').submit()" class="w-full px-2 py-1.5 text-sm bg-ebony border border-gray-600 rounded text-silver focus:ring-2 focus:ring-gold focus:border-transparent transition">
  <option value="">Todas</option>
  @foreach($categories as $cat)
  <option value="{{ $cat->id }}" {{ $category == $cat->id ? 'selected' : '' }}>
@@ -104,7 +107,7 @@
  <!-- Filtro por oferta -->
  <div class="flex-1 min-w-[120px]">
  <label class="block text-xs font-medium text-silver mb-1">Oferta</label>
- <select name="has_offer" class="w-full px-2 py-1.5 text-sm bg-ebony border border-gray-600 rounded text-silver focus:ring-2 focus:ring-gold focus:border-transparent transition">
+ <select name="has_offer" onchange="document.getElementById('filterForm').submit()" class="w-full px-2 py-1.5 text-sm bg-ebony border border-gray-600 rounded text-silver focus:ring-2 focus:ring-gold focus:border-transparent transition">
  <option value="">Todos</option>
  <option value="yes" {{ $hasOffer === 'yes' ? 'selected' : '' }}>Con oferta</option>
  <option value="no" {{ $hasOffer === 'no' ? 'selected' : '' }}>Sin oferta</option>
@@ -124,6 +127,7 @@
  step="10"
  x-model.number="priceMin"
  @input="if(priceMin > priceMax) priceMin = priceMax"
+ @change="document.getElementById('filterForm').submit()"
  class="price-min">
  <input type="range" 
  name="price_max_input"
@@ -132,6 +136,7 @@
  step="10"
  x-model.number="priceMax"
  @input="if(priceMax < priceMin) priceMax = priceMin"
+ @change="document.getElementById('filterForm').submit()"
  class="price-max">
  </div>
  <div class="price-display">
@@ -146,7 +151,7 @@
  <!-- Filtro de ordenamiento -->
  <div class="flex-1 min-w-[150px]">
  <label class="block text-xs font-medium text-silver mb-1">Ordenar por</label>
- <select name="sort_by" class="w-full px-2 py-1.5 text-sm bg-ebony border border-gray-600 rounded text-silver focus:ring-2 focus:ring-gold focus:border-transparent transition">
+ <select name="sort_by" onchange="document.getElementById('filterForm').submit()" class="w-full px-2 py-1.5 text-sm bg-ebony border border-gray-600 rounded text-silver focus:ring-2 focus:ring-gold focus:border-transparent transition">
  <option value="">Más recientes</option>
  <option value="name_asc" {{ $sortBy === 'name_asc' ? 'selected' : '' }}>Nombre (A-Z)</option>
  <option value="name_desc" {{ $sortBy === 'name_desc' ? 'selected' : '' }}>Nombre (Z-A)</option>
@@ -156,17 +161,14 @@
  </select>
  </div>
  
- <!-- Botones -->
+ <!-- Botón limpiar -->
+ @if($search || $category || $hasOffer || $priceMin || $priceMax || $sortBy)
  <div class="flex gap-2">
- <button type="submit" class="px-3 py-1.5 text-sm bg-gold text-ebony rounded font-semibold hover:bg-copper transition whitespace-nowrap">
- Filtrar
- </button>
- @if($search || $category || $hasOffer || $priceMin || $priceMax)
  <a href="{{ route('products.index') }}" class="px-3 py-1.5 text-sm bg-gray-600 text-silver rounded hover:bg-gray-500 transition whitespace-nowrap">
- Limpiar
+ Limpiar filtros
  </a>
- @endif
  </div>
+ @endif
  </div>
  
  <!-- Búsqueda por texto -->
