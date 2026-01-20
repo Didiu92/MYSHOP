@@ -3,6 +3,24 @@
  class="text-silver hover:text-gold transition {{ request()->routeIs('welcome') ? 'text-gold font-semibold' : '' }}">
  Tienda
  </a>
+ @if(auth()->user()?->isAdmin())
+ <a href="{{ route('admin.products.index') }}"
+ class="text-silver hover:text-gold transition {{ request()->routeIs('admin.products.*') ? 'text-gold font-semibold' : '' }}">
+ Productos
+ </a>
+ <a href="{{ route('admin.categories.index') }}"
+ class="text-silver hover:text-gold transition {{ request()->routeIs('admin.categories.*') ? 'text-gold font-semibold' : '' }}">
+ Categorías
+ </a>
+ <a href="{{ route('admin.offers.index') }}"
+ class="text-silver hover:text-gold transition {{ request()->routeIs('admin.offers.*') ? 'text-gold font-semibold' : '' }}">
+ Ofertas
+ </a>
+ <a href="{{ route('admin.users.index') }}"
+ class="text-silver hover:text-gold transition {{ request()->routeIs('admin.users.*') ? 'text-gold font-semibold' : '' }}">
+ Usuarios
+ </a>
+ @else
  <a href="{{ route('products.index') }}"
  class="text-silver hover:text-gold transition {{ request()->routeIs('products.*') ? 'text-gold font-semibold' : '' }}">
  Productos
@@ -15,6 +33,7 @@
  class="text-silver hover:text-gold transition {{ request()->routeIs('offers.*') ? 'text-gold font-semibold' : '' }}">
  Ofertas
  </a>
+ @endif
  <a href="{{ route('contact') }}"
  class="text-silver hover:text-gold transition {{ request()->routeIs('contact') ? 'text-gold font-semibold' : '' }}">
  Contacto
