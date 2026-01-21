@@ -37,9 +37,21 @@ class OfferController extends Controller
     /**
      * Admin: listado de ofertas.
      */
-    public function adminIndex(): View
+    public function adminIndex(Request $request): View
     {
-        $offers = Offer::latest()->get();
+        $query = Offer::query();
+        
+        // Búsqueda por nombre, descripción o porcentaje de descuento
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhere('discount_percentage', 'like', "%{$search}%");
+            });
+        }
+        
+        $offers = $query->latest()->get();
         return view('admin.offers.index', compact('offers'));
     }
 

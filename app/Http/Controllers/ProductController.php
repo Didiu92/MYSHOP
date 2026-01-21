@@ -163,9 +163,72 @@ class ProductController extends Controller
     /**
      * Muestra la lista de productos en el panel de administración.
      */
-public function adminIndex(): View
+public function adminIndex(Request $request): View
 {
-    $products = Product::with(['category', 'offer'])->latest()->get();
+    $query = Product::with(['category', 'offer']);
+    
+    // Búsqueda por nombre, descripción o categoría
+    if ($request->filled('search')) {
+        $search = $request->input('search');
+        $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', "%{$search}%")
+              ->orWhere('description', 'like', "%{$search}%")
+              ->orWhereHas('category', function ($catQuery) use ($search) {
+                  $catQuery->where('name', 'like', "%{$search}%");
+              });
+        });
+    }
+    
+    // Filtro por categoría
+    if ($request->filled('category')) {
+        $query->where('category_id', $request->input('category'));
+    }
+    
+    // Filtro por oferta
+    if ($request->filled('has_offer')) {
+        if ($request->input('has_offer') === 'yes') {
+            $query->whereNotNull('offer_id');
+        } elseif ($request->input('has_offer') === 'no') {
+            $query->whereNull('offer_id');
+        }
+    }
+    
+    // Ordenamiento
+    $sortBy = $request->input('sort_by', '');
+    switch ($sortBy) {
+        case 'name_asc':
+            $query->orderBy('name', 'asc');
+            break;
+        case 'name_desc':
+            $query->orderBy('name', 'desc');
+            break;
+        case 'price_asc':
+            $query->orderBy('price', 'asc');
+            break;
+        case 'price_desc':
+            $query->orderBy('price', 'desc');
+            break;
+        case 'oldest':
+            $query->orderBy('created_at', 'asc');
+            break;
+        default:
+            $query->orderBy('created_at', 'desc');
+            break;
+    }
+    
+    $products = $query->get();
+    
+    // Filtro por rango de precio (aplicando sobre el precio final después de ofertas)
+    if ($request->filled('price_min') || $request->filled('price_max')) {
+        $priceMinFilter = $request->filled('price_min') ? (float)$request->input('price_min') : 0;
+        $priceMaxFilter = $request->filled('price_max') ? (float)$request->input('price_max') : PHP_FLOAT_MAX;
+        
+        $products = $products->filter(function ($product) use ($priceMinFilter, $priceMaxFilter) {
+            $finalPrice = $product->final_price;
+            return $finalPrice >= $priceMinFilter && $finalPrice <= $priceMaxFilter;
+        });
+    }
+    
     return view('admin.products.index', compact('products'));
 }
 

@@ -14,9 +14,21 @@ class UserController extends Controller
     /**
      * Listado de usuarios.
      */
-    public function index(): View
+    public function index(Request $request): View
     {
-        $users = User::latest()->get();
+        $query = User::query();
+        
+        // Búsqueda por nombre, email o rol
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('role', 'like', "%{$search}%");
+            });
+        }
+        
+        $users = $query->latest()->get();
         return view('admin.users.index', compact('users'));
     }
 

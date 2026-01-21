@@ -34,9 +34,18 @@ class CategoryController extends Controller
     /**
      * Admin: listado de categorías.
      */
-    public function adminIndex(): View
+    public function adminIndex(Request $request): View
     {
-        $categories = Category::latest()->get();
+        $query = Category::query();
+        
+        // Búsqueda por nombre o descripción
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+        }
+        
+        $categories = $query->latest()->get();
         return view('admin.categories.index', compact('categories'));
     }
 
