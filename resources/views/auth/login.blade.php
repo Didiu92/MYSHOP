@@ -43,5 +43,13 @@
                 {{ __('Log in') }}
             </x-primary-button>
         </div>
+
+        <!-- Register Link -->
+        <div class="mt-4 text-center">
+            <span class="text-sm text-silver">¿No tienes una cuenta?</span>
+            <a class="ms-2 text-sm text-gold hover:text-copper underline" href="{{ route('register') }}">
+                Regístrate aquí
+            </a>
+        </div>
     </form>
 </x-guest-layout>
