@@ -13,6 +13,24 @@
                 <span class="inline-flex items-center bg-orange-100 text-orange-800 px-4 py-2 rounded-full font-semibold">
                     -{{ $offer->discount_percentage }}% de descuento
                 </span>
+                
+                {{-- Botones de Admin: Editar y Eliminar --}}
+                @auth
+                    @if(auth()->user()->isAdmin())
+                        <a href="{{ route('admin.offers.edit', $offer->id) }}" 
+                           class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm">
+                            ✏️ Editar
+                        </a>
+                        <form action="{{ route('admin.offers.destroy', $offer->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta oferta?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition text-sm">
+                                🗑️ Eliminar
+                            </button>
+                        </form>
+                    @endif
+                @endauth
+                
                 <a href="{{ route('offers.index') }}" 
                    class="text-gold hover:text-copper transition">
                     &larr; Volver a Ofertas

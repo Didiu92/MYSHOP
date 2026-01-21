@@ -77,7 +77,28 @@
 
             <!-- Información del Producto -->
             <div class="card p-6">
-                <h1 class="text-3xl font-bold text-gold mb-4">{{ $product->name }}</h1>
+                <div class="flex items-start justify-between gap-6 mb-8">
+                    <h1 class="text-3xl font-bold text-gold">{{ $product->name }}</h1>
+                    
+                    {{-- Botones de Admin: Editar y Eliminar (esquina superior derecha) --}}
+                    @auth
+                        @if(auth()->user()->isAdmin())
+                            <div class="flex flex-col gap-2 whitespace-nowrap">
+                                <a href="{{ route('admin.products.edit', $product->id) }}" 
+                                   class="bg-ebony text-silver border-2 border-silver px-4 py-2 rounded-lg hover:bg-silver hover:text-ebony transition text-sm font-semibold">
+                                    ✏️ Editar
+                                </a>
+                                <form action="{{ route('admin.products.destroy', $product->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este producto?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-graphite text-red-500 border-2 border-red-500 px-4 py-2 rounded-lg hover:bg-red-500 hover:text-white transition text-sm font-semibold w-full">
+                                        🗑️ Eliminar
+                                    </button>
+                                </form>
+                            </div>
+                        @endif
+                    @endauth
+                </div>
                 <p class="text-silver mb-6">{{ $product->description }}</p>
             
                 <!-- Precio -->

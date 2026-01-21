@@ -3,7 +3,7 @@
 @endphp
 
 <div class="card overflow-hidden product-card {{ $class }} relative {{ $product->offer ? 'ring-2 ring-copper' : 'ring-2 ring-silver' }}"
-     x-data="{ currentImage: 0, images: @json($productImages) }">
+     x-data="{ currentImage: 0, totalImages: {{ count($productImages) }} }">
     <!-- Badge de oferta destacado (esquina superior derecha) -->
     @if($product->offer)
         <div class="absolute top-0 right-0 bg-copper text-ebony px-4 py-2 rounded-bl-lg font-bold shadow-lg z-10">
@@ -23,23 +23,31 @@
     <div class="h-48 bg-ebony flex items-center justify-center overflow-hidden relative group">
         @if(count($productImages) > 0)
             <!-- Contenedor de imágenes -->
-            @foreach($productImages as $index => $imagePath)
-                <div :class="currentImage === {{ $index }} ? '' : 'hidden'" 
-                     class="absolute inset-0">
-                    <img src="{{ asset('storage/' . $imagePath) }}"
+            <template x-if="currentImage === 0">
+                <div class="absolute inset-0">
+                    <img src="{{ asset('storage/' . $productImages[0]) }}"
                          alt="{{ $product->name }}"
                          class="w-full h-full object-cover">
                 </div>
+            </template>
+            @foreach(array_slice($productImages, 1) as $index => $imagePath)
+                <template x-if="currentImage === {{ $index + 1 }}">
+                    <div class="absolute inset-0">
+                        <img src="{{ asset('storage/' . $imagePath) }}"
+                             alt="{{ $product->name }}"
+                             class="w-full h-full object-cover">
+                    </div>
+                </template>
             @endforeach
             
             <!-- Botones de navegación (solo si hay múltiples imágenes) -->
             @if(count($productImages) > 1)
-                <button @click="currentImage = (currentImage - 1 + images.length) % images.length"
-                        class="absolute left-1 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition z-10">
+                <button @click="currentImage = (currentImage - 1 + totalImages) % totalImages"
+                        class="absolute left-1 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-1 rounded opacity-50 hover:opacity-100 transition z-10">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 </button>
-                <button @click="currentImage = (currentImage + 1) % images.length"
-                        class="absolute right-1 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition z-10">
+                <button @click="currentImage = (currentImage + 1) % totalImages"
+                        class="absolute right-1 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-1 rounded opacity-50 hover:opacity-100 transition z-10">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                 </button>
                 
