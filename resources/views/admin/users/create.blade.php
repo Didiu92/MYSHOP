@@ -28,6 +28,7 @@
                         <label class="block text-sm font-medium text-gray-700">Rol</label>
                         <select name="role" class="mt-1 input" required>
                             <option value="admin" {{ old('role') === 'admin' ? 'selected' : '' }}>Admin</option>
+                            <option value="worker" {{ old('role') === 'worker' ? 'selected' : '' }}>Trabajador (invitado)</option>
                             <option value="guest" {{ old('role') === 'guest' ? 'selected' : '' }}>Guest</option>
                         </select>
                     </div>

@@ -10,21 +10,33 @@ class UserSeeder extends Seeder
  */
  public function run(): void
  {
- // Usuario admin fijo para acceso conocido
- User::updateOrCreate(
- ['email' => 'tu@email.com'],
- [
- 'name' => 'Admin',
- 'password' => Hash::make('password123'),
- ]
- );
+		// Usuario admin fijo para acceso conocido
+		User::updateOrCreate(
+			['email' => 'tu@email.com'],
+			[
+				'name' => 'Admin',
+				'password' => Hash::make('password123'),
+				'role' => 'admin',
+			]
+		);
 
-		// Usuario demo fijo (evita duplicados si ya existe)
+		// Usuario demo fijo como trabajador invitado (lectura sin CRUD de usuarios)
 		User::updateOrCreate(
 			['email' => 'demo@example.com'],
 			[
 				'name' => 'Usuario Demo',
 				'password' => Hash::make('password'),
+				'role' => 'worker',
+			]
+		);
+
+		// Cliente autenticado de prueba
+		User::updateOrCreate(
+			['email' => 'customer@myshop.com'],
+			[
+				'name' => 'Cliente',
+				'password' => Hash::make('password123'),
+				'role' => 'guest',
 			]
 		);
  // Crear usuarios adicionales con datos aleatorios

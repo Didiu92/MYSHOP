@@ -10,6 +10,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
+    public const ROLE_ADMIN = 'admin';
+    public const ROLE_WORKER = 'worker';
+    public const ROLE_GUEST = 'guest';
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory;
 
@@ -55,15 +59,31 @@ class User extends Authenticatable
      */
     public function isAdmin(): bool
     {
-        return $this->role === 'admin';
+        return $this->role === self::ROLE_ADMIN;
     }
 
     /**
-     * Check if user is guest.
+     * Check if user is a standard authenticated customer.
      */
     public function isGuest(): bool
     {
-        return $this->role === 'guest';
+        return $this->role === self::ROLE_GUEST;
+    }
+
+    /**
+     * Check if user is a worker (invited staff) without full admin powers.
+     */
+    public function isWorker(): bool
+    {
+        return $this->role === self::ROLE_WORKER || $this->isAdmin();
+    }
+
+    /**
+     * True only for the limited worker profile (non-admin staff).
+     */
+    public function isWorkerGuest(): bool
+    {
+        return $this->role === self::ROLE_WORKER;
     }
 
     /**

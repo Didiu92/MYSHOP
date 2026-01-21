@@ -9,6 +9,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,12 +30,6 @@ Route::get('/products-on-sale', [ProductController::class, 'onSale'])->name('pro
 Route::resource('products', ProductController::class)->only(['index', 'show']);
 // Rutas de ofertas (solo lectura)
 Route::resource('offers', OfferController::class)->only(['index', 'show']);
-// Rutas del carrito de compras (ahora completas)
-Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
-Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
-Route::put('/cart/{id}', [CartController::class, 'update'])->name('cart.update');
-Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
-Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 // ===========================================
 // RUTAS DE USUARIO AUTENTICADO (Breeze)
 // ===========================================
@@ -48,12 +43,24 @@ Route::middleware('auth')->group(function () {
  Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
  Route::post('/wishlist/{id}', [WishlistController::class, 'store'])->name('wishlist.store');
  Route::delete('/wishlist/{id}', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
+
+ // Carrito de compras (requiere login)
+ Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+ Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
+ Route::put('/cart/{id}', [CartController::class, 'update'])->name('cart.update');
+ Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
+ Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 });
 // ===========================================
-// RUTA DE LISTADO ADMIN (Solo autenticados, lectura)
+// RUTAS DE TRABAJADORES (Lectura, dashboard)
 // ===========================================
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'worker'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Listados de solo lectura para staff
     Route::get('/products', [ProductController::class, 'adminIndex'])->name('products.index');
+    Route::get('/categories', [CategoryController::class, 'adminIndex'])->name('categories.index');
+    Route::get('/offers', [OfferController::class, 'adminIndex'])->name('offers.index');
 });
 
 // ===========================================
@@ -64,11 +71,9 @@ Route::middleware(['auth', 'admin', 'log.activity'])->prefix('admin')->name('adm
     Route::resource('products', ProductController::class)->except(['index', 'show']);
 
     // Categorías
-    Route::get('/categories', [CategoryController::class, 'adminIndex'])->name('categories.index');
     Route::resource('categories', CategoryController::class)->except(['index', 'show']);
 
     // Ofertas
-    Route::get('/offers', [OfferController::class, 'adminIndex'])->name('offers.index');
     Route::resource('offers', OfferController::class)->except(['index', 'show']);
 
     // Usuarios

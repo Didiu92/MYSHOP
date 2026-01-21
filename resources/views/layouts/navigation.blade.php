@@ -1,3 +1,4 @@
+@php($user = auth()->user())
 <nav x-data="{ open: false }" class="bg-graphite border-b border-gold/20">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -5,41 +6,64 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('wishlist.index') }}">
+                    <a href="{{ route('welcome') }}">
                         <x-application-logo class="block h-9 w-auto fill-current text-gold" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-6 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')">
                         {{ __('Tienda') }}
                     </x-nav-link>
-                    {{-- Enlaces autenticados --}}
-                    @if(auth()->check())
-                        {{-- Enlaces de Administración --}}
-                        @if(auth()->user()?->isAdmin())
-                            <x-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')">
-                                {{ __('Productos') }}
-                            </x-nav-link>
-                            <x-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.*')">
-                                {{ __('Categorías') }}
-                            </x-nav-link>
-                            <x-nav-link :href="route('admin.offers.index')" :active="request()->routeIs('admin.offers.*')">
-                                {{ __('Ofertas') }}
-                            </x-nav-link>
-                            <x-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
-                                {{ __('Usuarios') }}
-                            </x-nav-link>
-                        @endif
-                        <x-nav-link :href="route('wishlist.index')" :active="request()->routeIs('wishlist.*')">
-                            {{ __('❤️ Lista de Deseos') }}
-                        </x-nav-link>
-                    @else
-                        <x-nav-link :href="route('login')">
-                            {{ __('Login') }}
-                        </x-nav-link>
+                    <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
+                        {{ __('Productos') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
+                        {{ __('Categorías') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('offers.index')" :active="request()->routeIs('offers.*')">
+                        {{ __('Ofertas') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
+                        {{ __('Contacto') }}
+                    </x-nav-link>
+
+                    @if($user?->isWorker())
+                        <div x-data="{ open: false }" class="relative">
+                            <button @click="open = !open" class="inline-flex items-center text-silver hover:text-gold px-2 py-1 rounded-md">
+                                Dashboard
+                                <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div x-show="open" @click.away="open = false" x-cloak
+                                 class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-graphite ring-1 ring-gold ring-opacity-20 z-40">
+                                <div class="py-1">
+                                    <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Panel</a>
+                                    <a href="{{ route('admin.products.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Productos</a>
+                                    <a href="{{ route('admin.categories.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Categorías</a>
+                                    <a href="{{ route('admin.offers.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Ofertas</a>
+                                    @if($user->isAdmin())
+                                        <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Usuarios</a>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
                     @endif
+
+                    <x-nav-link :href="route('wishlist.index')" :active="request()->routeIs('wishlist.*')">
+                        {{ __('❤️ Lista de Deseos') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">
+                        {{ __('🛒 Carrito') }}
+                    </x-nav-link>
+
+                    @guest
+                        <x-nav-link :href="route('login')">
+                            {{ __('Login / Sign in') }}
+                        </x-nav-link>
+                    @endguest
                 </div>
             </div>
 
@@ -52,11 +76,8 @@
                                 <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-silver bg-graphite hover:text-gold focus:outline-none transition ease-in-out duration-150">
                                     <div class="flex flex-col items-start">
                                         <span class="text-sm">{{ Auth::user()->name }}</span>
-                                        @if(Auth::user()->isAdmin())
-                                            <span class="mt-1 px-2 py-0.5 text-xs font-semibold rounded bg-gold text-black">Administrador</span>
-                                        @else
-                                            <span class="mt-1 px-2 py-0.5 text-xs font-semibold rounded bg-gray-400 text-black">Invitado</span>
-                                        @endif
+                                        @php($badge = Auth::user()->isAdmin() ? 'Administrador' : (Auth::user()->isWorkerGuest() ? 'Trabajador' : 'Cliente'))
+                                        <span class="mt-1 px-2 py-0.5 text-xs font-semibold rounded {{ Auth::user()->isAdmin() ? 'bg-gold text-black' : (Auth::user()->isWorkerGuest() ? 'bg-copper text-black' : 'bg-gray-400 text-black') }}">{{ $badge }}</span>
                                     </div>
 
                                     <div class="ms-1">
@@ -116,30 +137,51 @@
             <x-responsive-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')">
                 {{ __('Tienda') }}
             </x-responsive-nav-link>
-            @if(auth()->check())
-                {{-- Enlaces de Administración --}}
-                @if(auth()->user()?->isAdmin())
-                    <x-responsive-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')">
-                        {{ __('Productos') }}
-                    </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.*')">
-                        {{ __('Categorías') }}
-                    </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('admin.offers.index')" :active="request()->routeIs('admin.offers.*')">
-                        {{ __('Ofertas') }}
-                    </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">
+                {{ __('Productos') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
+                {{ __('Categorías') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('offers.index')" :active="request()->routeIs('offers.*')">
+                {{ __('Ofertas') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('contact')" :active="request()->routeIs('contact')">
+                {{ __('Contacto') }}
+            </x-responsive-nav-link>
+
+            @if($user?->isWorker())
+                <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.products.index')" :active="request()->routeIs('admin.products.*')">
+                    {{ __('Productos (Admin)') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.categories.index')" :active="request()->routeIs('admin.categories.*')">
+                    {{ __('Categorías (Admin)') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.offers.index')" :active="request()->routeIs('admin.offers.*')">
+                    {{ __('Ofertas (Admin)') }}
+                </x-responsive-nav-link>
+                @if($user->isAdmin())
                     <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
                         {{ __('Usuarios') }}
                     </x-responsive-nav-link>
                 @endif
-                <x-responsive-nav-link :href="route('wishlist.index')" :active="request()->routeIs('wishlist.*')">
-                    {{ __('❤️ Lista de Deseos') }}
-                </x-responsive-nav-link>
-            @else
-                <x-responsive-nav-link :href="route('login')">
-                    {{ __('Login') }}
-                </x-responsive-nav-link>
             @endif
+
+            <x-responsive-nav-link :href="route('wishlist.index')" :active="request()->routeIs('wishlist.*')">
+                {{ __('❤️ Wishlist') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('cart.index')" :active="request()->routeIs('cart.*')">
+                {{ __('🛒 Carrito') }}
+            </x-responsive-nav-link>
+
+            @guest
+                <x-responsive-nav-link :href="route('login')">
+                    {{ __('Login / Sign in') }}
+                </x-responsive-nav-link>
+            @endguest
         </div>
 
         <!-- Responsive Settings Options -->

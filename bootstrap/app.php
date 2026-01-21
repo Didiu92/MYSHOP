@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'log.activity' => \App\Http\Middleware\LogUserActivity::class,
             'admin' => \App\Http\Middleware\IsAdmin::class,
+            'worker' => \App\Http\Middleware\IsWorker::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
