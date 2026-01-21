@@ -16,7 +16,11 @@
     @endisset
 
     <div class="h-48 bg-ebony flex items-center justify-center overflow-hidden">
-        @if(!empty($product->image))
+        @if($product->images->count() > 0)
+            <img src="{{ asset('storage/' . $product->images->first()->path) }}" 
+                 alt="{{ $product->name }}" 
+                 class="w-full h-full object-cover">
+        @elseif(!empty($product->image))
             <img src="{{ asset('storage/' . $product->image) }}" 
                  alt="{{ $product->name }}" 
                  class="w-full h-full object-cover">

@@ -16,7 +16,7 @@ class WishlistController extends Controller
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
-        $wishlistProducts = $user->products()->with(['category', 'offer'])->get();
+        $wishlistProducts = $user->products()->with(['category', 'offer', 'images'])->get();
         
         return view('admin.wishlist.index', [
             'wishlistProducts' => $wishlistProducts

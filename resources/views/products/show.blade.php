@@ -5,10 +5,73 @@
 @section('content')
     <div class="container mx-auto px-6 py-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <!-- Imagen del Producto -->
-            <div class="card p-6">
-                <div class="h-96 bg-graphite flex items-center justify-center">
-                    <span class="text-8xl">📦</span>
+            <!-- Carrusel de Imágenes -->
+            <div class="card p-6" x-data="{ 
+                currentImage: 0, 
+                images: {{ json_encode($product->images->pluck('path')->values()->toArray()) }}
+            }">
+                <div class="relative">
+                    <!-- Imagen principal -->
+                    <div class="h-96 bg-graphite flex items-center justify-center rounded-lg overflow-hidden relative">
+                        @if ($product->images->count() > 0)
+                            <template x-for="(image, index) in images" :key="index">
+                                <div x-show="currentImage === index"
+                                     x-transition
+                                     class="absolute inset-0">
+                                    <img :src="'{{ asset('storage') }}/' + image"
+                                         :alt="'Imagen ' + (index + 1) + ' de {{ $product->name }}'"
+                                         class="w-full h-full object-cover">
+                                </div>
+                            </template>
+                        @else
+                            <span class="text-8xl">📦</span>
+                        @endif
+                    </div>
+
+                    <!-- Botones de navegación (solo si hay múltiples imágenes) -->
+                    @if ($product->images->count() > 1)
+                        <!-- Botón anterior -->
+                        <button @click="currentImage = (currentImage - 1 + images.length) % images.length"
+                                class="absolute left-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white px-3 py-2 rounded-lg transition">
+                            ◀
+                        </button>
+
+                        <!-- Botón siguiente -->
+                        <button @click="currentImage = (currentImage + 1) % images.length"
+                                class="absolute right-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white px-3 py-2 rounded-lg transition">
+                            ▶
+                        </button>
+
+                        <!-- Indicadores de posición -->
+                        <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
+                            <template x-for="(image, index) in images" :key="index">
+                                <button @click="currentImage = index"
+                                        :class="currentImage === index ? 'bg-gold' : 'bg-gray-400'"
+                                        class="w-2 h-2 rounded-full transition">
+                                </button>
+                            </template>
+                        </div>
+
+                        <!-- Contador de imágenes -->
+                        <div class="absolute top-3 right-3 bg-black bg-opacity-70 text-gold px-2 py-1 rounded text-sm">
+                            <span x-text="currentImage + 1"></span> / <span x-text="images.length"></span>
+                        </div>
+                    @endif
+
+                    <!-- Miniaturas -->
+                    @if ($product->images->count() > 1)
+                        <div class="mt-4 flex gap-2 overflow-x-auto">
+                            @foreach ($product->images as $image)
+                                <button @click="currentImage = {{ $loop->index }}"
+                                        :class="currentImage === {{ $loop->index }} ? 'ring-2 ring-gold' : 'ring-1 ring-gray-400'"
+                                        class="flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden transition">
+                                    <img src="{{ asset('storage/' . $image->path) }}"
+                                         alt="Miniatura {{ $loop->index + 1 }}"
+                                         class="w-full h-full object-cover">
+                                </button>
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             </div>
 

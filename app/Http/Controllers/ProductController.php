@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Offer;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -17,7 +18,7 @@ class ProductController extends Controller
      */
     public function index(Request $request): View
     {
-        $query = Product::with(['category', 'offer']);
+        $query = Product::with(['category', 'offer', 'images']);
         
         // Búsqueda por nombre, descripción o categoría
         if ($request->filled('search')) {
@@ -98,7 +99,7 @@ class ProductController extends Controller
      */
     public function onSale(): View
     {
-        $products = Product::with(['category', 'offer'])
+        $products = Product::with(['category', 'offer', 'images'])
             ->whereNotNull('offer_id')
             ->get();
         return view('products.index', ['products' => $products]);
@@ -121,11 +122,11 @@ class ProductController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // PASO 1: Validar todos los datos del formulario, incluyendo la imagen
+        // PASO 1: Validar todos los datos del formulario, incluyendo las imágenes
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:products,name',
             'description' => 'required|string|max:1000',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'price' => 'required|numeric|min:0|max:999999.99',
             'category_id' => 'required|exists:categories,id',
             'offer_id' => 'nullable|exists:offers,id',
@@ -133,9 +134,9 @@ class ProductController extends Controller
             'name.required' => 'El nombre del producto es obligatorio.',
             'name.unique' => 'Ya existe un producto con ese nombre.',
             'description.required' => 'La descripción es obligatoria.',
-            'image.image' => 'El archivo debe ser una imagen.',
-            'image.mimes' => 'La imagen debe ser de tipo: jpeg, png, jpg, webp.',
-            'image.max' => 'La imagen no debe superar los 2MB.',
+            'images.*.image' => 'Todos los archivos deben ser imágenes.',
+            'images.*.mimes' => 'Las imágenes deben ser de tipo: jpeg, png, jpg, webp.',
+            'images.*.max' => 'Cada imagen no debe superar los 2MB.',
             'price.required' => 'El precio es obligatorio.',
             'price.numeric' => 'El precio debe ser un número.',
             'category_id.required' => 'Debes seleccionar una categoría.',
@@ -143,16 +144,21 @@ class ProductController extends Controller
             'offer_id.exists' => 'La oferta seleccionada no es válida.',
         ]);
 
-        // PASO 2: Procesar la imagen si fue subida
-        if ($request->hasFile('image')) {
-            // Guardar en el disco 'public' dentro de la carpeta 'products'
-            // Laravel genera automáticamente un nombre único para evitar colisiones
-            $imagePath = $request->file('image')->store('products', 'public');
-            $validated['image'] = $imagePath;
-        }
+        // PASO 2: Crear el producto
+        $product = Product::create($validated);
 
-        // PASO 3: Crear el producto con los datos validados
-        Product::create($validated);
+        // PASO 3: Procesar las imágenes si fueron subidas
+        if ($request->hasFile('images')) {
+            $order = 0;
+            foreach ($request->file('images') as $image) {
+                $imagePath = $image->store('products', 'public');
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'path' => $imagePath,
+                    'order' => $order++,
+                ]);
+            }
+        }
 
         // PASO 4: Redirigir con mensaje de éxito
         return redirect()
@@ -165,7 +171,7 @@ class ProductController extends Controller
      */
 public function adminIndex(Request $request): View
 {
-    $query = Product::with(['category', 'offer']);
+    $query = Product::with(['category', 'offer', 'images']);
     
     // Búsqueda por nombre, descripción o categoría
     if ($request->filled('search')) {
@@ -242,7 +248,7 @@ public function adminIndex(Request $request): View
             abort(404, 'ID de producto inválido');
         }
 
-        $product = Product::with(['category', 'offer'])->find($id);
+        $product = Product::with(['category', 'offer', 'images'])->find($id);
 
         if (!$product) {
             abort(404, 'Producto no encontrado');
@@ -274,25 +280,34 @@ public function adminIndex(Request $request): View
         $validated = $request->validate([
             'name' => 'required|string|max:255|unique:products,name,' . $product->id,
             'description' => 'required|string|max:1000',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
+            'images.*' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
             'price' => 'required|numeric|min:0|max:999999.99',
             'category_id' => 'required|exists:categories,id',
             'offer_id' => 'nullable|exists:offers,id',
         ]);
 
-        // PASO 2: Manejar la subida de la nueva imagen
-        if ($request->hasFile('image')) {
-            // Eliminar la imagen anterior si existe para no acumular archivos
-            if ($product->image) {
-                Storage::disk('public')->delete($product->image);
-            }
-            // Guardar la nueva imagen y obtener su ruta
-            $imagePath = $request->file('image')->store('products', 'public');
-            $validated['image'] = $imagePath;
-        }
-
-        // PASO 3: Actualizar el producto con los datos validados
+        // PASO 2: Actualizar el producto con los datos validados
         $product->update($validated);
+
+        // PASO 3: Manejar las nuevas imágenes
+        if ($request->hasFile('images')) {
+            // Si se suben nuevas imágenes, eliminar las antiguas
+            foreach ($product->images as $image) {
+                Storage::disk('public')->delete($image->path);
+                $image->delete();
+            }
+            
+            // Guardar las nuevas imágenes
+            $order = 0;
+            foreach ($request->file('images') as $image) {
+                $imagePath = $image->store('products', 'public');
+                ProductImage::create([
+                    'product_id' => $product->id,
+                    'path' => $imagePath,
+                    'order' => $order++,
+                ]);
+            }
+        }
 
         // PASO 4: Redirigir con mensaje de éxito
         return redirect()
@@ -300,15 +315,13 @@ public function adminIndex(Request $request): View
             ->with('success', '¡Producto actualizado exitosamente!');
     }
 
-     /**
-     * Elimina un producto de la base de datos.
-     */
     public function destroy(Product $product): RedirectResponse
     {
-        // PASO 1: Eliminar la imagen asociada si existe
-        if ($product->image) {
-            Storage::disk('public')->delete($product->image);
+        // PASO 1: Eliminar todas las imágenes asociadas
+        foreach ($product->images as $image) {
+            Storage::disk('public')->delete($image->path);
         }
+        $product->images()->delete();
 
         // PASO 2: Eliminar el producto de la base de datos
         $product->delete();

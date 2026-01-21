@@ -21,7 +21,7 @@ class CartController extends Controller
         $productIds = array_keys($cart);
 
         // Cargamos los modelos de producto con sus relaciones
-        $cartProducts = Product::with(['category', 'offer'])->find($productIds);
+        $cartProducts = Product::with(['category', 'offer', 'images'])->find($productIds);
 
         // Añadimos la cantidad a cada producto para usarla en la vista
         $cartProducts = $cartProducts->map(function ($product) use ($cart) {

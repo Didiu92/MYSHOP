@@ -6,11 +6,12 @@
     </x-slot>
 
     <div class="py-12" x-data="{ 
-        previewImage: null,
-        previewFile(event) {
-            const file = event.target.files[0];
-            if (file) {
-                this.previewImage = URL.createObjectURL(file);
+        previewImages: [],
+        previewFiles(event) {
+            this.previewImages = [];
+            const files = event.target.files;
+            for (let i = 0; i < files.length; i++) {
+                this.previewImages.push(URL.createObjectURL(files[i]));
             }
         }
     }">
@@ -38,26 +39,31 @@
                             @enderror
                         </div>
 
-                        {{-- Imagen del Producto --}}
+                        {{-- Imágenes del Producto --}}
                         <div>
-                            <label for="image" class="block text-sm font-medium text-gray-700">Imagen del Producto</label>
+                            <label for="images" class="block text-sm font-medium text-gray-700">Imágenes del Producto (Múltiples)</label>
                             
                             {{-- Vista previa --}}
-                            <div x-show="previewImage" x-cloak class="my-3">
-                                <p class="text-xs text-green-600 font-medium mb-1">Vista previa:</p>
-                                <img :src="previewImage" 
-                                     alt="Vista previa"
-                                     class="h-32 w-32 object-cover rounded-md border-2 border-green-500">
+                            <div x-show="previewImages.length > 0" x-cloak class="my-3 grid grid-cols-4 gap-3">
+                                <template x-for="(image, index) in previewImages" :key="index">
+                                    <div class="relative">
+                                        <img :src="image" 
+                                             alt="Vista previa"
+                                             class="h-24 w-24 object-cover rounded-md border-2 border-green-500">
+                                        <span class="absolute top-0 right-0 bg-green-500 text-white text-xs px-2 py-1 rounded-bl-md" x-text="index + 1"></span>
+                                    </div>
+                                </template>
                             </div>
                             
                             <input type="file" 
-                                   id="image" 
-                                   name="image" 
+                                   id="images" 
+                                   name="images[]" 
+                                   multiple
                                    accept="image/jpeg,image/png,image/jpg,image/webp" 
-                                   @change="previewFile($event)"
-                                   class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 @error('image') border-red-500 @enderror">
-                            <p class="mt-1 text-xs text-gray-500">Formatos permitidos: JPG, PNG, WEBP. Tamaño máximo: 2MB</p>
-                            @error('image')
+                                   @change="previewFiles($event)"
+                                   class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 @error('images.*') border-red-500 @enderror">
+                            <p class="mt-1 text-xs text-gray-500">Puedes seleccionar múltiples imágenes. Formatos: JPG, PNG, WEBP. Máximo 2MB cada una</p>
+                            @error('images.*')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>

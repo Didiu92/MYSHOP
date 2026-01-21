@@ -215,7 +215,16 @@
                             @forelse($products as $product)
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        @if($product->image)
+                                        @if($product->images->count() > 0)
+                                            <img src="{{ asset('storage/' . $product->images->first()->path) }}" 
+                                                 alt="{{ $product->name }}"
+                                                 @click="openLightbox('{{ asset('storage/' . $product->images->first()->path) }}')"
+                                                 class="h-16 w-16 object-cover rounded-md shadow-sm cursor-pointer hover:opacity-80 transition"
+                                                 style="cursor: pointer;">
+                                            @if($product->images->count() > 1)
+                                                <span class="inline-block ml-1 text-xs text-gray-500">(+{{ $product->images->count() - 1 }})</span>
+                                            @endif
+                                        @elseif($product->image)
                                             <img src="{{ asset('storage/' . $product->image) }}" 
                                                  alt="{{ $product->name }}"
                                                  @click="openLightbox('{{ asset('storage/' . $product->image) }}')"
