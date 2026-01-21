@@ -2,7 +2,11 @@
     <x-slot name="header">
         <div class="flex justify-between items-center">
             <h2 class="font-semibold text-xl text-gray-800 leading-tight">Ofertas</h2>
-            <a href="{{ route('admin.offers.create') }}" class="btn-primary">Nueva oferta</a>
+            @if(auth()->user()?->isAdmin())
+                <a href="{{ route('admin.offers.create') }}" class="btn-primary">Nueva oferta</a>
+            @else
+                <span class="text-sm text-gray-500">Vista solo lectura</span>
+            @endif
         </div>
     </x-slot>
 
@@ -25,12 +29,16 @@
                                 <td class="px-6 py-4 text-copper font-semibold">{{ $offer->discount_percentage }}%</td>
                                 <td class="px-6 py-4 text-gray-500">{{ Str::limit($offer->description, 80) }}</td>
                                 <td class="px-6 py-4 text-right text-sm font-medium">
-                                    <a href="{{ route('admin.offers.edit', $offer) }}" class="text-indigo-600 hover:text-indigo-900 mr-4">Editar</a>
-                                    <form action="{{ route('admin.offers.destroy', $offer) }}" method="POST" class="inline" onsubmit="return confirm('¿Eliminar oferta?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900">Eliminar</button>
-                                    </form>
+                                    @if(auth()->user()?->isAdmin())
+                                        <a href="{{ route('admin.offers.edit', $offer) }}" class="text-indigo-600 hover:text-indigo-900 mr-4">Editar</a>
+                                        <form action="{{ route('admin.offers.destroy', $offer) }}" method="POST" class="inline" onsubmit="return confirm('¿Eliminar oferta?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-red-600 hover:text-red-900">Eliminar</button>
+                                        </form>
+                                    @else
+                                        <span class="text-gray-400 text-sm">Solo lectura</span>
+                                    @endif
                                 </td>
                             </tr>
                         @empty
