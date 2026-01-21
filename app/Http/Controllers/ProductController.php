@@ -144,14 +144,25 @@ class ProductController extends Controller
             'offer_id.exists' => 'La oferta seleccionada no es válida.',
         ]);
 
-        // PASO 2: Crear el producto
-        $product = Product::create($validated);
+        // PASO 2: Crear el producto (sin el campo images)
+        $product = Product::create([
+            'name' => $validated['name'],
+            'description' => $validated['description'],
+            'price' => $validated['price'],
+            'category_id' => $validated['category_id'],
+            'offer_id' => $validated['offer_id'] ?? null,
+        ]);
 
         // PASO 3: Procesar las imágenes si fueron subidas
         if ($request->hasFile('images')) {
             $order = 0;
-            foreach ($request->file('images') as $image) {
+            $images = $request->file('images');
+            \Log::info('Imágenes recibidas: ' . count($images));
+            
+            foreach ($images as $image) {
                 $imagePath = $image->store('products', 'public');
+                \Log::info('Guardando imagen: ' . $imagePath . ' - Orden: ' . $order);
+                
                 ProductImage::create([
                     'product_id' => $product->id,
                     'path' => $imagePath,

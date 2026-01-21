@@ -9,6 +9,7 @@
 	body { @apply bg-ebony text-silver antialiased; }
 	h1, h2, h3, h4, h5, h6 { @apply font-display text-gold tracking-tight; }
 	a { @apply text-gold hover:text-copper transition-colors; }
+	[x-cloak] { @apply hidden; }
 }
 
 @layer components {

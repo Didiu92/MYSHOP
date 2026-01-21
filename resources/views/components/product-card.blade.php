@@ -1,4 +1,9 @@
-<div class="card overflow-hidden product-card {{ $class }} relative {{ $product->offer ? 'ring-2 ring-copper' : 'ring-2 ring-silver' }}">
+@php
+    $productImages = $product->images->pluck('path')->values()->toArray();
+@endphp
+
+<div class="card overflow-hidden product-card {{ $class }} relative {{ $product->offer ? 'ring-2 ring-copper' : 'ring-2 ring-silver' }}"
+     x-data="{ currentImage: 0, images: @json($productImages) }">
     <!-- Badge de oferta destacado (esquina superior derecha) -->
     @if($product->offer)
         <div class="absolute top-0 right-0 bg-copper text-ebony px-4 py-2 rounded-bl-lg font-bold shadow-lg z-10">
@@ -15,11 +20,38 @@
         </div>
     @endisset
 
-    <div class="h-48 bg-ebony flex items-center justify-center overflow-hidden">
-        @if($product->images->count() > 0)
-            <img src="{{ asset('storage/' . $product->images->first()->path) }}" 
-                 alt="{{ $product->name }}" 
-                 class="w-full h-full object-cover">
+    <div class="h-48 bg-ebony flex items-center justify-center overflow-hidden relative group">
+        @if(count($productImages) > 0)
+            <!-- Contenedor de imágenes -->
+            @foreach($productImages as $index => $imagePath)
+                <div :class="currentImage === {{ $index }} ? '' : 'hidden'" 
+                     class="absolute inset-0">
+                    <img src="{{ asset('storage/' . $imagePath) }}"
+                         alt="{{ $product->name }}"
+                         class="w-full h-full object-cover">
+                </div>
+            @endforeach
+            
+            <!-- Botones de navegación (solo si hay múltiples imágenes) -->
+            @if(count($productImages) > 1)
+                <button @click="currentImage = (currentImage - 1 + images.length) % images.length"
+                        class="absolute left-1 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition z-10">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+                <button @click="currentImage = (currentImage + 1) % images.length"
+                        class="absolute right-1 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-1 rounded opacity-0 group-hover:opacity-100 transition z-10">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
+                
+                <!-- Indicadores -->
+                <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-10">
+                    @foreach($productImages as $index => $imagePath)
+                        <button @click="currentImage = {{ $index }}"
+                                :class="currentImage === {{ $index }} ? 'bg-gold' : 'bg-white/50'"
+                                class="w-1.5 h-1.5 rounded-full transition"></button>
+                    @endforeach
+                </div>
+            @endif
         @elseif(!empty($product->image))
             <img src="{{ asset('storage/' . $product->image) }}" 
                  alt="{{ $product->name }}" 

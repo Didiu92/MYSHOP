@@ -52,9 +52,9 @@
                                 {{-- Imágenes actuales --}}
                                 @if ($product->images->count() > 0)
                                     <p class="text-xs text-gray-600 font-medium mb-2">Imágenes actuales:</p>
-                                    <div class="grid grid-cols-4 gap-3 mb-4">
+                                    <div class="flex gap-3 mb-4 overflow-x-auto pb-2">
                                         @foreach ($product->images as $image)
-                                            <div class="relative">
+                                            <div class="relative flex-shrink-0">
                                                 <img src="{{ asset('storage/' . $image->path) }}" 
                                                      alt="Imagen"
                                                      @click="openLightbox('{{ asset('storage/' . $image->path) }}')"
@@ -70,9 +70,9 @@
                             </div>
                             
                             {{-- Vista previa de nuevas imágenes --}}
-                            <div x-show="previewImages.length > 0" x-cloak class="my-3 grid grid-cols-4 gap-3">
+                            <div x-show="previewImages.length > 0" x-cloak class="my-3 flex gap-3 overflow-x-auto pb-2">
                                 <template x-for="(image, index) in previewImages" :key="index">
-                                    <div class="relative">
+                                    <div class="relative flex-shrink-0">
                                         <img :src="image" 
                                              alt="Vista previa"
                                              class="h-24 w-24 object-cover rounded-md border-2 border-green-500">
