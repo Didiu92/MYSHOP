@@ -12,7 +12,7 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-6 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')">
                         {{ __('Tienda') }}
                     </x-nav-link>
@@ -30,15 +30,15 @@
                     </x-nav-link>
 
                     @if($user?->isWorker())
-                        <div x-data="{ open: false }" class="relative">
-                            <button @click="open = !open" class="inline-flex items-center text-silver hover:text-gold px-2 py-1 rounded-md">
+                        <div x-data="{ open: false }" class="relative flex items-center">
+                            <button @click="open = !open" class="inline-flex items-center px-3 py-2 text-sm font-medium text-silver hover:text-gold rounded-md transition">
                                 Dashboard
                                 <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                 </svg>
                             </button>
                             <div x-show="open" @click.away="open = false" x-cloak
-                                 class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-graphite ring-1 ring-gold ring-opacity-20 z-40">
+                                 class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-graphite ring-1 ring-gold ring-opacity-20 z-40 top-full">
                                 <div class="py-1">
                                     <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Panel</a>
                                     <a href="{{ route('admin.products.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Productos</a>

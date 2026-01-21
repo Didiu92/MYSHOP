@@ -1,5 +1,5 @@
 @php($user = auth()->user())
-<nav class="hidden md:flex space-x-6 items-center">
+<nav class="hidden md:flex space-x-8 items-center">
 	<a href="{{ route('welcome') }}"
 	   class="text-silver hover:text-gold transition {{ request()->routeIs('welcome') ? 'text-gold font-semibold' : '' }}">
 		Tienda
@@ -24,7 +24,7 @@
 	@if($user?->isWorker())
 		<div x-data="{ open: false }" class="relative">
 			<button @click="open = !open"
-					class="inline-flex items-center text-silver hover:text-gold transition">
+					class="inline-flex items-center px-3 py-2 text-silver hover:text-gold transition rounded-md">
 				Dashboard
 				<svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
