@@ -1,13 +1,19 @@
 @extends('layouts.public')
 
+@php
+    $initialImage = $product->images->count() > 0
+        ? max(0, min($product->images->count() - 1, (int) request('image', 0)))
+        : 0;
+@endphp
+
 @section('title', $product->name . ' - Mi Tienda')
 
 @section('content')
     <div class="container mx-auto px-6 py-8">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Carrusel de Imágenes -->
-            <div class="card p-6" x-data="{ 
-                currentImage: 0, 
+            <div class="card p-6" x-data=" { 
+                currentImage: {{ $initialImage }}, 
                 images: {{ json_encode($product->images->pluck('path')->values()->toArray()) }}
             }">
                 <div class="relative">

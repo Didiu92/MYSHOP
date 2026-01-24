@@ -32,8 +32,9 @@
      }">
     
     <!-- IMAGEN CUADRADA (contenedor dedicado) -->
-    <div class="relative w-full aspect-square bg-ebony flex items-center justify-center overflow-hidden group flex-shrink-0">
-        <a href="{{ route('products.show', $product->id) }}" class="block w-full h-full relative pointer-events-none">
+        <div class="relative w-full aspect-square bg-ebony flex items-center justify-center overflow-hidden group flex-shrink-0 cursor-pointer"
+            @click="window.location.href='{{ route('products.show', $product->id) }}?image=' + currentImage">
+        <div class="block w-full h-full relative pointer-events-none">
             @if(count($productImages) > 0)
                 <!-- Contenedor de imágenes -->
                 <template x-if="currentImage === 0">
@@ -59,7 +60,7 @@
             @else
                 <span class="text-6xl">📦</span>
             @endif
-        </a>
+        </div>
 
         <!-- Capa de overlays sobre la imagen -->
         <div class="absolute inset-0 z-20 pointer-events-none">
@@ -69,7 +70,7 @@
                 </div>
             @endif
 
-            <button @click.prevent="toggleWishlist()"
+            <button @click.stop.prevent="toggleWishlist()"
             class="absolute top-2 right-2 transition transform hover:scale-110 cursor-pointer p-1 pointer-events-auto">
                 <svg :fill="inWishlist ? '#ef4444' : 'none'"
                      stroke="#ef4444"
@@ -96,7 +97,7 @@
             <!-- Indicadores de imagen -->
             <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-30 opacity-0 group-hover:opacity-100 transition">
                 @foreach($productImages as $index => $imagePath)
-                    <button @click.prevent="currentImage = {{ $index }}"
+                    <button @click.stop.prevent="currentImage = {{ $index }}"
                             :class="currentImage === {{ $index }} ? 'bg-gold' : 'bg-white/50'"
                             class="w-1.5 h-1.5 rounded-full transition"></button>
                 @endforeach
