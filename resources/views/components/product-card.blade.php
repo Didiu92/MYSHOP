@@ -33,11 +33,11 @@
     
     <!-- IMAGEN CUADRADA (contenedor dedicado) -->
     <div class="relative w-full aspect-square bg-ebony flex items-center justify-center overflow-hidden group flex-shrink-0">
-        <a href="{{ route('products.show', $product->id) }}" class="block w-full h-full relative">
+        <a href="{{ route('products.show', $product->id) }}" class="block w-full h-full relative pointer-events-none">
             @if(count($productImages) > 0)
                 <!-- Contenedor de imágenes -->
                 <template x-if="currentImage === 0">
-                    <div class="absolute inset-0 z-0">
+                    <div class="absolute inset-0 z-0 pointer-events-auto">
                         <img src="{{ asset('storage/' . $productImages[0]) }}"
                              alt="{{ $product->name }}"
                              class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
@@ -45,7 +45,7 @@
                 </template>
                 @foreach(array_slice($productImages, 1) as $index => $imagePath)
                     <template x-if="currentImage === {{ $index + 1 }}">
-                        <div class="absolute inset-0 z-0">
+                        <div class="absolute inset-0 z-0 pointer-events-auto">
                             <img src="{{ asset('storage/' . $imagePath) }}"
                                  alt="{{ $product->name }}"
                                  class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
@@ -62,7 +62,7 @@
         </a>
 
         <!-- Capa de overlays sobre la imagen -->
-        <div class="absolute inset-0 z-50">
+        <div class="absolute inset-0 z-20 pointer-events-none">
             @if($product->offer)
                 <div class="absolute top-2 left-2 bg-copper text-ebony px-2 py-1 rounded font-bold shadow-lg text-xs">
                     -{{ $product->offer->discount_percentage }}%
@@ -70,7 +70,7 @@
             @endif
 
             <button @click.prevent="toggleWishlist()"
-            class="absolute top-2 right-2 transition transform hover:scale-110 cursor-pointer p-1">
+            class="absolute top-2 right-2 transition transform hover:scale-110 cursor-pointer p-1 pointer-events-auto">
                 <svg :fill="inWishlist ? '#ef4444' : 'none'"
                      stroke="#ef4444"
                      stroke-width="2"
@@ -84,17 +84,17 @@
 
         <!-- Navegación de imágenes (solo si hay múltiples) -->
         @if(count($productImages) > 1)
-            <button @click.prevent="currentImage = (currentImage - 1 + totalImages) % totalImages"
-                    class="absolute left-2 top-1/2 -translate-y-1/2 bg-graphite/80 hover:bg-gold text-gold hover:text-ebony p-1 rounded transition z-10 opacity-0 group-hover:opacity-100">
+            <button @click="currentImage = (currentImage - 1 + totalImages) % totalImages; $event.stopPropagation();"
+                    class="absolute left-2 top-1/2 -translate-y-1/2 bg-graphite/80 hover:bg-gold text-gold hover:text-ebony p-1 rounded transition z-50 opacity-0 group-hover:opacity-100">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
             </button>
-            <button @click.prevent="currentImage = (currentImage + 1) % totalImages"
-                    class="absolute right-2 top-1/2 -translate-y-1/2 bg-graphite/80 hover:bg-gold text-gold hover:text-ebony p-1 rounded transition z-10 opacity-0 group-hover:opacity-100">
+            <button @click="currentImage = (currentImage + 1) % totalImages; $event.stopPropagation();"
+                    class="absolute right-2 top-1/2 -translate-y-1/2 bg-graphite/80 hover:bg-gold text-gold hover:text-ebony p-1 rounded transition z-50 opacity-0 group-hover:opacity-100">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
             </button>
             
             <!-- Indicadores de imagen -->
-            <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-10 opacity-0 group-hover:opacity-100 transition">
+            <div class="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1 z-30 opacity-0 group-hover:opacity-100 transition">
                 @foreach($productImages as $index => $imagePath)
                     <button @click.prevent="currentImage = {{ $index }}"
                             :class="currentImage === {{ $index }} ? 'bg-gold' : 'bg-white/50'"
