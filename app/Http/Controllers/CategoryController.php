@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -65,9 +66,14 @@ class CategoryController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:255|unique:categories,name',
             'description' => 'nullable|string|max:1000',
+            'image' => 'nullable|image|max:4096',
         ]);
 
         $data['slug'] = Str::slug($data['name']);
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('categories', 'public');
+        }
 
         Category::create($data);
 
@@ -111,9 +117,18 @@ class CategoryController extends Controller
         $data = $request->validate([
             'name' => 'required|string|max:255|unique:categories,name,' . $category->id,
             'description' => 'nullable|string|max:1000',
+            'image' => 'nullable|image|max:4096',
         ]);
 
         $data['slug'] = Str::slug($data['name']);
+
+        if ($request->hasFile('image')) {
+            // borrar la imagen anterior si existe
+            if ($category->image) {
+                Storage::disk('public')->delete($category->image);
+            }
+            $data['image'] = $request->file('image')->store('categories', 'public');
+        }
 
         $category->update($data);
 

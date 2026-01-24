@@ -6,6 +6,11 @@
     <div class="container mx-auto px-6 py-8">
         <div class="mb-8 flex items-start justify-between">
             <div>
+                @if($category->image)
+                    <div class="w-24 h-24 mb-4 overflow-hidden rounded-full border border-gold/40">
+                        <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="w-full h-full object-cover">
+                    </div>
+                @endif
                 <h1 class="text-3xl font-bold text-gold mb-4">{{ $category->name }}</h1>
                 <p class="text-silver mb-4">{{ $category->description }}</p>
             </div>
