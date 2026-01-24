@@ -31,7 +31,8 @@
 				</svg>
 			</button>
 			<div x-show="open" @click.away="open = false" x-cloak
-				 class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-graphite ring-1 ring-gold ring-opacity-20 z-40">
+				 style="border: 2px solid #FFD700; z-index: 99999;"
+				 class="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-graphite">
 				<div class="py-1">
 					<a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Panel</a>
 					<a href="{{ route('admin.products.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Productos</a>
