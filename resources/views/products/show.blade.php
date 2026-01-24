@@ -32,15 +32,19 @@
                             <!-- Botón anterior -->
                             <button @click="currentImage = (currentImage - 1 + images.length) % images.length"
                                     style="left: 1rem;" 
-                                    class="absolute top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-50 hover:bg-opacity-75 text-white px-3 py-2 rounded-lg transition">
-                                ◀
+                                    class="absolute top-1/2 -translate-y-1/2 z-20 bg-graphite border-2 border-gold hover:bg-gold hover:text-ebony text-gold px-3 py-2 rounded-lg transition">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                                </svg>
                             </button>
 
                             <!-- Botón siguiente -->
                             <button @click="currentImage = (currentImage + 1) % images.length"
                                     style="right: 1rem;"
-                                    class="absolute top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-50 hover:bg-opacity-75 text-white px-3 py-2 rounded-lg transition">
-                                ▶
+                                    class="absolute top-1/2 -translate-y-1/2 z-20 bg-graphite border-2 border-gold hover:bg-gold hover:text-ebony text-gold px-3 py-2 rounded-lg transition">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                </svg>
                             </button>
 
                             <!-- Indicadores de posición -->
@@ -54,7 +58,7 @@
                             </div>
 
                             <!-- Contador de imágenes -->
-                            <div class="absolute top-3 right-3 z-10 bg-black bg-opacity-70 text-gold px-2 py-1 rounded text-sm">
+                            <div style="position: absolute; bottom: 0.75rem; right: 0.75rem; z-index: 10;" class="bg-black bg-opacity-70 text-gold px-2 py-1 rounded text-sm">
                                 <span x-text="currentImage + 1"></span> / <span x-text="images.length"></span>
                             </div>
                         @endif
