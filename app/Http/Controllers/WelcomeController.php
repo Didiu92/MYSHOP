@@ -14,11 +14,23 @@ class WelcomeController extends Controller
      */
     public function index(): View
     {
-        // Get featured products (first 3 products with offers for the featured section)
+        // Featured products: prefer products with active offers, target up to 9 items
         $featuredProducts = Product::with(['category', 'offer', 'images'])
             ->whereNotNull('offer_id')
-            ->take(3)
+            ->latest()
+            ->take(9)
             ->get();
+
+        // If not enough with offers, backfill with latest products to ensure carousel has multiple slides
+        if ($featuredProducts->count() < 6) { // ensure at least 2 slides (3 per slide)
+            $needed = 6 - $featuredProducts->count();
+            $fallback = Product::with(['category', 'offer', 'images'])
+                ->whereNotIn('id', $featuredProducts->pluck('id'))
+                ->latest()
+                ->take($needed)
+                ->get();
+            $featuredProducts = $featuredProducts->merge($fallback);
+        }
 
         // Get featured categories (first 4 categories for the categories section)
         $featuredCategories = Category::take(4)->get();
