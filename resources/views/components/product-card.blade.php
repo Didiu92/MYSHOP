@@ -43,11 +43,13 @@
             <!-- Botones de navegación (solo si hay múltiples imágenes) -->
             @if(count($productImages) > 1)
                 <button @click="currentImage = (currentImage - 1 + totalImages) % totalImages"
-                        class="absolute left-1 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-1 rounded opacity-50 hover:opacity-100 transition z-10">
+                        style="left: 0.25rem;"
+                        class="absolute top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-1 rounded opacity-50 hover:opacity-100 transition z-10">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
                 </button>
                 <button @click="currentImage = (currentImage + 1) % totalImages"
-                        class="absolute right-1 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-1 rounded opacity-50 hover:opacity-100 transition z-10">
+                        style="right: 0.25rem;"
+                        class="absolute top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white p-1 rounded opacity-50 hover:opacity-100 transition z-10">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                 </button>
                 

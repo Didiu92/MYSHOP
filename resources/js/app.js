@@ -29,3 +29,5 @@ window.productCarousel = function() {
     };
 };
 
+Alpine.start();
+

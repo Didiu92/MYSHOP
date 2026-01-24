@@ -26,37 +26,39 @@
                         @else
                             <span class="text-8xl">📦</span>
                         @endif
+
+                        <!-- Botones de navegación (solo si hay múltiples imágenes) -->
+                        @if ($product->images->count() > 1)
+                            <!-- Botón anterior -->
+                            <button @click="currentImage = (currentImage - 1 + images.length) % images.length"
+                                    style="left: 1rem;" 
+                                    class="absolute top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-50 hover:bg-opacity-75 text-white px-3 py-2 rounded-lg transition">
+                                ◀
+                            </button>
+
+                            <!-- Botón siguiente -->
+                            <button @click="currentImage = (currentImage + 1) % images.length"
+                                    style="right: 1rem;"
+                                    class="absolute top-1/2 -translate-y-1/2 z-20 bg-black bg-opacity-50 hover:bg-opacity-75 text-white px-3 py-2 rounded-lg transition">
+                                ▶
+                            </button>
+
+                            <!-- Indicadores de posición -->
+                            <div class="absolute bottom-3 left-1/2 -translate-x-1/2 z-10 flex gap-2">
+                                <template x-for="(image, index) in images" :key="index">
+                                    <button @click="currentImage = index"
+                                            :class="currentImage === index ? 'bg-gold' : 'bg-gray-400'"
+                                            class="w-2 h-2 rounded-full transition">
+                                    </button>
+                                </template>
+                            </div>
+
+                            <!-- Contador de imágenes -->
+                            <div class="absolute top-3 right-3 z-10 bg-black bg-opacity-70 text-gold px-2 py-1 rounded text-sm">
+                                <span x-text="currentImage + 1"></span> / <span x-text="images.length"></span>
+                            </div>
+                        @endif
                     </div>
-
-                    <!-- Botones de navegación (solo si hay múltiples imágenes) -->
-                    @if ($product->images->count() > 1)
-                        <!-- Botón anterior -->
-                        <button @click="currentImage = (currentImage - 1 + images.length) % images.length"
-                                class="absolute left-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white px-3 py-2 rounded-lg transition">
-                            ◀
-                        </button>
-
-                        <!-- Botón siguiente -->
-                        <button @click="currentImage = (currentImage + 1) % images.length"
-                                class="absolute right-2 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 hover:bg-opacity-75 text-white px-3 py-2 rounded-lg transition">
-                            ▶
-                        </button>
-
-                        <!-- Indicadores de posición -->
-                        <div class="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-2">
-                            <template x-for="(image, index) in images" :key="index">
-                                <button @click="currentImage = index"
-                                        :class="currentImage === index ? 'bg-gold' : 'bg-gray-400'"
-                                        class="w-2 h-2 rounded-full transition">
-                                </button>
-                            </template>
-                        </div>
-
-                        <!-- Contador de imágenes -->
-                        <div class="absolute top-3 right-3 bg-black bg-opacity-70 text-gold px-2 py-1 rounded text-sm">
-                            <span x-text="currentImage + 1"></span> / <span x-text="images.length"></span>
-                        </div>
-                    @endif
 
                     <!-- Miniaturas -->
                     @if ($product->images->count() > 1)
