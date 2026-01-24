@@ -24,23 +24,39 @@ class WishlistController extends Controller
     }
 
     /**
-     * Añade un producto a la lista de deseos.
+     * Añade o elimina un producto de la lista de deseos (toggle).
      */
-    public function store(string $id): RedirectResponse
+    public function store(string $id)
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
         $product = Product::findOrFail($id);
         
         // Verificar si ya está en la wishlist
-        if ($user->products()->where('product_id', $id)->exists()) {
-            return redirect()->back()->with('info', 'Este producto ya está en tu lista de deseos.');
+        $isInWishlist = $user->products()->where('product_id', $id)->exists();
+        
+        if ($isInWishlist) {
+            // Eliminar de la wishlist
+            $user->products()->detach($id);
+            $message = 'Producto eliminado de tu lista de deseos.';
+            $inWishlist = false;
+        } else {
+            // Añadir a la wishlist
+            $user->products()->attach($id, ['quantity' => 1]);
+            $message = '¡Producto añadido a tu lista de deseos!';
+            $inWishlist = true;
         }
         
-        // Añadir a la wishlist
-        $user->products()->attach($id, ['quantity' => 1]);
+        // Si es una petición AJAX, devolver JSON
+        if (request()->ajax() || request()->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => $message,
+                'inWishlist' => $inWishlist
+            ]);
+        }
         
-        return redirect()->back()->with('success', '¡Producto añadido a tu lista de deseos!');
+        return redirect()->back()->with('success', $message);
     }
 
     /**
