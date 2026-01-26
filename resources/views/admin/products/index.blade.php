@@ -78,18 +78,18 @@
     @endpush
     <x-slot name="header">
         <div class="flex justify-between items-center">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gold leading-tight">
             {{ __('Gestión de Productos') }}
         </h2>
             @if(auth()->user()?->isAdmin())
-            <a href="{{ route('admin.products.create') }}" class="inline-flex items-center px-4 py-2 border rounded-md font-semibold text-xs uppercase hover:bg-gray-100 transition">
+            <a href="{{ route('admin.products.create') }}" class="inline-flex items-center px-4 py-2 bg-gold text-ebony border border-gold rounded-md font-semibold text-xs uppercase hover:bg-copper hover:text-ebony transition">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
                 </svg>
                 Crear Nuevo Producto
             </a>
             @else
-                <span class="text-sm text-gray-500">Vista solo lectura</span>
+                <span class="text-sm text-silver">Vista solo lectura</span>
             @endif
         </div>
     </x-slot>
@@ -106,8 +106,8 @@
                     <div class="flex gap-2 mb-3 flex-wrap items-end">
                         <!-- Filtro por categoría -->
                         <div class="flex-1 min-w-[120px]">
-                            <label class="block text-xs font-medium text-gray-700 mb-1">Categoría</label>
-                            <select name="category" onchange="document.getElementById('adminFilterForm').submit()" class="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            <label class="block text-xs font-medium text-gold mb-1">Categoría</label>
+                            <select name="category" onchange="document.getElementById('adminFilterForm').submit()" class="w-full px-2 py-1.5 text-sm border border-gold/20 bg-gray-800 text-white rounded focus:ring-2 focus:ring-gold focus:border-gold">
                                 <option value="">Todas</option>
                                 @foreach(\App\Models\Category::all() as $cat)
                                     <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
@@ -119,8 +119,8 @@
 
                         <!-- Filtro por oferta -->
                         <div class="flex-1 min-w-[120px]">
-                            <label class="block text-xs font-medium text-gray-700 mb-1">Oferta</label>
-                            <select name="has_offer" onchange="document.getElementById('adminFilterForm').submit()" class="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            <label class="block text-xs font-medium text-gold mb-1">Oferta</label>
+                            <select name="has_offer" onchange="document.getElementById('adminFilterForm').submit()" class="w-full px-2 py-1.5 text-sm border border-gold/20 bg-gray-800 text-white rounded focus:ring-2 focus:ring-gold focus:border-gold">
                                 <option value="">Todos</option>
                                 <option value="yes" {{ request('has_offer') === 'yes' ? 'selected' : '' }}>Con oferta</option>
                                 <option value="no" {{ request('has_offer') === 'no' ? 'selected' : '' }}>Sin oferta</option>
@@ -129,7 +129,7 @@
 
                         <!-- Filtro por rango de precio con slider -->
                         <div class="flex-1 min-w-[220px]">
-                            <label class="block text-xs font-medium text-gray-700 mb-2">Rango de Precio</label>
+                            <label class="block text-xs font-medium text-gold mb-2">Rango de Precio</label>
                             <div class="price-range-slider">
                                 <div class="track"></div>
                                 <div class="range-progress" :style="{ left: (priceMin / 500 * 100) + '%', right: (100 - (priceMax / 500 * 100)) + '%' }"></div>
@@ -163,8 +163,8 @@
 
                         <!-- Filtro de ordenamiento -->
                         <div class="flex-1 min-w-[150px]">
-                            <label class="block text-xs font-medium text-gray-700 mb-1">Ordenar por</label>
-                            <select name="sort_by" onchange="document.getElementById('adminFilterForm').submit()" class="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                            <label class="block text-xs font-medium text-gold mb-1">Ordenar por</label>
+                            <select name="sort_by" onchange="document.getElementById('adminFilterForm').submit()" class="w-full px-2 py-1.5 text-sm border border-gold/20 bg-gray-800 text-white rounded focus:ring-2 focus:ring-gold focus:border-gold">
                                 <option value="">Más recientes</option>
                                 <option value="name_asc" {{ request('sort_by') === 'name_asc' ? 'selected' : '' }}>Nombre (A-Z)</option>
                                 <option value="name_desc" {{ request('sort_by') === 'name_desc' ? 'selected' : '' }}>Nombre (Z-A)</option>
@@ -176,7 +176,7 @@
 
                         <!-- Botón limpiar -->
                         @if(request('search') || request('category') || request('has_offer') || request('price_min') || request('price_max') || request('sort_by'))
-                            <a href="{{ route('admin.products.index') }}" class="px-3 py-1.5 text-sm bg-gray-400 text-white rounded hover:bg-gray-500 transition whitespace-nowrap">
+                            <a href="{{ route('admin.products.index') }}" class="px-3 py-1.5 text-sm bg-graphite text-white rounded hover:bg-graphite/80 transition whitespace-nowrap">
                                 Limpiar filtros
                             </a>
                         @endif
@@ -188,8 +188,8 @@
                                name="search" 
                                value="{{ request('search') }}"
                                placeholder="Buscar productos por nombre, descripción o categoría..."
-                               class="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
-                        <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition flex items-center gap-2">
+                               class="flex-1 px-3 py-2 text-sm border border-gold/20 bg-gray-800 text-white rounded-lg focus:ring-2 focus:ring-gold focus:border-gold placeholder-gray-400">
+                        <button type="submit" class="px-6 py-2 bg-gold text-ebony rounded-lg hover:bg-copper transition flex items-center gap-2 font-semibold">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                             </svg>
@@ -199,21 +199,21 @@
                 </form>
             </div>
 
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-gray-900 overflow-hidden shadow-sm sm:rounded-lg border border-gold/10">
                 <div class="overflow-x-auto">
-                    <table class="w-full divide-y divide-gray-200">
+                    <table class="w-full divide-y divide-gold/10">
                         <thead class="bg-gray-50">
                             <tr>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Imagen</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoría</th>
-                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Precio</th>
-                                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gold uppercase tracking-wider">Imagen</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gold uppercase tracking-wider">Nombre</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gold uppercase tracking-wider">Categoría</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gold uppercase tracking-wider">Precio</th>
+                                <th class="px-6 py-3 text-right text-xs font-medium text-gold uppercase tracking-wider">Acciones</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody class="bg-gray-900 divide-y divide-gold/10">
                             @forelse($products as $product)
-                                <tr class="hover:bg-gray-50">
+                                <tr class="hover:bg-gray-800">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if($product->images->count() > 0)
                                             <img src="{{ asset('storage/' . $product->images->first()->path) }}" 
@@ -231,13 +231,13 @@
                                                  class="h-16 w-16 object-cover rounded-md shadow-sm cursor-pointer hover:opacity-80 transition"
                                                  style="cursor: pointer;">
                                         @else
-                                            <div class="h-16 w-16 bg-gray-100 flex items-center justify-center rounded-md text-4xl">
+                                            <div class="h-16 w-16 bg-gray-800 flex items-center justify-center rounded-md text-4xl border border-gold/10">
                                                 📦
                                             </div>
                                         @endif
                                     </td>
                                     <td class="px-6 py-4">
-                                        <div class="text-sm font-medium text-gray-900">
+                                        <div class="text-sm font-medium text-white">
                                             <a href="{{ route('products.show', $product->id) }}" class="hover:underline">
                                                 {{ $product->name }}
                                             </a>
@@ -245,14 +245,14 @@
                                         <div class="text-sm text-gray-500">{{ Str::limit($product->description, 50) }}</div>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gold/20 text-gold">
                                             {{ $product->category->name ?? 'N/A' }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
-                                        <div class="text-sm font-medium text-gray-900">€{{ number_format($product->price, 2) }}</div>
+                                        <div class="text-sm font-medium text-white">€{{ number_format($product->price, 2) }}</div>
                                         @if($product->offer)
-                                            <div class="text-xs text-orange-600">
+                                            <div class="text-xs text-copper">
                                                 -{{ $product->offer->discount_percentage }}% descuento
                                             </div>
                                         @endif
@@ -260,7 +260,7 @@
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         @if(auth()->user()?->isAdmin())
                                             <a href="{{ route('admin.products.edit', $product) }}" 
-                                               class="text-indigo-600 hover:text-indigo-900 mr-4">
+                                               class="px-3 py-1 inline-block bg-gold/10 text-gold rounded hover:bg-gold hover:text-ebony transition mr-4">
                                                 Editar
                                             </a>
                                             <form action="{{ route('admin.products.destroy', $product) }}" 
@@ -269,7 +269,7 @@
                                                   onsubmit="return confirm('¿Estás seguro de que deseas eliminar este producto?');">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="text-red-600 hover:text-red-900">
+                                                <button type="submit" class="px-3 py-1 inline-block bg-red-900/20 text-red-400 rounded hover:bg-red-600 hover:text-white transition">
                                                     Eliminar
                                                 </button>
                                             </form>
@@ -281,9 +281,9 @@
                             @empty
                                 <tr>
                                     <td colspan="5" class="px-6 py-12 text-center">
-                                        <div class="text-gray-400 text-4xl mb-4">📦</div>
-                                        <p class="text-gray-500 text-lg font-medium">No hay productos para mostrar</p>
-                                        <p class="text-gray-400 text-sm mt-2">Crea tu primer producto usando el botón de arriba</p>
+                                        <div class="text-silver text-4xl mb-4">📦</div>
+                                        <p class="text-silver text-lg font-medium">No hay productos para mostrar</p>
+                                        <p class="text-gold/50 text-sm mt-2">Crea tu primer producto usando el botón de arriba</p>
                                     </td>
                                 </tr>
                             @endforelse
@@ -300,7 +300,7 @@
          @click="lightboxImage = null"
          class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 p-4"
          style="animation: fadeIn 0.2s ease-in;">
-        <div class="relative bg-white rounded-lg shadow-2xl p-4 max-w-2xl" @click.stop>
+        <div class="relative bg-gray-900 rounded-lg shadow-2xl p-4 max-w-2xl border border-gold/20" @click.stop>
             <button @click="lightboxImage = null" 
                     class="absolute -top-4 -right-4 text-white bg-red-600 rounded-full w-10 h-10 flex items-center justify-center hover:bg-red-700 transition font-bold text-2xl shadow-lg">
                 ✕

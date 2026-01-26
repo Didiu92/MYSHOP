@@ -160,4 +160,68 @@ return [
  'category_id' => 5,
  'offer_id' => null
  ],
+ 21 => [
+ 'id' => 21,
+ 'name' => 'Pulsera Ser Natural',
+ 'description' => 'Pulsera de cuero con cierre y dos circunferencias de metal bañadas en plata de ley. Colección genderless elaborada artesanalmente en España.',
+ 'price' => 89.00,
+ 'category_id' => 4,
+ 'offer_id' => 5
+ ],
+ 22 => [
+ 'id' => 22,
+ 'name' => 'Anillo oro rosa 18kt con brillante negro',
+ 'description' => 'Anillo de oro rosa de 18kt con brillante negro de 0,05ct.',
+ 'price' => 309.00,
+ 'category_id' => 1,
+ 'offer_id' => 2
+ ],
+ 23 => [
+ 'id' => 23,
+ 'name' => 'Colgante Cupido',
+ 'description' => 'Cadena bañada en plata con dos corazones en volumen, uno ajustable en el centro, largo y forma regulables. Pieza artesanal elaborada en España.',
+ 'price' => 149.00,
+ 'category_id' => 2,
+ 'offer_id' => null
+ ],
+ 24 => [
+ 'id' => 24,
+ 'name' => 'Pendientes triángulo',
+ 'description' => 'Pendientes largos de plata negra con lámina de oro 18k grabada, 10 mm de ancho por 25 mm de alto, cierre de presión.',
+ 'price' => 159.00,
+ 'category_id' => 3,
+ 'offer_id' => 4
+ ],
+ 25 => [
+ 'id' => 25,
+ 'name' => 'Pulsera Silver Key',
+ 'description' => 'Pulsera de cuentas con charms de llave y candado, cierre de mosquetón ajustable. Aleación de metales con baño de plata de 1ª ley, diseño UNOde50.',
+ 'price' => 105.00,
+ 'category_id' => 4,
+ 'offer_id' => null
+ ],
+ 26 => [
+ 'id' => 26,
+ 'name' => 'Anillo Crossed',
+ 'description' => 'Anillo con forma de pata de araña cruzada.',
+ 'price' => 89.00,
+ 'category_id' => 1,
+ 'offer_id' => null
+ ],
+ 27 => [
+ 'id' => 27,
+ 'name' => 'Colgante plata calavera y oro',
+ 'description' => 'Colgante unisex de plata envejecida con calavera filigrana y ojos de oro de 18kt.',
+ 'price' => 219.00,
+ 'category_id' => 2,
+ 'offer_id' => 3
+ ],
+ 28 => [
+ 'id' => 28,
+ 'name' => 'Collar Superfly',
+ 'description' => 'Collar largo bañado en plata con bolas y cristales multicolor y mariposa central, cierre de mosquetón ajustable. Pieza artesanal Made in Spain.',
+ 'price' => 209.00,
+ 'category_id' => 2,
+ 'offer_id' => null
+ ],
 ];
