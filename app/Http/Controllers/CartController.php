@@ -37,7 +37,7 @@ class CartController extends Controller
     /**
      * Añade un producto al carrito de compras en la sesión.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $request->validate(['product_id' => 'required|exists:products,id']);
         $productId = $request->input('product_id');
@@ -51,13 +51,23 @@ class CartController extends Controller
         }
 
         session()->put('cart', $cart);
+        
+        // Si es una petición AJAX, devolver JSON
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => '¡Producto añadido al carrito!',
+                'cartCount' => count($cart)
+            ]);
+        }
+        
         return redirect()->back()->with('success', '¡Producto añadido al carrito!');
     }
 
     /**
      * Actualiza la cantidad de un producto en el carrito.
      */
-    public function update(Request $request, string $id): RedirectResponse
+    public function update(Request $request, string $id)
     {
         $request->validate(['quantity' => 'required|integer|min:1']);
         
@@ -66,7 +76,24 @@ class CartController extends Controller
         if (isset($cart[$id])) {
             $cart[$id]['quantity'] = $request->input('quantity');
             session()->put('cart', $cart);
+            
+            // Si es una petición AJAX, devolver JSON
+            if ($request->wantsJson() || $request->ajax()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Cantidad actualizada correctamente.',
+                    'cartCount' => count($cart)
+                ]);
+            }
+            
             return redirect()->route('cart.index')->with('success', 'Cantidad actualizada correctamente.');
+        }
+
+        if ($request->wantsJson() || $request->ajax()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'El producto no se encontró en el carrito.'
+            ], 404);
         }
 
         return redirect()->route('cart.index')->with('error', 'El producto no se encontró en el carrito.');

@@ -35,23 +35,59 @@
                             $total += $subtotal;
                         @endphp
                         
-                        <tr class="hover:bg-graphite">
+                        <tr class="hover:bg-graphite" x-data="{
+                            quantity: {{ $product->quantity }},
+                            productId: {{ $product->id }},
+                            updating: false,
+                            updateQuantity() {
+                                if (this.updating) return;
+                                this.updating = true;
+                                fetch('{{ route('cart.update', $product->id) }}', {
+                                    method: 'POST',
+                                    headers: {
+                                        'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                                        'Accept': 'application/json',
+                                        'Content-Type': 'application/json',
+                                        'X-Requested-With': 'XMLHttpRequest'
+                                    },
+                                    body: JSON.stringify({
+                                        _method: 'PUT',
+                                        quantity: this.quantity
+                                    })
+                                })
+                                .then(response => response.json())
+                                .then(data => {
+                                    this.updating = false;
+                                    if (data.success) {
+                                        window.location.reload();
+                                    }
+                                })
+                                .catch(e => {
+                                    this.updating = false;
+                                    console.error('Error:', e);
+                                });
+                            }
+                        }">
                             <td class="px-6 py-4">
                                 <div class="flex items-center">
-                                    @if($product->image)
+                                    @if($product->images->count() > 0)
+                                        <img src="{{ asset('storage/' . $product->images->first()->path) }}" 
+                                             alt="{{ $product->name }}" 
+                                             class="h-16 w-16 object-cover rounded-md mr-4">
+                                    @elseif($product->image)
                                         <img src="{{ asset('storage/' . $product->image) }}" 
                                              alt="{{ $product->name }}" 
                                              class="h-16 w-16 object-cover rounded-md mr-4">
                                     @else
-                                        <div class="h-16 w-16 bg-gray-100 flex items-center justify-center rounded-md text-4xl mr-4">
+                                        <div class="h-16 w-16 bg-gray-700 flex items-center justify-center rounded-md text-4xl mr-4">
                                             📦
                                         </div>
                                     @endif
                                     <div>
-                                        <div class="font-semibold text-gray-900">{{ $product->name }}</div>
-                                        <div class="text-sm text-gray-600">{{ $product->category->name }}</div>
+                                        <div class="font-semibold text-gold">{{ $product->name }}</div>
+                                        <div class="text-sm text-silver">{{ $product->category->name }}</div>
                                         @if($product->offer)
-                                            <span class="inline-block bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full mt-1">
+                                            <span class="inline-block bg-copper/20 text-copper text-xs px-2 py-1 rounded-full mt-1">
                                                 🏷️ -{{ $product->offer->discount_percentage }}%
                                             </span>
                                         @endif
@@ -61,23 +97,25 @@
                             <td class="px-6 py-4">
                                 @if($product->offer)
                                     <div>
-                                        <span class="text-sm text-gray-400 line-through">€{{ number_format($product->price, 2) }}</span>
-                                        <div class="font-semibold text-orange-600">€{{ number_format($product->final_price, 2) }}</div>
+                                        <span class="text-sm text-silver/60 line-through">€{{ number_format($product->price, 2) }}</span>
+                                        <div class="font-semibold text-copper">€{{ number_format($product->final_price, 2) }}</div>
                                     </div>
                                 @else
                                         <div class="font-semibold text-gold">€{{ number_format($product->final_price, 2) }}</div>
                                 @endif
                             </td>
                             <td class="px-6 py-4">
-                                {{-- FORMULARIO PARA ACTUALIZAR CANTIDAD --}}
-                                <form action="{{ route('cart.update', $product->id) }}" method="POST" class="flex items-center justify-center">
-                                    @csrf
-                                    @method('PUT')
-                                    <input type="number" name="quantity" value="{{ $product->quantity }}" min="1" class="w-20 text-center border-gray-300 rounded-md shadow-sm">
-                                    <button type="submit" class="ml-2 p-1 text-indigo-600 hover:text-indigo-800" title="Actualizar cantidad">🔄</button>
-                                </form>
+                                <div class="flex items-center justify-center">
+                                    <input type="number" 
+                                           x-model.number="quantity" 
+                                           @change="updateQuantity()" 
+                                           min="1" 
+                                           :disabled="updating"
+                                           class="w-20 text-center border-gray-600 bg-ebony text-silver rounded-md shadow-sm focus:ring-gold focus:border-gold">
+                                    <span x-show="updating" class="ml-2 text-gold">⏳</span>
+                                </div>
                             </td>
-                            <td class="px-6 py-4 font-semibold text-gray-900">€{{ number_format($subtotal, 2) }}</td>
+                            <td class="px-6 py-4 font-semibold text-gold">€{{ number_format($subtotal, 2) }}</td>
                             <td class="px-6 py-4 text-center">
                                 {{-- FORMULARIO PARA ELIMINAR --}}
                                 <form action="{{ route('cart.destroy', $product->id) }}" method="POST">

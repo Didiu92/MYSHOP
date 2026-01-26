@@ -22,13 +22,13 @@
                 Cada pieza es un reflejo de elegancia y distinción.
             </p>
             <div class="flex flex-wrap justify-center gap-4">
-                <a href="{{ route('products.index') }}"
+                <a href="{{ route('products.index', ['has_offer' => 'no']) }}"
                     class="border-2 border-gold text-gold font-bold py-4 px-8 rounded-full hover:bg-gold hover:text-ebony transition duration-300 ease-in-out transform hover:scale-105">
-                    Ver Colecciones
+                    ✨ Novedades
                 </a>
-                <a href="{{ route('products.on-sale') }}"
+                <a href="{{ route('products.index', ['has_offer' => 'yes']) }}"
                     class="border-2 border-gold text-gold font-bold py-4 px-8 rounded-full hover:bg-gold hover:text-ebony transition duration-300 ease-in-out">
-                    ✨ Piezas Exclusivas
+                    🏷️ Ofertas
                 </a>
             </div>
         </div>

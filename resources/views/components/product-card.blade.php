@@ -10,6 +10,7 @@
         inWishlist: {{ $isInWishlist ? 'true' : 'false' }},
         productId: {{ $product->id }},
         isAuthenticated: {{ Auth::check() ? 'true' : 'false' }},
+        addingToCart: false,
         toggleWishlist() {
             if (this.isAuthenticated) {
                 fetch('{{ route('wishlist.store', ':id') }}'.replace(':id', this.productId), {
@@ -28,6 +29,60 @@
             } else {
                 window.location.href = '{{ route('login') }}';
             }
+        },
+        addToCart() {
+            if (!this.isAuthenticated) {
+                window.location.href = '{{ route('login') }}';
+                return;
+            }
+            
+            this.addingToCart = true;
+            
+            fetch('{{ route('cart.store') }}', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').content,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({
+                    product_id: this.productId,
+                    quantity: 1
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                this.addingToCart = false;
+                if (data.success) {
+                    const notification = document.createElement('div');
+                    notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #FFD700; color: #1a1a1a; padding: 16px 24px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 9999; display: flex; align-items: center; gap: 12px; font-weight: 600; animation: slideIn 0.3s ease-out;';
+                    const checkmark = document.createElement('span');
+                    checkmark.textContent = '✓';
+                    checkmark.style.cssText = 'font-size: 24px; font-weight: bold;';
+                    const text = document.createElement('span');
+                    text.textContent = '¡Producto añadido al carrito!';
+                    notification.appendChild(checkmark);
+                    notification.appendChild(text);
+                    
+                    const style = document.createElement('style');
+                    style.textContent = '@keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }';
+                    document.head.appendChild(style);
+                    
+                    document.body.appendChild(notification);
+                    setTimeout(() => {
+                        notification.style.animation = 'slideIn 0.3s ease-out reverse';
+                        setTimeout(() => notification.remove(), 300);
+                    }, 2500);
+                } else {
+                    alert(data.message || 'Error al añadir al carrito');
+                }
+            })
+            .catch(e => {
+                this.addingToCart = false;
+                console.error('Error:', e);
+                alert('Error al añadir al carrito');
+            });
         }
      }">
     
@@ -107,21 +162,32 @@
 
     <!-- NOMBRE Y PRECIO (FUERA de la imagen, en su propio bloque) -->
     <div class="p-4 bg-ebony border-t border-silver/20">
-        <a href="{{ route('products.show', $product->id) }}" class="block">
-            <h4 class="text-lg font-bold text-gold mb-3 line-clamp-2 hover:text-gold/80 transition">
-                {{ $product->name }}
-            </h4>
-        </a>
+        <div class="flex items-start justify-between gap-2 mb-3">
+            <a href="{{ route('products.show', $product->id) }}" class="flex-1">
+                <h4 class="text-xl font-bold text-gold line-clamp-2 hover:text-gold/80 transition">
+                    {{ $product->name }}
+                </h4>
+            </a>
+            <button @click.stop.prevent="addToCart()"
+                    :disabled="addingToCart"
+                    :class="addingToCart ? 'opacity-50 cursor-not-allowed' : 'hover:bg-copper hover:scale-110'"
+                    class="flex-shrink-0 bg-gold text-ebony p-2 rounded-lg transition transform"
+                    title="Añadir al carrito">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+            </button>
+        </div>
 
         <!-- Precio -->
         <div>
             @if($product->offer)
                 <div class="flex items-baseline gap-2">
                     <span class="text-xs text-silver/60 line-through">€{{ number_format($product->price, 2) }}</span>
-                    <span class="text-xl font-bold text-copper">€{{ number_format($product->final_price, 2) }}</span>
+                    <span class="text-lg font-bold text-copper">€{{ number_format($product->final_price, 2) }}</span>
                 </div>
             @else
-                <span class="text-xl font-bold text-gold">€{{ number_format($product->final_price, 2) }}</span>
+                <span class="text-lg font-bold text-gold">€{{ number_format($product->final_price, 2) }}</span>
             @endif
         </div>
     </div>
