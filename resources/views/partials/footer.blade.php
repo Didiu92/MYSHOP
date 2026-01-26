@@ -8,8 +8,8 @@
 	 <span>Aristocats</span>
  </h5>
  <p class="text-gray-400">
- Tu tienda de confianza para encontrar los mejores
-productos.
+ Tu joyería de confianza para encontrar 
+ las mejores joyas.
  </p>
  </div>
  <div>
@@ -24,9 +24,9 @@ productos.
  <div>
  <h6 class="font-bold mb-4">Contacto</h6>
  <ul class="space-y-2 text-silver/70">
- <li>📞 Teléfono de contacto</li>
- <li>📧 Email de contacto</li>
- <li>🕒 Horario de atención</li>
+ <li>📞 6192837464</li>
+ <li>📧 joyeriaaristocats@gmail.com</li>
+ <li>🕒 L-S 9:00 a 20:00</li>
  </ul>
  </div>
  </div>
