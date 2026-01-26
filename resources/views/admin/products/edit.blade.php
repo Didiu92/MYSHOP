@@ -60,7 +60,7 @@
                                                      @click="openLightbox('{{ asset('storage/' . $image->path) }}')"
                                                      class="h-24 w-24 object-cover rounded-md cursor-pointer hover:opacity-80 transition border-2 border-gold/20"
                                                      style="cursor: pointer;">
-                                                <span class="absolute top-0 right-0 bg-blue-500 text-white text-xs px-1 py-0.5 rounded-bl-md">{{ $image->order + 1 }}</span>
+                                                <span class="absolute top-0 right-0 bg-gold text-graphite text-xs px-1 py-0.5 rounded-bl-md font-semibold">{{ $image->order + 1 }}</span>
                                             </div>
                                         @endforeach
                                     </div>
@@ -87,7 +87,7 @@
                                    multiple
                                    accept="image/jpeg,image/png,image/jpg,image/webp" 
                                    @change="previewFiles($event)"
-                                   class="mt-1 block w-full text-sm text-silver file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gold/10 file:text-gold hover:file:bg-gold @error('images.*') border-red-500 @enderror">
+                                   class="mt-1 block w-full text-sm text-silver file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gold/10 file:text-gold hover:file:bg-gold hover:file:text-gray-900 file:transition-colors @error('images.*') border-red-500 @enderror">
                             <p class="mt-1 text-xs text-gray-500">Seleccionar nuevas imágenes reemplazará todas las actuales. Formatos: JPG, PNG, WEBP. Máximo 2MB cada una</p>
                             @error('images.*')
                                 <p class="mt-1 text-sm text-red-400">{{ $message }}</p>
@@ -140,7 +140,7 @@
                             <a href="{{ route('admin.products.index') }}" class="px-4 py-2 bg-gray-300 text-gold rounded-md hover:bg-graphite transition">
                                 Cancelar
                             </a>
-                            <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
+                            <button type="submit" class="px-4 py-2 bg-gold text-graphite font-semibold rounded-md hover:bg-gold/80 transition">
                                 Actualizar Producto
                             </button>
                         </div>
