@@ -5,7 +5,21 @@
 @push('styles')
     <style>
         .hero-gradient {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-image: url('{{ asset('images/fondo.webp') }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        .hero-gradient::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+        }
+        .hero-gradient > * {
+            position: relative;
+            z-index: 1;
         }
     </style>
 @endpush
@@ -14,10 +28,10 @@
     <!-- Hero Section -->
     <section class="hero-gradient text-white py-20">
         <div class="container mx-auto px-6 text-center">
-            <h2 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
+            <h2 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6" style="text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.8);">
                 Bienvenidx a Joyería Aristocats
             </h2>
-            <p class="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto">
+            <p class="text-xl md:text-2xl text-blue-100 mb-8 max-w-3xl mx-auto" style="text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.9);">
                 Descubre nuestras exclusivas colecciones de joyas. 
                 Cada pieza es un reflejo de elegancia y distinción.
             </p>
