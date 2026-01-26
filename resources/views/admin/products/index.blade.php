@@ -1,7 +1,24 @@
 <x-app-layout x-data="{ 
-    lightboxImage: null,
-    openLightbox(image) {
-        this.lightboxImage = image;
+    carouselOpen: false,
+    carouselImages: [],
+    currentIndex: 0,
+    openCarousel(images, startIndex = 0) {
+        this.carouselImages = images;
+        this.currentIndex = startIndex;
+        this.carouselOpen = true;
+        document.body.style.overflow = 'hidden';
+    },
+    closeCarousel() {
+        this.carouselOpen = false;
+        document.body.style.overflow = '';
+    },
+    next() {
+        if (this.carouselImages.length === 0) return;
+        this.currentIndex = (this.currentIndex + 1) % this.carouselImages.length;
+    },
+    prev() {
+        if (this.carouselImages.length === 0) return;
+        this.currentIndex = (this.currentIndex - 1 + this.carouselImages.length) % this.carouselImages.length;
     }
 }">
     @push('styles')
@@ -216,18 +233,18 @@
                                 <tr class="hover:bg-gray-800">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         @if($product->images->count() > 0)
-                                            <img src="{{ asset('storage/' . $product->images->first()->path) }}" 
-                                                 alt="{{ $product->name }}"
-                                                 @click="openLightbox('{{ asset('storage/' . $product->images->first()->path) }}')"
+                                                <img src="{{ asset('storage/' . $product->images->first()->path) }}" 
+                                                    alt="{{ $product->name }}"
+                                                    @click="openCarousel(@js($product->images->sortBy('order')->map(fn($img) => asset('storage/' . $img->path))->values()->all()), 0)"
                                                  class="h-16 w-16 object-cover rounded-md shadow-sm cursor-pointer hover:opacity-80 transition"
                                                  style="cursor: pointer;">
                                             @if($product->images->count() > 1)
                                                 <span class="inline-block ml-1 text-xs text-gray-500">(+{{ $product->images->count() - 1 }})</span>
                                             @endif
                                         @elseif($product->image)
-                                            <img src="{{ asset('storage/' . $product->image) }}" 
-                                                 alt="{{ $product->name }}"
-                                                 @click="openLightbox('{{ asset('storage/' . $product->image) }}')"
+                                                <img src="{{ asset('storage/' . $product->image) }}" 
+                                                    alt="{{ $product->name }}"
+                                                    @click="openCarousel(@js([asset('storage/' . $product->image)]), 0)"
                                                  class="h-16 w-16 object-cover rounded-md shadow-sm cursor-pointer hover:opacity-80 transition"
                                                  style="cursor: pointer;">
                                         @else
@@ -294,20 +311,43 @@
         </div>
     </div>
 
-    <!-- Lightbox Modal -->
-    <div x-show="lightboxImage" 
-         x-cloak
-         @click="lightboxImage = null"
-         class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 p-4"
-         style="animation: fadeIn 0.2s ease-in;">
-        <div class="relative bg-gray-900 rounded-lg shadow-2xl p-4 max-w-2xl border border-gold/20" @click.stop>
-            <button @click="lightboxImage = null" 
+    <!-- Lightbox Carousel Modal -->
+    <div 
+        x-show="carouselOpen" 
+        x-cloak
+        @keydown.window.escape="closeCarousel()"
+        @keydown.window.arrow-right="next()"
+        @keydown.window.arrow-left="prev()"
+        @click.self="closeCarousel()"
+        class="fixed inset-0 z-50 flex items-start justify-center bg-black/80 px-4 py-8 sm:py-12 overflow-y-auto"
+        style="animation: fadeIn 0.2s ease-in;">
+        <div class="relative bg-gray-900 rounded-lg shadow-2xl p-3 max-w-4xl w-full border border-gold/40" @click.stop>
+            <button @click="closeCarousel()" 
                     class="absolute -top-4 -right-4 text-white bg-red-600 rounded-full w-10 h-10 flex items-center justify-center hover:bg-red-700 transition font-bold text-2xl shadow-lg">
                 ✕
             </button>
-            <img :src="lightboxImage" 
-                 alt="Imagen ampliada"
-                 class="w-full max-h-screen object-contain">
+
+            <div class="flex items-center gap-3">
+                <button @click="prev()" class="p-2 text-gold hover:text-white hover:bg-gold/20 rounded-full transition" aria-label="Anterior">
+                    <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                </button>
+
+                <div class="flex-1">
+                    <img :src="carouselImages[currentIndex]" alt="Imagen de producto" class="w-full max-h-[35vh] sm:max-h-[40vh] md:max-h-[45vh] object-contain rounded" />
+                    <div class="text-center mt-1 text-silver text-sm">Imagen <span x-text="currentIndex + 1"></span> / <span x-text="carouselImages.length"></span></div>
+                </div>
+
+                <button @click="next()" class="p-2 text-gold hover:text-white hover:bg-gold/20 rounded-full transition" aria-label="Siguiente">
+                    <svg class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                </button>
+            </div>
+
+            <!-- Miniaturas -->
+            <div class="mt-4 hidden sm:flex gap-2 overflow-x-auto pb-1">
+                <template x-for="(img, idx) in carouselImages" :key="idx">
+                    <img :src="img" @click="currentIndex = idx" :class="['h-16 w-16 object-cover rounded border', currentIndex === idx ? 'border-gold' : 'border-transparent opacity-70 hover:opacity-100']" />
+                </template>
+            </div>
         </div>
     </div>
 

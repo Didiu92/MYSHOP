@@ -6,6 +6,14 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
         <title>{{ config('app.name', 'Laravel') }}</title>
+        
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="{{ asset('images/favicon/favicon.png') }}">
+        <style>
+            link[rel="icon"] {
+                border-radius: 50%;
+            }
+        </style>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
@@ -17,8 +25,8 @@
     <body class="font-sans text-silver antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-ebony">
             <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+                <a href="/" class="flex items-center justify-center">
+                    <img src="{{ asset('images/favicon/favicon.png') }}" alt="Aristocats" class="w-20 h-20 rounded-full ring-1 ring-gold/30" />
                 </a>
             </div>
 

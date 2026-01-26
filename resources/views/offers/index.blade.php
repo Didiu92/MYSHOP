@@ -1,5 +1,5 @@
 @extends('layouts.public')
-@section('title', 'Ofertas - Mi Tienda')
+@section('title', 'Ofertas - Aristocats')
 @section('content')
  <div class="container mx-auto px-6 py-8">
  <div class="mb-8">

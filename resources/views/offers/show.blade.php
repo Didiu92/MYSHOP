@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', $offer->name . ' - Mi Tienda')
+@section('title', $offer->name . ' - Aristocats')
 
 @section('content')
     <div class="container mx-auto px-6 py-8">

@@ -3,7 +3,10 @@
  <div class="container mx-auto px-6">
  <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
  <div>
- <h5 class="text-xl font-bold mb-4">🛍 Mi Tienda</h5>
+ <h5 class="text-xl font-bold mb-4 flex items-center gap-2">
+	 <img src="{{ asset('images/favicon/favicon.png') }}" alt="Aristocats" class="h-6 w-6 rounded-full ring-1 ring-gold/30">
+	 <span>Aristocats</span>
+ </h5>
  <p class="text-gray-400">
  Tu tienda de confianza para encontrar los mejores
 productos.
@@ -28,7 +31,7 @@ productos.
  </div>
  </div>
  <div class="border-t border-gold/20 mt-8 pt-8 text-center text-silver/60">
- <p>© 2025 Mi Tienda. Todos los derechos reservados.</p>
+ <p>© 2025 Aristocats. Todos los derechos reservados.</p>
  </div>
  </div>
  </footer>

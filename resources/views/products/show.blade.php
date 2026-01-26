@@ -6,7 +6,7 @@
         : 0;
 @endphp
 
-@section('title', $product->name . ' - Mi Tienda')
+@section('title', $product->name . ' - Aristocats')
 
 @section('content')
     <div class="container mx-auto px-6 py-8">

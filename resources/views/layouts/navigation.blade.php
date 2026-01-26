@@ -6,8 +6,9 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('welcome') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gold" />
+                    <a href="{{ route('welcome') }}" class="flex items-center gap-3">
+                        <img src="{{ asset('images/favicon/favicon.png') }}" alt="Aristocats" class="h-10 w-10 rounded-full border-0" style="clip-path: circle(46% at 50% 50%);" />
+                        <span class="hidden sm:inline text-xl font-semibold text-gold">Aristocats</span>
                     </a>
                 </div>
 

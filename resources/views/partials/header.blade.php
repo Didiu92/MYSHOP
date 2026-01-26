@@ -3,9 +3,10 @@
     <div class="container mx-auto px-6 py-4">
         <div class="flex items-center justify-between">
             <!-- Logo -->
-            <div class="flex items-center space-x-4">
-            <a href="{{ route('welcome') }}" class="text-2xl font-bold text-gold hover:text-copper transition">
-                    🛍️ Mi Tienda
+            <div class="flex items-center gap-4">
+                <a href="{{ route('welcome') }}" class="flex items-center gap-3 group">
+                    <img src="{{ asset('images/favicon/favicon.png') }}" alt="Aristocats" class="h-20 w-20 rounded-full border-0" style="clip-path: circle(46% at 50% 50%);">
+                    <span class="text-2xl font-bold text-gold group-hover:text-copper transition">Aristocats</span>
                 </a>
             </div>
             
