@@ -69,6 +69,7 @@ Route::middleware(['auth', 'worker'])->prefix('admin')->name('admin.')->group(fu
 Route::middleware(['auth', 'admin', 'log.activity'])->prefix('admin')->name('admin.')->group(function () {
     // Rutas de gestión de productos
     Route::resource('products', ProductController::class)->except(['index', 'show']);
+    Route::post('products/{product}/reorder-images', [ProductController::class, 'reorderImages'])->name('products.reorder-images');
 
     // Categorías
     Route::resource('categories', CategoryController::class)->except(['index', 'show']);

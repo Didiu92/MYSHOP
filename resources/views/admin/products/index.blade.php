@@ -202,7 +202,7 @@
             <div class="bg-gray-900 overflow-hidden shadow-sm sm:rounded-lg border border-gold/10">
                 <div class="overflow-x-auto">
                     <table class="w-full divide-y divide-gold/10">
-                        <thead class="bg-gray-50">
+                        <thead class="bg-gray-800">
                             <tr>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gold uppercase tracking-wider">Imagen</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gold uppercase tracking-wider">Nombre</th>

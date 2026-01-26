@@ -7,12 +7,44 @@
 
     <div class="py-12" x-data="{ 
         previewImages: [],
+        selectedFiles: [],
+        draggedIndex: null,
         previewFiles(event) {
             this.previewImages = [];
-            const files = event.target.files;
-            for (let i = 0; i < files.length; i++) {
-                this.previewImages.push(URL.createObjectURL(files[i]));
+            this.selectedFiles = Array.from(event.target.files);
+            for (let i = 0; i < this.selectedFiles.length; i++) {
+                this.previewImages.push(URL.createObjectURL(this.selectedFiles[i]));
             }
+        },
+        dragStart(index) {
+            this.draggedIndex = index;
+        },
+        dragOver(event) {
+            event.preventDefault();
+        },
+        drop(index) {
+            if (this.draggedIndex !== null && this.draggedIndex !== index) {
+                // Reordenar previews
+                const draggedPreview = this.previewImages[this.draggedIndex];
+                this.previewImages.splice(this.draggedIndex, 1);
+                this.previewImages.splice(index, 0, draggedPreview);
+                
+                // Reordenar archivos
+                const draggedFile = this.selectedFiles[this.draggedIndex];
+                this.selectedFiles.splice(this.draggedIndex, 1);
+                this.selectedFiles.splice(index, 0, draggedFile);
+                
+                // Actualizar el input de archivos
+                this.updateFileInput();
+            }
+            this.draggedIndex = null;
+        },
+        updateFileInput() {
+            const dataTransfer = new DataTransfer();
+            this.selectedFiles.forEach(file => {
+                dataTransfer.items.add(file);
+            });
+            document.getElementById('images').files = dataTransfer.files;
         }
     }">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
@@ -44,15 +76,23 @@
                             <label for="images" class="block text-sm font-medium text-gold">Imágenes del Producto (Múltiples)</label>
                             
                             {{-- Vista previa --}}
-                            <div x-show="previewImages.length > 0" x-cloak class="my-3 flex gap-3 overflow-x-auto pb-2">
-                                <template x-for="(image, index) in previewImages" :key="index">
-                                    <div class="relative flex-shrink-0">
-                                        <img :src="image" 
-                                             alt="Vista previa"
-                                             class="h-24 w-24 object-cover rounded-md border-2 border-gold/20">
-                                        <span class="absolute top-0 right-0 bg-gold text-graphite text-xs px-1 py-0.5 rounded-bl-md font-semibold" x-text="index + 1"></span>
-                                    </div>
-                                </template>
+                            <div x-show="previewImages.length > 0" x-cloak class="my-3">
+                                <p class="text-xs text-silver font-medium mb-2">Vista previa (arrastra para reordenar):</p>
+                                <div class="flex gap-3 overflow-x-auto pb-2">
+                                    <template x-for="(image, index) in previewImages" :key="index">
+                                        <div class="relative flex-shrink-0 cursor-move"
+                                             draggable="true"
+                                             @dragstart="dragStart(index)"
+                                             @dragover="dragOver($event)"
+                                             @drop="drop(index)">
+                                            <img :src="image" 
+                                                 alt="Vista previa"
+                                                 class="h-24 w-24 object-cover rounded-md border-2 border-gold/20"
+                                                 :class="{ 'opacity-50': draggedIndex === index }">
+                                            <span class="absolute top-0 right-0 bg-gold text-graphite text-xs px-1 py-0.5 rounded-bl-md font-semibold" x-text="index + 1"></span>
+                                        </div>
+                                    </template>
+                                </div>
                             </div>
                             
                             <input type="file" 

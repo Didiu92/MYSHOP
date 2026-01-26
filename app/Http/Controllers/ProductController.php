@@ -343,5 +343,25 @@ public function adminIndex(Request $request): View
             ->with('success', 'Producto eliminado exitosamente.');
     }
 
+    /**
+     * Reorder product images
+     */
+    public function reorderImages(Request $request, Product $product)
+    {
+        $validated = $request->validate([
+            'images' => 'required|array',
+            'images.*.id' => 'required|exists:product_images,id',
+            'images.*.order' => 'required|integer|min:0'
+        ]);
+
+        foreach ($validated['images'] as $imageData) {
+            ProductImage::where('id', $imageData['id'])
+                ->where('product_id', $product->id)
+                ->update(['order' => $imageData['order']]);
+        }
+
+        return response()->json(['success' => true]);
+    }
+
     
 }

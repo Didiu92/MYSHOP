@@ -8,6 +8,8 @@
     <div class="py-12" x-data="{ 
         lightboxImage: null,
         previewImages: [],
+        images: {{ $product->images->map(fn($img) => ['id' => $img->id, 'path' => $img->path, 'order' => $img->order])->toJson() }},
+        draggedIndex: null,
         openLightbox(image) {
             this.lightboxImage = image;
         },
@@ -16,6 +18,39 @@
             const files = event.target.files;
             for (let i = 0; i < files.length; i++) {
                 this.previewImages.push(URL.createObjectURL(files[i]));
+            }
+        },
+        dragStart(index) {
+            this.draggedIndex = index;
+        },
+        dragOver(event) {
+            event.preventDefault();
+        },
+        drop(index) {
+            if (this.draggedIndex !== null && this.draggedIndex !== index) {
+                const draggedItem = this.images[this.draggedIndex];
+                this.images.splice(this.draggedIndex, 1);
+                this.images.splice(index, 0, draggedItem);
+                this.saveOrder();
+            }
+            this.draggedIndex = null;
+        },
+        async saveOrder() {
+            const order = this.images.map((img, idx) => ({ id: img.id, order: idx }));
+            try {
+                const response = await fetch('{{ route('admin.products.reorder-images', $product) }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ images: order })
+                });
+                if (!response.ok) {
+                    console.error('Error al guardar el orden');
+                }
+            } catch (error) {
+                console.error('Error:', error);
             }
         }
     }">
@@ -51,18 +86,22 @@
                             <div class="my-2">
                                 {{-- Imágenes actuales --}}
                                 @if ($product->images->count() > 0)
-                                    <p class="text-xs text-silver font-medium mb-2">Imágenes actuales:</p>
+                                    <p class="text-xs text-silver font-medium mb-2">Imágenes actuales (arrastra para reordenar):</p>
                                     <div class="flex gap-3 mb-4 overflow-x-auto pb-2">
-                                        @foreach ($product->images as $image)
-                                            <div class="relative flex-shrink-0">
-                                                <img src="{{ asset('storage/' . $image->path) }}" 
+                                        <template x-for="(image, index) in images" :key="image.id">
+                                            <div class="relative flex-shrink-0 cursor-move"
+                                                 draggable="true"
+                                                 @dragstart="dragStart(index)"
+                                                 @dragover="dragOver($event)"
+                                                 @drop="drop(index)">
+                                                <img :src="`/storage/${image.path}`" 
                                                      alt="Imagen"
-                                                     @click="openLightbox('{{ asset('storage/' . $image->path) }}')"
+                                                     @click="openLightbox(`/storage/${image.path}`)"
                                                      class="h-24 w-24 object-cover rounded-md cursor-pointer hover:opacity-80 transition border-2 border-gold/20"
-                                                     style="cursor: pointer;">
-                                                <span class="absolute top-0 right-0 bg-gold text-graphite text-xs px-1 py-0.5 rounded-bl-md font-semibold">{{ $image->order + 1 }}</span>
+                                                     :class="{ 'opacity-50': draggedIndex === index }">
+                                                <span class="absolute top-0 right-0 bg-gold text-graphite text-xs px-1 py-0.5 rounded-bl-md font-semibold" x-text="index + 1"></span>
                                             </div>
-                                        @endforeach
+                                        </template>
                                     </div>
                                 @else
                                     <p class="text-xs text-gray-500 italic mb-3">Este producto no tiene imágenes aún</p>
