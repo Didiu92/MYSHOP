@@ -1,34 +1,34 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Profile') }}
+        <h2 class="font-semibold text-xl text-gold leading-tight">
+            {{ __('Perfil') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
             <!-- Información de Rol -->
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+            <div class="p-4 sm:p-8 card">
                 <div class="max-w-xl">
                     <header>
-                        <h2 class="text-lg font-medium text-gray-900">
+                        <h2 class="text-lg font-medium text-gold">
                             {{ __('Información de Cuenta') }}
                         </h2>
-                        <p class="mt-1 text-sm text-gray-600">
+                        <p class="mt-1 text-sm text-silver/80">
                             {{ __('Detalles de tu cuenta y rol de usuario.') }}
                         </p>
                     </header>
                     <div class="mt-6 space-y-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Nombre de Usuario</label>
-                            <p class="mt-1 text-base text-gray-900">{{ Auth::user()->name }}</p>
+                            <label class="block text-sm font-medium text-gold">Nombre de Usuario</label>
+                            <p class="mt-1 text-base text-silver">{{ Auth::user()->name }}</p>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Correo Electrónico</label>
-                            <p class="mt-1 text-base text-gray-900">{{ Auth::user()->email }}</p>
+                            <label class="block text-sm font-medium text-gold">Correo Electrónico</label>
+                            <p class="mt-1 text-base text-silver">{{ Auth::user()->email }}</p>
                         </div>
                         <div>
-                            <label class="block text-sm font-medium text-gray-700">Rol</label>
+                            <label class="block text-sm font-medium text-gold">Rol</label>
                             <div class="mt-2">
                                 @if(Auth::user()->isAdmin())
                                     <span class="inline-flex items-center gap-2 px-4 py-2 text-base font-semibold rounded-lg bg-gold text-black">
@@ -37,15 +37,15 @@
                                         </svg>
                                         Administrador
                                     </span>
-                                    <p class="mt-2 text-sm text-gray-600">Tienes acceso completo a todas las funciones de gestión.</p>
+                                    <p class="mt-2 text-sm text-silver/80">Tienes acceso completo a todas las funciones de gestión.</p>
                                 @else
-                                    <span class="inline-flex items-center gap-2 px-4 py-2 text-base font-semibold rounded-lg bg-gray-300 text-black">
+                                    <span class="inline-flex items-center gap-2 px-4 py-2 text-base font-semibold rounded-lg bg-graphite text-silver border border-gold/30">
                                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                                         </svg>
                                         Invitado
                                     </span>
-                                    <p class="mt-2 text-sm text-gray-600">Puedes navegar por la tienda y gestionar tu lista de deseos.</p>
+                                    <p class="mt-2 text-sm text-silver/80">Puedes navegar por la tienda y gestionar tu lista de deseos.</p>
                                 @endif
                             </div>
                         </div>
@@ -53,19 +53,19 @@
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+            <div class="p-4 sm:p-8 card">
                 <div class="max-w-xl">
                     @include('profile.partials.update-profile-information-form')
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+            <div class="p-4 sm:p-8 card">
                 <div class="max-w-xl">
                     @include('profile.partials.update-password-form')
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
+            <div class="p-4 sm:p-8 card">
                 <div class="max-w-xl">
                     @include('profile.partials.delete-user-form')
                 </div>

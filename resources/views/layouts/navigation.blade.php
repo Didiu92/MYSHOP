@@ -79,7 +79,7 @@
                                     <div class="flex flex-col items-start">
                                         <span class="text-sm">{{ Auth::user()->name }}</span>
                                         @php($badge = Auth::user()->isAdmin() ? 'Administrador' : (Auth::user()->isWorkerGuest() ? 'Trabajador' : 'Cliente'))
-                                        <span class="mt-1 px-2 py-0.5 text-xs font-semibold rounded {{ Auth::user()->isAdmin() ? 'bg-gold text-black' : (Auth::user()->isWorkerGuest() ? 'bg-copper text-black' : 'bg-gray-400 text-black') }}">{{ $badge }}</span>
+                                        <span class="mt-1 px-2 py-0.5 text-xs font-semibold rounded {{ Auth::user()->isAdmin() ? 'bg-gold text-black' : (Auth::user()->isWorkerGuest() ? 'bg-copper text-black' : 'bg-graphite text-silver border border-gold/30') }}">{{ $badge }}</span>
                                     </div>
 
                                     <div class="ms-1">
@@ -92,7 +92,7 @@
 
                             <x-slot name="content">
                                 <x-dropdown-link :href="route('profile.edit')">
-                                    {{ __('Profile') }}
+                                    {{ __('Perfil') }}
                                 </x-dropdown-link>
 
                                 <!-- Authentication -->
@@ -102,19 +102,19 @@
                                     <x-dropdown-link :href="route('logout')"
                                             onclick="event.preventDefault();
                                                         this.closest('form').submit();">
-                                        {{ __('Log Out') }}
+                                        {{ __('Cerrar Sesión') }}
                                     </x-dropdown-link>
                                 </form>
                             </x-slot>
                         </x-dropdown>
                     @else
                         <a href="{{ route('login') }}" class="text-silver hover:text-gold px-3 py-2 rounded-md text-sm font-medium">
-                            {{ __('Log in') }}
+                            {{ __('Iniciar Sesión') }}
                         </a>
 
                         @if (Route::has('register'))
                             <a href="{{ route('register') }}" class="ms-4 text-silver hover:text-gold px-3 py-2 rounded-md text-sm font-medium">
-                                {{ __('Register') }}
+                                {{ __('Registrarse') }}
                             </a>
                         @endif
                     @endauth
@@ -196,7 +196,7 @@
 
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
-                    {{ __('Profile') }}
+                    {{ __('Perfil') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->
@@ -206,7 +206,7 @@
                     <x-responsive-nav-link :href="route('logout')"
                             onclick="event.preventDefault();
                                         this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                        {{ __('Cerrar Sesión') }}
                     </x-responsive-nav-link>
                 </form>
             </div>
@@ -215,11 +215,11 @@
         <div class="pt-4 pb-1 border-t border-gold/20">
             <div class="px-4 space-y-2">
                 <a href="{{ route('login') }}" class="block text-silver hover:text-gold px-3 py-2 rounded-md text-base font-medium">
-                    {{ __('Log in') }}
+                    {{ __('Iniciar Sesión') }}
                 </a>
                 @if (Route::has('register'))
                     <a href="{{ route('register') }}" class="block text-silver hover:text-gold px-3 py-2 rounded-md text-base font-medium">
-                        {{ __('Register') }}
+                        {{ __('Registrarse') }}
                     </a>
                 @endif
             </div>
