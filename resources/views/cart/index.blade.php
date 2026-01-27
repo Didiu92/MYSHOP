@@ -2,9 +2,8 @@
 
 @section('content')
 <div class="container mx-auto px-4 py-8">
-    <h1 class="text-3xl font-bold mb-8">🛒 Carrito de Compras</h1>
-
     @if($cartProducts->isEmpty())
+        <h1 class="text-3xl font-bold mb-8">🛒 Carrito de Compras</h1>
         <div class="card p-8 text-center">
             <div class="text-6xl mb-4">🛒</div>
             <h2 class="text-2xl font-bold text-gold mb-2">Tu carrito está vacío</h2>
@@ -14,6 +13,17 @@
             </a>
         </div>
     @else
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold">🛒 Carrito de Compras</h1>
+            {{-- FORMULARIO PARA VACIAR CARRITO --}}
+            <form action="{{ route('cart.clear') }}" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas vaciar el carrito?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="bg-graphite text-red-500 border border-red-500 px-6 py-3 rounded-lg hover:bg-red-500 hover:text-white transition font-semibold">
+                    🗑️ Vaciar Carrito
+                </button>
+            </form>
+        </div>
         <div class="card overflow-hidden">
             <table class="w-full">
                 <thead class="bg-graphite">
@@ -127,9 +137,9 @@
                         </tr>
                     @endforeach
                 </tbody>
-                <tfoot class="bg-gray-50">
+                <tfoot class="bg-graphite">
                     <tr>
-                        <td colspan="4" class="px-6 py-4 text-right font-semibold text-gray-700">Total:</td>
+                        <td colspan="4" class="px-6 py-4 text-right font-semibold text-silver">Total:</td>
                         <td class="px-6 py-4 font-bold text-xl text-gold">€{{ number_format($total, 2) }}</td>
                     </tr>
                 </tfoot>

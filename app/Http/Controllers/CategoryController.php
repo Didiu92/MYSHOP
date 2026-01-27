@@ -132,7 +132,7 @@ class CategoryController extends Controller
 
         $category->update($data);
 
-        return redirect()->route('admin.categories.index')->with('success', 'Categoría actualizada correctamente');
+        return redirect()->route('categories.show', $category->id)->with('success', 'Categoría actualizada correctamente');
     }
 
     /**

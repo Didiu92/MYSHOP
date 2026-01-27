@@ -36,4 +36,14 @@
 @layer base {
 	/* Form controls tuned for dark theme */
 	input, textarea, select { @apply bg-graphite text-silver placeholder-silver/70 border border-gold/30 focus:border-gold focus:ring-gold; }
+	
+	/* Sobrescribir estilos de autocompletado del navegador */
+	input:-webkit-autofill,
+	input:-webkit-autofill:hover,
+	input:-webkit-autofill:focus,
+	input:-webkit-autofill:active {
+		-webkit-box-shadow: 0 0 0 30px #1F1F1F inset !important;
+		-webkit-text-fill-color: #E8E8E8 !important;
+		caret-color: #E8E8E8 !important;
+	}
 }

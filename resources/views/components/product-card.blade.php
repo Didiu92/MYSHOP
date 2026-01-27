@@ -1,9 +1,10 @@
 @php
     $productImages = $product->images->pluck('path')->values()->toArray();
     $isInWishlist = Auth::check() && Auth::user()->products()->where('product_id', $product->id)->exists();
+    $isWishlistPage = request()->routeIs('wishlist.index');
 @endphp
 
-<div class="card overflow-hidden product-card {{ $class }} flex flex-col"
+<div class="card overflow-hidden product-card {{ $class }} flex flex-col {{ $product->offer ? 'border-2 border-copper' : '' }}"
      x-data="{
         currentImage: 0,
         totalImages: {{ count($productImages) }},
@@ -11,6 +12,7 @@
         productId: {{ $product->id }},
         isAuthenticated: {{ Auth::check() ? 'true' : 'false' }},
         addingToCart: false,
+        isWishlistPage: {{ $isWishlistPage ? 'true' : 'false' }},
         toggleWishlist() {
             if (this.isAuthenticated) {
                 fetch('{{ route('wishlist.store', ':id') }}'.replace(':id', this.productId), {
@@ -24,6 +26,23 @@
                 .then(response => response.json())
                 .then(data => {
                     this.inWishlist = data.inWishlist;
+                    // Si estamos en la página de wishlist y se quita de favoritos, ocultar la tarjeta
+                    if (this.isWishlistPage && !data.inWishlist) {
+                        // Contar cuántas tarjetas de producto quedan antes de eliminar esta
+                        const productCards = document.querySelectorAll('.product-card');
+                        const remainingCards = productCards.length - 1;
+                        
+                        this.$root.style.transition = 'opacity 0.3s, transform 0.3s';
+                        this.$root.style.opacity = '0';
+                        this.$root.style.transform = 'scale(0.9)';
+                        setTimeout(() => {
+                            this.$root.remove();
+                            // Si era el último producto, recargar la página para mostrar el mensaje de lista vacía
+                            if (remainingCards === 0) {
+                                window.location.reload();
+                            }
+                        }, 300);
+                    }
                 })
                 .catch(e => console.error('Error:', e));
             } else {

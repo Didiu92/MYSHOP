@@ -6,7 +6,9 @@
     @else
         <div class="text-4xl text-gold mb-4">📦</div>
     @endif
-    <h4 class="text-xl font-bold mb-2 text-gold">{{ $category->name }}</h4>
+    <a href="{{ route('categories.show', $category->id) }}">
+        <h4 class="text-xl font-bold mb-2 text-gold hover:text-copper transition cursor-pointer">{{ $category->name }}</h4>
+    </a>
     <p class="text-silver mb-4">{{ $category->description }}</p>
     <a href="{{ route('categories.show', $category->id) }}" 
        class="text-gold font-semibold hover:text-copper transition">

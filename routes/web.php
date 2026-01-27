@@ -49,6 +49,7 @@ Route::middleware('auth')->group(function () {
  Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
  Route::put('/cart/{id}', [CartController::class, 'update'])->name('cart.update');
  Route::delete('/cart/{id}', [CartController::class, 'destroy'])->name('cart.destroy');
+ Route::delete('/cart', [CartController::class, 'clear'])->name('cart.clear');
  Route::post('/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
 });
 // ===========================================

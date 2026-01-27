@@ -116,6 +116,15 @@ class CartController extends Controller
     }
     
     /**
+     * Vacía completamente el carrito de compras.
+     */
+    public function clear(): RedirectResponse
+    {
+        session()->forget('cart');
+        return redirect()->route('cart.index')->with('success', 'El carrito ha sido vaciado.');
+    }
+    
+    /**
      * Simula la finalización de la compra, vaciando el carrito.
      */
     public function checkout(): RedirectResponse

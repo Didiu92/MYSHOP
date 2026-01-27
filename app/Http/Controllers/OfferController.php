@@ -125,7 +125,7 @@ class OfferController extends Controller
 
         $offer->update($data);
 
-        return redirect()->route('admin.offers.index')->with('success', 'Oferta actualizada correctamente');
+        return redirect()->route('offers.show', $offer->id)->with('success', 'Oferta actualizada correctamente');
     }
 
     /**

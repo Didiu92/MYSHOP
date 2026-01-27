@@ -18,13 +18,13 @@
                 @auth
                     @if(auth()->user()->isAdmin())
                         <a href="{{ route('admin.offers.edit', $offer->id) }}" 
-                           class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm">
+                           class="bg-gold text-ebony px-4 py-2 rounded-lg hover:bg-copper hover:text-ebony transition text-sm font-semibold">
                             ✏️ Editar
                         </a>
                         <form action="{{ route('admin.offers.destroy', $offer->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('¿Estás seguro de que deseas eliminar esta oferta?');">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition text-sm">
+                            <button type="submit" class="bg-graphite text-red-500 border border-red-500 px-4 py-2 rounded-lg hover:bg-red-500 hover:text-white transition text-sm font-semibold">
                                 🗑️ Eliminar
                             </button>
                         </form>

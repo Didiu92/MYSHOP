@@ -105,7 +105,7 @@
 
                 {{-- Botones --}}
                 <div class="flex gap-4 pt-4">
-                    <button type="submit" class="btn-primary flex-1">
+                    <button type="submit" class="btn-primary">
                         <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                         </svg>
@@ -123,17 +123,17 @@
             <div class="text-center p-4">
                 <div class="text-gold text-3xl mb-2">📧</div>
                 <h3 class="text-silver font-semibold mb-1">Email</h3>
-                <p class="text-gray-400 text-sm">info@mitienda.com</p>
+                <p class="text-gray-400 text-sm">joyeriaaristocats@gmail.com</p>
             </div>
             <div class="text-center p-4">
                 <div class="text-gold text-3xl mb-2">📞</div>
                 <h3 class="text-silver font-semibold mb-1">Teléfono</h3>
-                <p class="text-gray-400 text-sm">+34 123 456 789</p>
+                <p class="text-gray-400 text-sm">+34 6192837464</p>
             </div>
             <div class="text-center p-4">
                 <div class="text-gold text-3xl mb-2">🕒</div>
                 <h3 class="text-silver font-semibold mb-1">Horario</h3>
-                <p class="text-gray-400 text-sm">Lun - Vie: 9:00 - 18:00</p>
+                <p class="text-gray-400 text-sm"> L-S 9:00 a 20:00</p>
             </div>
         </div>
     </div>
