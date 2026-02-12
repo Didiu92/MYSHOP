@@ -19,6 +19,16 @@ class ProductImageFromLocalSeeder extends Seeder
     {
         // Mapeo de nombre de producto => lista de imágenes (en orden)
         $productImageMap = [
+            'Pulsera Attached' => [
+                'PUL2178GRSMTL_1_1024x1024.webp',
+                'PUL2178GRSMTL_1_mod_1024x1024.webp',
+            ],
+            'Collar Superfly' => [
+                'COL1857MCLMTL_1_1024x1024.webp',
+                'COL1857MCLMTL_1_mod_1024x1024.webp',
+                'COL1857MCLMTL_2_1024x1024.webp',
+                'COL1857MCLMTL_2_mod_1024x1024.webp',
+            ],
             'Colgante plata calavera y oro' => [
                 'Colganteplatacalaverayoro_1024x1024.webp',
                 'colgante-calavera1_1024x1024.webp',
@@ -27,12 +37,6 @@ class ProductImageFromLocalSeeder extends Seeder
             'Anillo Crossed' => [
                 'ANI0732MTL000_mod1_1024x1024.webp',
                 'ANI0732MTL0009_1_1024x1024.webp',
-            ],
-            'Collar Superfly' => [
-                'COL1857MCLMTL_1_1024x1024.webp',
-                'COL1857MCLMTL_1_mod_1024x1024.webp',
-                'COL1857MCLMTL_2_1024x1024.webp',
-                'COL1857MCLMTL_2_mod_1024x1024.webp',
             ],
             'Pulsera Silver Key' => [
                 'PUL2305MTL000_1_1024x1024.webp',
@@ -55,45 +59,48 @@ class ProductImageFromLocalSeeder extends Seeder
                 'PUL2458MARMTL_2_mod_1024x1024.webp',
                 'PUL2458MARMTL_3_1024x1024.webp',
             ],
-            'Pulsera amatistas' => [
+            'Colgante dorado "ojo"' => [
+                'unode50-02_1024x1024.webp',
+            ],
+            'PULSERA IBIZA' => [
                 'PUL0227MAR_1_1024x1024.webp',
                 'PUL0227MAR_1_mod_1024x1024.webp',
                 'PUL0227MAR_2_1024x1024.webp',
                 'PUL0227MAR_3_1024x1024.webp',
             ],
-            'Pendientes perla botón' => [
+            'Pendientes Sofia 42' => [
                 'delcerro_SOFIA_dormilonas_42_v_600x_1a8e05ed-947c-4bd7-9724-3b7586bf4a1b_1024x1024.webp',
                 'F5C577F3-7133-4911-94AB-BB46D2F9E05A_600x_b496be47-0246-49d4-b69f-4f654853d7f1_1024x1024.webp',
             ],
-            'Anillo solitario moissanita' => [
+            'Anillo UNO heart' => [
                 'ANI0700MTL000_1_1024x1024.webp',
                 'ANI0700MTL000_2_1024x1024.webp',
                 'ANI0700MTL000_mod1_1024x1024.webp',
             ],
-            'Alianza titanio cepillado' => [
+            'Anillo Bluemoon' => [
                 'ANI0711GRSMTL_2_1024x1024.webp',
                 'ANI0711GRSMTL_mod1_1024x1024.webp',
             ],
-            'Pendientes aro minimal' => [
+            'PENDIENTE LIBELULA' => [
                 'PEN0970MTL000_1_1024x1024.webp',
                 'PEN0970MTL000_2_mod_1024x1024.webp',
             ],
-            'Alianza oro blanco mate' => [
+            'COLLAR JOY OF LIVING' => [
                 'COL1844BPLMTL_1_mod_1024x1024.webp',
                 'COL1844BPLMTL_2_1024x1024.webp',
                 'COL1844BPLMTL_2_mod_1024x1024.webp',
                 'COL1844BPLMTL_3_1024x1024.webp',
             ],
-            'Anillo media alianza zafiro' => [
+            'Anillo Maratua Island' => [
                 'ani0639mtl000_1_3_1024x1024.webp',
                 'ani0639mtl000_2_3_1024x1024.webp',
                 'ANI0639MTL000_mod1_1024x1024.webp',
             ],
-            'Pendientes topacio azul' => [
+            'PENDIENTES ESCAMAS' => [
                 'pen0055mtl000_4_mod_1_1024x1024.webp',
                 'unode50-14_1024x1024.webp',
             ],
-            'Pendientes amatista gota' => [
+            'Pendiente "tu orbitas?"' => [
                 'Pendiente-tu-orbitas_1024x1024.webp',
                 'pen0433mtl000_1_mod_1_1024x1024.webp',
                 'PEN0433MTL000_2_1024x1024.webp',
