@@ -99,9 +99,6 @@ class ProductImageFromLocalSeeder extends Seeder
                 'PEN0433MTL000_2_1024x1024.webp',
                 'PEN0433MTL000_mod2_1024x1024.webp',
             ],
-            'Pulsera tenis circonitas' => [
-                'unode50-02_1024x1024.webp',
-            ],
         ];
 
         ProductImage::truncate();
