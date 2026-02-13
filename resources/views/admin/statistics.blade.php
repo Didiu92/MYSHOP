@@ -41,7 +41,7 @@
             </div>
 
             <div class="rounded-xl border border-gold/20 bg-graphite p-6">
-                <h3 class="text-lg font-semibold text-gold mb-4">Mas vistos</h3>
+                <h3 class="text-lg font-semibold text-gold mb-4">Más vistos</h3>
                 <template x-if="topViewed.length === 0">
                     <p class="text-silver/70 text-sm">Sin datos disponibles.</p>
                 </template>
@@ -56,7 +56,7 @@
             </div>
 
             <div class="rounded-xl border border-gold/20 bg-graphite p-6">
-                <h3 class="text-lg font-semibold text-gold mb-4">Paginas mas visitadas</h3>
+                <h3 class="text-lg font-semibold text-gold mb-4">Páginas más visitadas</h3>
                 <template x-if="topPages.length === 0">
                     <p class="text-silver/70 text-sm">Sin datos disponibles.</p>
                 </template>
