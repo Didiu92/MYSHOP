@@ -3,7 +3,7 @@
 @section('content')
 <div>
     <div class="mb-8">
-        <h1 class="text-4xl font-bold text-gold mb-2">Estadisticas</h1>
+        <h1 class="text-4xl font-bold text-gold mb-2">Estadísticas</h1>
         <p class="text-silver/70">Resumen de visitas, compras y rendimiento.</p>
     </div>
 
