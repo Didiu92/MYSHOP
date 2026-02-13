@@ -19,7 +19,7 @@
                 <p class="mt-2 text-3xl font-bold text-gold" x-text="summary.page_visits_total"></p>
             </div>
             <div class="rounded-xl border border-gold/20 bg-graphite p-6">
-                <p class="text-sm text-silver/60">Compras simuladas</p>
+                <p class="text-sm text-silver/60">Compras</p>
                 <p class="mt-2 text-3xl font-bold text-gold" x-text="summary.checkout_clicks"></p>
             </div>
         </div>
