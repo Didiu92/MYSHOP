@@ -259,8 +259,13 @@ Alpine.data('accessibilityPanel', () => ({
 
 Alpine.data('dashboardApi', () => ({
     status: 'Cargando datos desde la API...',
+    summary: {
+        page_visits_total: 0,
+        checkout_clicks: 0,
+    },
     topFavorites: [],
     topViewed: [],
+    topPages: [],
     async load() {
         try {
             const response = await fetch('/api/admin/dashboard/overview', {
@@ -274,13 +279,17 @@ Alpine.data('dashboardApi', () => ({
             }
 
             const data = await response.json();
+            this.summary = data.summary || { page_visits_total: 0, checkout_clicks: 0 };
             this.topFavorites = data.top_favorites || [];
             this.topViewed = data.top_viewed || [];
+            this.topPages = data.top_pages || [];
             this.status = `Actualizado: ${data.generated_at || 'justo ahora'}`;
         } catch (error) {
             this.status = 'No se pudieron cargar los datos de la API.';
+            this.summary = { page_visits_total: 0, checkout_clicks: 0 };
             this.topFavorites = [];
             this.topViewed = [];
+            this.topPages = [];
         }
     },
 }));

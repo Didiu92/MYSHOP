@@ -38,6 +38,7 @@
 					<a href="{{ route('admin.products.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Productos</a>
 					<a href="{{ route('admin.categories.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Categorías</a>
 					<a href="{{ route('admin.offers.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Ofertas</a>
+					<a href="{{ route('admin.dashboard.stats') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Estadísticas</a>
 					@if($user->isAdmin())
 						<a href="{{ route('admin.users.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Usuarios</a>
 					@endif

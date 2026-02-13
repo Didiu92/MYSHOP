@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Collection;
+use App\Services\SiteMetricsService;
 
 class CartController extends Controller
 {
@@ -129,6 +130,7 @@ class CartController extends Controller
      */
     public function checkout(): RedirectResponse
     {
+        app(SiteMetricsService::class)->increment('checkout_clicks');
         session()->forget('cart'); // Vacía el carrito de la sesión
         return redirect()->route('welcome')->with('success', '¡Pedido realizado con éxito! Gracias por tu compra.');
     }

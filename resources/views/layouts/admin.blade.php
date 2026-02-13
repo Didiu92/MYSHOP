@@ -57,6 +57,13 @@
                                     Ofertas
                                 </a>
 
+                                <a href="{{ route('admin.dashboard.stats') }}" class="flex items-center px-4 py-2 rounded-lg {{ request()->routeIs('admin.dashboard.stats') ? 'bg-gold/20 text-gold' : 'text-silver hover:bg-graphite/50' }} transition">
+                                    <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3a1 1 0 011 1v16a1 1 0 11-2 0V4a1 1 0 011-1zm7 6a1 1 0 011 1v10a1 1 0 11-2 0V10a1 1 0 011-1zM4 13a1 1 0 011 1v6a1 1 0 11-2 0v-6a1 1 0 011-1z"></path>
+                                    </svg>
+                                    Estadísticas
+                                </a>
+
                                 @if(auth()->user()->isAdmin())
                                     <a href="{{ route('admin.users.index') }}" class="flex items-center px-4 py-2 rounded-lg {{ request()->routeIs('admin.users.*') ? 'bg-gold/20 text-gold' : 'text-silver hover:bg-graphite/50' }} transition">
                                         <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">

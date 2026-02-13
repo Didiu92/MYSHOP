@@ -82,6 +82,7 @@
                 </div>
             </a>
         @endif
+
     </div>
 
     <!-- Acciones Rápidas -->
@@ -106,45 +107,6 @@
                     <p class="text-sm">Tienes acceso de solo lectura. Contacta con un administrador para crear o modificar elementos.</p>
                 </div>
             @endif
-        </div>
-    </div>
-
-    <div class="mt-12" x-data="dashboardApi()" x-init="load()">
-        <div class="flex flex-col items-start gap-2 mb-6">
-            <h2 class="text-2xl font-bold text-gold">Resumen en vivo (API)</h2>
-            <p class="text-silver/80" x-text="status"></p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="rounded-xl border border-gold/20 bg-graphite p-6">
-                <h3 class="text-lg font-semibold text-gold mb-4">Top Favoritos</h3>
-                <template x-if="topFavorites.length === 0">
-                    <p class="text-silver/70 text-sm">Sin datos disponibles.</p>
-                </template>
-                <ul class="space-y-2" x-show="topFavorites.length > 0">
-                    <template x-for="item in topFavorites" :key="item.id">
-                        <li class="flex items-center justify-between text-sm text-silver">
-                            <span x-text="item.name"></span>
-                            <span class="text-gold" x-text="item.favorites"></span>
-                        </li>
-                    </template>
-                </ul>
-            </div>
-
-            <div class="rounded-xl border border-gold/20 bg-graphite p-6">
-                <h3 class="text-lg font-semibold text-gold mb-4">Mas vistos</h3>
-                <template x-if="topViewed.length === 0">
-                    <p class="text-silver/70 text-sm">Sin datos disponibles.</p>
-                </template>
-                <ul class="space-y-2" x-show="topViewed.length > 0">
-                    <template x-for="item in topViewed" :key="item.id">
-                        <li class="flex items-center justify-between text-sm text-silver">
-                            <span x-text="item.name"></span>
-                            <span class="text-gold" x-text="item.views"></span>
-                        </li>
-                    </template>
-                </ul>
-            </div>
         </div>
     </div>
 

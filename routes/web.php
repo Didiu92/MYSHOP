@@ -65,6 +65,7 @@ Route::middleware('auth')->group(function () {
 // ===========================================
 Route::middleware(['auth', 'worker'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/estadisticas', [DashboardController::class, 'statistics'])->name('dashboard.stats');
 
     // Listados de solo lectura para staff
     Route::get('/products', [ProductController::class, 'adminIndex'])->name('products.index');

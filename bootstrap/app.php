@@ -13,9 +13,14 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         // Registrar middleware con alias
         $middleware->alias([
+            'track.visits' => \App\Http\Middleware\TrackPageVisits::class,
             'log.activity' => \App\Http\Middleware\LogUserActivity::class,
             'admin' => \App\Http\Middleware\IsAdmin::class,
             'worker' => \App\Http\Middleware\IsWorker::class,
+        ]);
+
+        $middleware->appendToGroup('web', [
+            \App\Http\Middleware\TrackPageVisits::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -28,4 +28,9 @@ class DashboardController extends Controller
 
         return view('admin.dashboard', compact('stats', 'metalPrices'));
     }
+
+    public function statistics(): View
+    {
+        return view('admin.statistics');
+    }
 }

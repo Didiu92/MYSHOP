@@ -54,6 +54,7 @@
                                     <a role="menuitem" href="{{ route('admin.products.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Productos</a>
                                     <a role="menuitem" href="{{ route('admin.categories.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Categorías</a>
                                     <a role="menuitem" href="{{ route('admin.offers.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Ofertas</a>
+                                    <a role="menuitem" href="{{ route('admin.dashboard.stats') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Estadísticas</a>
                                     @if($user->isAdmin())
                                         <a role="menuitem" href="{{ route('admin.users.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Usuarios</a>
                                     @endif
@@ -180,6 +181,9 @@
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('admin.offers.index')" :active="request()->routeIs('admin.offers.*')">
                     {{ __('Ofertas (Admin)') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('admin.dashboard.stats')" :active="request()->routeIs('admin.dashboard.stats')">
+                    {{ __('Estadísticas') }}
                 </x-responsive-nav-link>
                 @if($user->isAdmin())
                     <x-responsive-nav-link :href="route('admin.users.index')" :active="request()->routeIs('admin.users.*')">
