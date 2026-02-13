@@ -18,7 +18,7 @@
  <li><a href="{{ route('welcome') }}" class="hover:text-gold transition">Inicio</a></li>
  <li><a href="{{ route('products.index') }}" class="hover:text-gold transition">Productos</a></li>
  <li><a href="{{ route('categories.index') }}" class="hover:text-gold transition">Categorías</a></li>
- <li><a href="#" class="hover:text-gold transition">Contacto</a></li>
+ <li><a href="{{ route('contact') }}" class="hover:text-gold transition">Contacto</a></li>
  </ul>
  </div>
  <div>

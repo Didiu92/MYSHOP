@@ -2,18 +2,18 @@
 <nav x-data="{ open: false }" class="bg-graphite border-b border-gold/20">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
-            <div class="flex">
-                <!-- Logo -->
+        <div class="flex justify-between items-center h-16">
+            <!-- Logo - Centered on mobile, left-aligned on desktop -->
+            <div class="flex-1 flex justify-center lg:flex-none lg:justify-start">
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('welcome') }}" class="flex items-center gap-3">
                         <img src="{{ asset('images/favicon/favicon.png') }}" alt="Aristocats" class="h-10 w-10 rounded-full border-0" style="clip-path: circle(46% at 50% 50%);" />
-                        <span class="hidden sm:inline text-xl font-semibold text-gold">Aristocats</span>
+                        <span class="hidden lg:inline text-xl font-semibold text-gold">Aristocats</span>
                     </a>
                 </div>
 
-                <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+            <!-- Navigation Links - Hidden on mobile/tablet, visible on desktop -->
+            <div class="hidden space-x-8 lg:-my-px lg:ms-10 lg:flex">
                     <x-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')">
                         {{ __('Tienda') }}
                     </x-nav-link>
@@ -32,22 +32,30 @@
 
                     @if($user?->isWorker())
                         <div x-data="{ open: false }" class="relative flex items-center">
-                            <button @click="open = !open" class="inline-flex items-center px-3 py-2 text-sm font-medium text-silver hover:text-gold rounded-md transition" style="position: relative; z-index: 99998;">
+                            <button
+                                type="button"
+                                @click="open = !open"
+                                class="inline-flex items-center px-3 py-2 text-sm font-medium text-silver hover:text-gold rounded-md transition"
+                                style="position: relative; z-index: 99998;"
+                                aria-haspopup="menu"
+                                :aria-expanded="open.toString()"
+                                aria-controls="worker-menu"
+                            >
                                 Dashboard
                                 <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                 </svg>
                             </button>
-                            <div x-show="open" @click.away="open = false" x-cloak
+                            <div id="worker-menu" x-show="open" @click.away="open = false" x-cloak role="menu"
                                  style="position: absolute; top: 100%; left: 0; margin-top: 0.5rem; border: 2px solid #FFD700; z-index: 99999;"
                                  class="w-48 rounded-md shadow-lg bg-graphite">
                                 <div class="py-1">
-                                    <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Panel</a>
-                                    <a href="{{ route('admin.products.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Productos</a>
-                                    <a href="{{ route('admin.categories.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Categorías</a>
-                                    <a href="{{ route('admin.offers.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Ofertas</a>
+                                    <a role="menuitem" href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Panel</a>
+                                    <a role="menuitem" href="{{ route('admin.products.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Productos</a>
+                                    <a role="menuitem" href="{{ route('admin.categories.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Categorías</a>
+                                    <a role="menuitem" href="{{ route('admin.offers.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Ofertas</a>
                                     @if($user->isAdmin())
-                                        <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Usuarios</a>
+                                        <a role="menuitem" href="{{ route('admin.users.index') }}" class="block px-4 py-2 text-sm text-silver hover:text-gold hover:bg-ebony">Usuarios</a>
                                     @endif
                                 </div>
                             </div>
@@ -69,8 +77,8 @@
                 </div>
             </div>
 
-            <!-- Settings Dropdown -->
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <!-- Settings Dropdown - Hidden on mobile/tablet, visible on desktop -->
+            <div class="hidden lg:flex lg:items-center lg:ms-6">
                 @if (Route::has('login'))
                     @auth
                         <x-dropdown align="right" width="48">
@@ -121,9 +129,17 @@
                 @endif
             </div>
 
-            <!-- Hamburger -->
-            <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-silver hover:text-gold hover:bg-graphite focus:outline-none focus:bg-graphite focus:text-gold transition duration-150 ease-in-out">
+            <!-- Hamburger Menu - Shown on mobile/tablet, hidden on desktop -->
+            <div class="-me-2 flex items-center lg:hidden">
+                <button
+                    type="button"
+                    @click="open = ! open"
+                    class="inline-flex items-center justify-center p-2 rounded-md text-silver hover:text-gold hover:bg-graphite focus:outline-none focus:bg-graphite focus:text-gold transition duration-150 ease-in-out"
+                    :aria-expanded="open.toString()"
+                    aria-controls="app-mobile-menu"
+                    aria-label="Alternar menu de navegacion"
+                >
+                    <span class="sr-only">Menu principal</span>
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -133,8 +149,8 @@
         </div>
     </div>
 
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
+    <!-- Responsive Navigation Menu - Shown on mobile/tablet, hidden on desktop -->
+    <div id="app-mobile-menu" :class="{'block': open, 'hidden': ! open}" class="hidden lg:hidden" aria-label="Menu principal">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('welcome')" :active="request()->routeIs('welcome')">
                 {{ __('Tienda') }}

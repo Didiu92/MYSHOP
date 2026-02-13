@@ -68,6 +68,7 @@ Route::middleware(['auth', 'worker'])->prefix('admin')->name('admin.')->group(fu
 // RUTAS DE ADMINISTRACIÓN (Protegidas + Solo Admin)
 // ===========================================
 Route::middleware(['auth', 'admin', 'log.activity'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('users/check-email', [AdminUserController::class, 'checkEmail'])->name('users.check-email');
     // Rutas de gestión de productos
     Route::resource('products', ProductController::class)->except(['index', 'show']);
     Route::post('products/{product}/reorder-images', [ProductController::class, 'reorderImages'])->name('products.reorder-images');

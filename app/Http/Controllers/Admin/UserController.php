@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -38,6 +39,39 @@ class UserController extends Controller
     public function create(): View
     {
         return view('admin.users.create');
+    }
+
+    /**
+     * Check if an email is available.
+     */
+    public function checkEmail(Request $request): JsonResponse
+    {
+        $email = trim((string) $request->input('email', ''));
+        if ($email === '') {
+            return response()->json([
+                'available' => false,
+                'message' => 'El correo electronico es obligatorio.',
+            ], 200);
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return response()->json([
+                'available' => false,
+                'message' => 'El correo electronico no es valido.',
+            ], 200);
+        }
+
+        $query = User::query()->where('email', $email);
+        if ($request->filled('user_id')) {
+            $query->where('id', '!=', (int) $request->input('user_id'));
+        }
+
+        $exists = $query->exists();
+
+        return response()->json([
+            'available' => !$exists,
+            'message' => $exists ? 'El correo electronico ya esta en uso.' : '',
+        ]);
     }
 
     /**

@@ -1,5 +1,5 @@
 @php($user = auth()->user())
-<nav class="hidden md:flex space-x-8 items-center">
+<nav class="hidden lg:flex space-x-8 items-center">
 	<a href="{{ route('welcome') }}"
 	   class="text-silver hover:text-gold transition {{ request()->routeIs('welcome') ? 'text-gold font-semibold' : '' }}">
 		Tienda

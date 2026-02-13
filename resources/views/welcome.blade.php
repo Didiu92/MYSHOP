@@ -85,16 +85,18 @@
                     <!-- Botones de navegación -->
                     <template x-if="positions() > 1">
                         <div>
-                            <button @click="prev()"
+                                <button type="button" @click="prev()"
                                     style="position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);"
-                                    class="bg-graphite border-2 border-gold hover:bg-gold hover:text-ebony text-gold px-4 py-3 rounded-lg transition z-10">
+                                    class="bg-graphite border-2 border-gold hover:bg-gold hover:text-ebony text-gold px-4 py-3 rounded-lg transition z-10"
+                                    aria-label="Anterior">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
                                 </svg>
                             </button>
-                            <button @click="next()"
+                                <button type="button" @click="next()"
                                     style="position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);"
-                                    class="bg-graphite border-2 border-gold hover:bg-gold hover:text-ebony text-gold px-4 py-3 rounded-lg transition z-10">
+                                    class="bg-graphite border-2 border-gold hover:bg-gold hover:text-ebony text-gold px-4 py-3 rounded-lg transition z-10"
+                                    aria-label="Siguiente">
                                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
                                 </svg>
@@ -105,9 +107,14 @@
                     <!-- Indicadores -->
                     <div class="flex justify-center gap-2 mt-8">
                         <template x-for="i in positions()" :key="i">
-                            <button @click="currentIndex = i - 1"
-                                    :class="currentIndex === (i - 1) ? 'bg-gold' : 'bg-gray-400'"
-                                    class="w-3 h-3 rounded-full transition">
+                            <button
+                                type="button"
+                                @click="currentIndex = i - 1"
+                                :class="currentIndex === (i - 1) ? 'bg-gold' : 'bg-gray-400'"
+                                class="w-3 h-3 rounded-full transition"
+                                :aria-label="'Ir a la posicion ' + i"
+                                :aria-current="currentIndex === (i - 1) ? 'true' : 'false'"
+                            >
                             </button>
                         </template>
                     </div>

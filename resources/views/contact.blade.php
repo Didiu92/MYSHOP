@@ -8,31 +8,37 @@
             <p class="text-silver">Estamos aquí para ayudarte. Envíanos un mensaje y te responderemos pronto.</p>
         </div>
 
-        @if(session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-lg mb-6 shadow-sm">
-                <div class="flex items-center">
-                    <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                    </svg>
-                    <p class="font-medium">{{ session('success') }}</p>
-                </div>
-            </div>
-        @endif
-
         <div class="card p-8">
-            <form action="{{ route('contact.submit') }}" method="POST" class="space-y-6">
+            <form
+                x-data="contactForm(@js([
+                    'name' => old('name', ''),
+                    'email' => old('email', ''),
+                    'subject' => old('subject', ''),
+                    'message' => old('message', ''),
+                ]))"
+                x-on:submit.prevent="if (validateAll()) $el.submit()"
+                action="{{ route('contact.submit') }}"
+                method="POST"
+                class="space-y-6"
+            >
                 @csrf
 
                 {{-- Nombre --}}
                 <div>
                     <label for="name" class="block text-sm font-medium text-silver mb-2">Nombre *</label>
-                    <input type="text" 
+                          <input type="text" 
                            id="name" 
                            name="name" 
                            value="{{ old('name') }}"
+                                        x-model="form.name"
+                                        x-on:input="touched.name = true; validateField('name')"
+                                        x-on:blur="touched.name = true; validateField('name')"
+                                        x-bind:aria-invalid="errors.name ? 'true' : 'false'"
+                                        x-bind:aria-describedby="errors.name ? 'contact-name-error' : null"
                            class="w-full px-4 py-3 bg-ebony border rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent transition @error('name') border-red-500 @else border-gray-600 @enderror text-silver"
                            placeholder="Tu nombre completo"
                            required>
+                          <p id="contact-name-error" x-show="touched.name && errors.name" x-text="errors.name" class="mt-2 text-sm text-red-500 flex items-center" role="status" aria-live="polite"></p>
                     @error('name')
                         <p class="mt-2 text-sm text-red-500 flex items-center">
                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -46,13 +52,19 @@
                 {{-- Email --}}
                 <div>
                     <label for="email" class="block text-sm font-medium text-silver mb-2">Correo Electrónico *</label>
-                    <input type="email" 
+                          <input type="email" 
                            id="email" 
                            name="email" 
                            value="{{ old('email') }}"
+                                        x-model="form.email"
+                                        x-on:input="touched.email = true; validateField('email')"
+                                        x-on:blur="touched.email = true; validateField('email')"
+                                        x-bind:aria-invalid="errors.email ? 'true' : 'false'"
+                                        x-bind:aria-describedby="errors.email ? 'contact-email-error' : null"
                            class="w-full px-4 py-3 bg-ebony border rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent transition @error('email') border-red-500 @else border-gray-600 @enderror text-silver"
                            placeholder="tu@email.com"
                            required>
+                          <p id="contact-email-error" x-show="touched.email && errors.email" x-text="errors.email" class="mt-2 text-sm text-red-500 flex items-center" role="status" aria-live="polite"></p>
                     @error('email')
                         <p class="mt-2 text-sm text-red-500 flex items-center">
                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -66,13 +78,19 @@
                 {{-- Asunto --}}
                 <div>
                     <label for="subject" class="block text-sm font-medium text-silver mb-2">Asunto *</label>
-                    <input type="text" 
+                          <input type="text" 
                            id="subject" 
                            name="subject" 
                            value="{{ old('subject') }}"
+                                        x-model="form.subject"
+                                        x-on:input="touched.subject = true; validateField('subject')"
+                                        x-on:blur="touched.subject = true; validateField('subject')"
+                                        x-bind:aria-invalid="errors.subject ? 'true' : 'false'"
+                                        x-bind:aria-describedby="errors.subject ? 'contact-subject-error' : null"
                            class="w-full px-4 py-3 bg-ebony border rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent transition @error('subject') border-red-500 @else border-gray-600 @enderror text-silver"
                            placeholder="¿En qué podemos ayudarte?"
                            required>
+                          <p id="contact-subject-error" x-show="touched.subject && errors.subject" x-text="errors.subject" class="mt-2 text-sm text-red-500 flex items-center" role="status" aria-live="polite"></p>
                     @error('subject')
                         <p class="mt-2 text-sm text-red-500 flex items-center">
                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
@@ -89,9 +107,15 @@
                     <textarea id="message" 
                               name="message" 
                               rows="6"
+                              x-model="form.message"
+                              x-on:input="touched.message = true; validateField('message')"
+                              x-on:blur="touched.message = true; validateField('message')"
+                              x-bind:aria-invalid="errors.message ? 'true' : 'false'"
+                              x-bind:aria-describedby="errors.message ? 'contact-message-error' : null"
                               class="w-full px-4 py-3 bg-ebony border rounded-lg focus:ring-2 focus:ring-gold focus:border-transparent transition @error('message') border-red-500 @else border-gray-600 @enderror text-silver resize-none"
                               placeholder="Escribe tu mensaje aquí (mínimo 10 caracteres)..."
                               required>{{ old('message') }}</textarea>
+                    <p id="contact-message-error" x-show="touched.message && errors.message" x-text="errors.message" class="mt-2 text-sm text-red-500 flex items-center" role="status" aria-live="polite"></p>
                     @error('message')
                         <p class="mt-2 text-sm text-red-500 flex items-center">
                             <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
