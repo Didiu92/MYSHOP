@@ -8,8 +8,10 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CurrencyController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\DashboardApiController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,6 +25,12 @@ Route::get('/', [WelcomeController::class, 'index'])->name('welcome');
 // Contact page
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
+// Currency selector (public)
+Route::post('/currency', [CurrencyController::class, 'set'])->name('currency.set');
+// Dashboard API (admin + worker)
+Route::middleware(['auth', 'worker'])->prefix('api/admin')->name('api.admin.')->group(function () {
+    Route::get('/dashboard/overview', [DashboardApiController::class, 'overview'])->name('dashboard.overview');
+});
 // Rutas de categorías (solo lectura)
 Route::resource('categories', CategoryController::class)->only(['index', 'show']);
 // Rutas de productos (solo lectura)

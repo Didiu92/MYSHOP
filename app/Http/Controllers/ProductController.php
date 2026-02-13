@@ -265,6 +265,8 @@ public function adminIndex(Request $request): View
             abort(404, 'Producto no encontrado');
         }
 
+        $product->increment('views');
+
         $category = $product->category;
 
         return view('products.show', compact('product', 'category'));

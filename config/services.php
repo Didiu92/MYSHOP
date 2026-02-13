@@ -35,4 +35,18 @@ return [
         ],
     ],
 
+    'metals' => [
+        'key' => env('METALS_DEV_API_KEY'),
+        'currency' => env('METALS_DEV_CURRENCY', 'EUR'),
+        'unit' => env('METALS_DEV_UNIT', 'toz'),
+        'metals' => env('METALS_DEV_METALS', 'gold,silver,platinum'),
+    ],
+
+    'exchange_rates' => [
+        'base' => env('EXCHANGE_RATES_BASE', 'EUR'),
+        'symbols' => env('EXCHANGE_RATES_SYMBOLS', 'USD,GBP'),
+        'endpoint' => env('EXCHANGE_RATES_ENDPOINT', 'https://api.exchangerate.host/latest'),
+        'key' => env('EXCHANGE_RATES_KEY'),
+    ],
+
 ];

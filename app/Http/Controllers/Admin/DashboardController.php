@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Category;
 use App\Models\Offer;
 use App\Models\User;
+use App\Services\MetalsApiService;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
@@ -14,7 +15,7 @@ class DashboardController extends Controller
     /**
      * Display the admin dashboard.
      */
-    public function index(): View
+    public function index(MetalsApiService $metalsApi): View
     {
         $stats = [
             'products' => Product::count(),
@@ -23,6 +24,8 @@ class DashboardController extends Controller
             'users' => User::count(),
         ];
 
-        return view('admin.dashboard', compact('stats'));
+        $metalPrices = $metalsApi->latestPrices();
+
+        return view('admin.dashboard', compact('stats', 'metalPrices'));
     }
 }

@@ -257,6 +257,34 @@ Alpine.data('accessibilityPanel', () => ({
     },
 }));
 
+Alpine.data('dashboardApi', () => ({
+    status: 'Cargando datos desde la API...',
+    topFavorites: [],
+    topViewed: [],
+    async load() {
+        try {
+            const response = await fetch('/api/admin/dashboard/overview', {
+                headers: {
+                    'Accept': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error('API no disponible');
+            }
+
+            const data = await response.json();
+            this.topFavorites = data.top_favorites || [];
+            this.topViewed = data.top_viewed || [];
+            this.status = `Actualizado: ${data.generated_at || 'justo ahora'}`;
+        } catch (error) {
+            this.status = 'No se pudieron cargar los datos de la API.';
+            this.topFavorites = [];
+            this.topViewed = [];
+        }
+    },
+}));
+
 // Función para el carrusel de productos
 window.productCarousel = function() {
     return {

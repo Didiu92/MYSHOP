@@ -117,14 +117,14 @@
                 <div class="mb-6">
                     @if($product->offer)
                         <div class="flex items-baseline gap-3">
-                            <span class="text-2xl text-silver/60 line-through">€{{ number_format($product->price, 2) }}</span>
-                            <span class="text-4xl font-bold text-orange-600">€{{ number_format($product->final_price, 2) }}</span>
+                            <span class="text-2xl text-silver/60 line-through">{{ \App\Support\Currency::format($product->price, $currencyRate, $currencySymbol) }}</span>
+                            <span class="text-4xl font-bold text-orange-600">{{ \App\Support\Currency::format($product->final_price, $currencyRate, $currencySymbol) }}</span>
                         </div>
                         <p class="text-sm text-orange-600 mt-2">
-                            ¡Ahorra €{{ number_format($product->price - $product->final_price, 2) }}!
+                            ¡Ahorra {{ \App\Support\Currency::format($product->price - $product->final_price, $currencyRate, $currencySymbol) }}!
                         </p>
                 @else
-                        <span class="text-4xl font-bold text-gold">€{{ number_format($product->price, 2) }}</span>
+                        <span class="text-4xl font-bold text-gold">{{ \App\Support\Currency::format($product->price, $currencyRate, $currencySymbol) }}</span>
                 @endif
             </div>
             

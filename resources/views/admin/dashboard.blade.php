@@ -108,5 +108,75 @@
             @endif
         </div>
     </div>
+
+    <div class="mt-12" x-data="dashboardApi()" x-init="load()">
+        <div class="flex flex-col items-start gap-2 mb-6">
+            <h2 class="text-2xl font-bold text-gold">Resumen en vivo (API)</h2>
+            <p class="text-silver/80" x-text="status"></p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="rounded-xl border border-gold/20 bg-graphite p-6">
+                <h3 class="text-lg font-semibold text-gold mb-4">Top Favoritos</h3>
+                <template x-if="topFavorites.length === 0">
+                    <p class="text-silver/70 text-sm">Sin datos disponibles.</p>
+                </template>
+                <ul class="space-y-2" x-show="topFavorites.length > 0">
+                    <template x-for="item in topFavorites" :key="item.id">
+                        <li class="flex items-center justify-between text-sm text-silver">
+                            <span x-text="item.name"></span>
+                            <span class="text-gold" x-text="item.favorites"></span>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+
+            <div class="rounded-xl border border-gold/20 bg-graphite p-6">
+                <h3 class="text-lg font-semibold text-gold mb-4">Mas vistos</h3>
+                <template x-if="topViewed.length === 0">
+                    <p class="text-silver/70 text-sm">Sin datos disponibles.</p>
+                </template>
+                <ul class="space-y-2" x-show="topViewed.length > 0">
+                    <template x-for="item in topViewed" :key="item.id">
+                        <li class="flex items-center justify-between text-sm text-silver">
+                            <span x-text="item.name"></span>
+                            <span class="text-gold" x-text="item.views"></span>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    @if(!empty($metalPrices) && !empty($metalPrices['prices']))
+        @php
+            $metalLabels = [
+                'gold' => 'Oro',
+                'silver' => 'Plata',
+                'platinum' => 'Platino',
+            ];
+            $unitLabels = [
+                'g' => 'gramo',
+                'toz' => 'onza troy',
+            ];
+            $unitLabel = $unitLabels[$metalPrices['unit']] ?? $metalPrices['unit'];
+        @endphp
+        <div class="mt-12">
+            <div class="flex flex-col items-start gap-2 mb-6">
+                <h2 class="text-2xl font-bold text-gold">Cotización de metales preciosos</h2>
+                <p class="text-silver/80">Precios spot por {{ $unitLabel }} en {{ $metalPrices['currency'] }}.</p>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                @foreach($metalLabels as $symbol => $label)
+                    @if(isset($metalPrices['prices'][$symbol]))
+                        <div class="rounded-xl border border-gold/20 bg-graphite p-6 text-center">
+                            <div class="text-xs uppercase tracking-widest text-silver/60">{{ $label }}</div>
+                            <div class="mt-3 text-3xl font-bold text-gold">{{ number_format($metalPrices['prices'][$symbol], 2) }}</div>
+                        </div>
+                    @endif
+                @endforeach
+            </div>
+        </div>
+    @endif
 </div>
 @endsection
