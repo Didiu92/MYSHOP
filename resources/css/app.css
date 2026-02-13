@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Playfair+Display:wght@400;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,10 +6,92 @@
 
 @layer base {
 	html { scroll-behavior: smooth; }
-	body { @apply bg-ebony text-silver antialiased; }
+	body { @apply bg-ebony text-silver antialiased; font-family: var(--a11y-font-family, 'Figtree', system-ui, sans-serif); }
 	h1, h2, h3, h4, h5, h6 { @apply font-display text-gold tracking-tight; }
 	a { @apply text-gold hover:text-copper transition-colors; }
 	[x-cloak] { @apply hidden; }
+}
+
+@layer base {
+	html.a11y-font-hyper body,
+	html.a11y-font-hyper h1,
+	html.a11y-font-hyper h2,
+	html.a11y-font-hyper h3,
+	html.a11y-font-hyper h4,
+	html.a11y-font-hyper h5,
+	html.a11y-font-hyper h6 {
+		font-family: var(--a11y-font-family, 'Atkinson Hyperlegible', 'Figtree', system-ui, sans-serif);
+	}
+
+	html.a11y-contrast {
+		background-color: #000 !important;
+		color: #fff !important;
+	}
+
+	html.a11y-contrast body {
+		background-color: #000 !important;
+		color: #fff !important;
+	}
+
+	html.a11y-contrast a {
+		color: #ffff00 !important;
+		text-decoration: underline !important;
+	}
+
+	html.a11y-contrast button,
+	html.a11y-contrast .btn-primary {
+		background-color: #ffff00 !important;
+		color: #000 !important;
+		border: 2px solid #ffff00 !important;
+	}
+
+	html.a11y-filter-deuteranopia #a11y-content {
+		filter: url(#a11y-deuteranopia) !important;
+		-webkit-filter: url(#a11y-deuteranopia) !important;
+	}
+
+	html.a11y-filter-protanopia #a11y-content {
+		filter: url(#a11y-protanopia) !important;
+		-webkit-filter: url(#a11y-protanopia) !important;
+	}
+
+	html.a11y-filter-tritanopia #a11y-content {
+		filter: url(#a11y-tritanopia) !important;
+		-webkit-filter: url(#a11y-tritanopia) !important;
+	}
+
+	@supports not (filter: url(#a11y-test)) {
+		html.a11y-filter-deuteranopia #a11y-content {
+			filter: hue-rotate(30deg) saturate(0.7) !important;
+		}
+
+		html.a11y-filter-protanopia #a11y-content {
+			filter: hue-rotate(-15deg) saturate(0.6) !important;
+		}
+
+		html.a11y-filter-tritanopia #a11y-content {
+			filter: hue-rotate(90deg) saturate(0.8) !important;
+		}
+	}
+
+	html.a11y-reduce-motion * {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		transition-delay: 0ms !important;
+		scroll-behavior: auto !important;
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		*,
+		*::before,
+		*::after {
+			animation-duration: 0.01ms !important;
+			animation-iteration-count: 1 !important;
+			transition-duration: 0.01ms !important;
+			scroll-behavior: auto !important;
+		}
+	}
 }
 
 @layer components {
