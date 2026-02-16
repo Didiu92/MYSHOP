@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Product;
 use App\Models\Category;
@@ -157,11 +158,11 @@ class ProductController extends Controller
         if ($request->hasFile('images')) {
             $order = 0;
             $images = $request->file('images');
-            \Log::info('Imágenes recibidas: ' . count($images));
+            Log::info('Imágenes recibidas: ' . count($images));
             
             foreach ($images as $image) {
                 $imagePath = $image->store('products', 'public');
-                \Log::info('Guardando imagen: ' . $imagePath . ' - Orden: ' . $order);
+                Log::info('Guardando imagen: ' . $imagePath . ' - Orden: ' . $order);
                 
                 ProductImage::create([
                     'product_id' => $product->id,

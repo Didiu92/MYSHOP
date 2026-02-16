@@ -45,20 +45,7 @@
 		border: 2px solid #ffff00 !important;
 	}
 
-	html.a11y-filter-deuteranopia {
-		filter: hue-rotate(-30deg) saturate(0.6) !important;
-		-webkit-filter: hue-rotate(-30deg) saturate(0.6) !important;
-	}
-
-	html.a11y-filter-protanopia {
-		filter: hue-rotate(-15deg) saturate(0.6) brightness(1.1) !important;
-		-webkit-filter: hue-rotate(-15deg) saturate(0.6) brightness(1.1) !important;
-	}
-
-	html.a11y-filter-tritanopia {
-		filter: hue-rotate(90deg) saturate(0.8) !important;
-		-webkit-filter: hue-rotate(90deg) saturate(0.8) !important;
-	}
+	/* Los filtros SVG ahora se inyectan dinámicamente desde JS */
 
 	html.a11y-reduce-motion * {
 		animation-duration: 0.01ms !important;

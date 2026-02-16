@@ -23,26 +23,12 @@
         @include('partials.head')
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         
-        <!-- SVG Filters para accesibilidad (invisible pero disponible para filter property) -->
-        <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden">
-            <defs>
-                <filter id="a11y-deuteranopia" color-interpolation-filters="sRGB">
-                    <feColorMatrix type="matrix" values="0.625 0.375 0 0 0 0.7 0.3 0 0 0 0 0.3 0.7 0 0 0 0 0 1 0" />
-                </filter>
-                <filter id="a11y-protanopia" color-interpolation-filters="sRGB">
-                    <feColorMatrix type="matrix" values="0.567 0.433 0 0 0 0.558 0.442 0 0 0 0 0.242 0.758 0 0 0 0 0 1 0" />
-                </filter>
-                <filter id="a11y-tritanopia" color-interpolation-filters="sRGB">
-                    <feColorMatrix type="matrix" values="0.95 0.05 0 0 0 0 0.433 0.567 0 0 0 0.475 0.525 0 0 0 0 0 1 0" />
-                </filter>
-            </defs>
-        </svg>
     </head>
     <body class="font-sans antialiased">
         <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-ebony focus:text-gold focus:px-4 focus:py-2 focus:rounded">
             Saltar al contenido principal
         </a>
-        <div id="a11y-content" {{ $attributes->merge(['class' => 'min-h-screen bg-ebony']) }}>
+        <div id="a11y-wrapper" {{ $attributes->merge(['class' => 'min-h-screen w-full bg-ebony']) }}>
             @include('layouts.navigation')
 
             <!-- Page Heading -->
@@ -64,5 +50,22 @@
         </div>
 
         @include('partials.accessibility')
+
+        <!-- SVG Filters para accesibilidad -->
+        <div id="filter_id_a11y_color" style="height: 0; padding: 0; margin: 0; line-height: 0;">
+            <svg id="colorblind-filters" style="display: none">
+                <defs>
+                    <filter id="a11y-deuteranopia" color-interpolation-filters="linearRGB">
+                        <feColorMatrix type="matrix" values="0.29031,0.70969,-0.00000,0,0 0.29031,0.70969,-0.00000,0,0 -0.02197,0.02197,1.00000,0,0 0,0,0,1,0" in="SourceGraphic"></feColorMatrix>
+                    </filter>
+                    <filter id="a11y-protanopia" color-interpolation-filters="linearRGB">
+                        <feColorMatrix type="matrix" values="0.567,0.433,0,0,0 0.558,0.442,0,0,0 0,0.242,0.758,0,0 0,0,0,1,0" in="SourceGraphic"></feColorMatrix>
+                    </filter>
+                    <filter id="a11y-tritanopia" color-interpolation-filters="linearRGB">
+                        <feColorMatrix type="matrix" values="0.95,0.05,0,0,0 0,0.433,0.567,0,0 0,0.475,0.525,0,0 0,0,0,1,0" in="SourceGraphic"></feColorMatrix>
+                    </filter>
+                </defs>
+            </svg>
+        </div>
     </body>
 </html>

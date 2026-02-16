@@ -4,15 +4,6 @@ import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
 
-// Mover SVG con filtros al head si está en el body
-document.addEventListener('DOMContentLoaded', () => {
-    const svg = document.querySelector('svg[aria-hidden="true"] defs filter#a11y-deuteranopia')?.parentElement?.parentElement;
-    if (svg && svg.parentElement === document.body) {
-        console.log('🎯 Moviendo SVG al head');
-        document.head.insertAdjacentElement('afterbegin', svg);
-    }
-});
-
 Alpine.data('userForm', (initial = {}) => ({
     form: {
         name: initial.name || '',
@@ -263,14 +254,37 @@ Alpine.data('accessibilityPanel', () => ({
         root.classList.toggle('a11y-contrast', this.settings.contrast);
         root.classList.toggle('a11y-reduce-motion', this.settings.reduceMotion);
 
-        root.classList.remove('a11y-filter-deuteranopia', 'a11y-filter-protanopia', 'a11y-filter-tritanopia');
-        if (this.settings.filter !== 'none') {
-            root.classList.add(`a11y-filter-${this.settings.filter}`);
-            console.log('🔍 Filtro aplicado:', this.settings.filter, 'Clase añadida:', `a11y-filter-${this.settings.filter}`);
-        } else {
-            console.log('🔍 Filtro removido');
-        }
+        // ✅ INYECCIÓN DINÁMICA DE FILTRO (como en la página que funciona)
+        this.applyColorFilter();
+        
         console.log('📊 Clases en html:', root.className);
+    },
+
+    applyColorFilter() {
+        // Eliminar style tag previo si existe
+        const existingStyle = document.getElementById('a11y-color-filter-style');
+        if (existingStyle) {
+            existingStyle.remove();
+        }
+
+        // Si el filtro no es 'none', crear e inyectar el style tag
+        if (this.settings.filter !== 'none') {
+            const style = document.createElement('style');
+            style.id = 'a11y-color-filter-style';
+            style.textContent = `
+                html {
+                    -webkit-filter: url(#a11y-${this.settings.filter}) !important;
+                    -moz-filter: url(#a11y-${this.settings.filter}) !important;
+                    -ms-filter: url(#a11y-${this.settings.filter}) !important;
+                    -o-filter: url(#a11y-${this.settings.filter}) !important;
+                    filter: url(#a11y-${this.settings.filter}) !important;
+                }
+            `;
+            document.head.appendChild(style);
+            console.log('✅ Color filter inyectado dinámicamente:', this.settings.filter);
+        } else {
+            console.log('✅ Color filter removido');
+        }
     },
 }));
 
