@@ -50,7 +50,7 @@
                 <select
                     class="mt-2 w-full rounded-md border border-gold/30 bg-ebony px-3 py-2 text-silver"
                     x-model="settings.filter"
-                    @change="applyAndSave()"
+                    @change="console.log('Select cambió a:', settings.filter); applyAndSave()"
                 >
                     <option value="none">Sin filtro</option>
                     <option value="deuteranopia">Deuteranopia</option>

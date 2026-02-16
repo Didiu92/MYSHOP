@@ -45,33 +45,19 @@
 		border: 2px solid #ffff00 !important;
 	}
 
-	html.a11y-filter-deuteranopia #a11y-content {
-		filter: url(#a11y-deuteranopia) !important;
-		-webkit-filter: url(#a11y-deuteranopia) !important;
+	html.a11y-filter-deuteranopia {
+		filter: hue-rotate(-30deg) saturate(0.6) !important;
+		-webkit-filter: hue-rotate(-30deg) saturate(0.6) !important;
 	}
 
-	html.a11y-filter-protanopia #a11y-content {
-		filter: url(#a11y-protanopia) !important;
-		-webkit-filter: url(#a11y-protanopia) !important;
+	html.a11y-filter-protanopia {
+		filter: hue-rotate(-15deg) saturate(0.6) brightness(1.1) !important;
+		-webkit-filter: hue-rotate(-15deg) saturate(0.6) brightness(1.1) !important;
 	}
 
-	html.a11y-filter-tritanopia #a11y-content {
-		filter: url(#a11y-tritanopia) !important;
-		-webkit-filter: url(#a11y-tritanopia) !important;
-	}
-
-	@supports not (filter: url(#a11y-test)) {
-		html.a11y-filter-deuteranopia #a11y-content {
-			filter: hue-rotate(30deg) saturate(0.7) !important;
-		}
-
-		html.a11y-filter-protanopia #a11y-content {
-			filter: hue-rotate(-15deg) saturate(0.6) !important;
-		}
-
-		html.a11y-filter-tritanopia #a11y-content {
-			filter: hue-rotate(90deg) saturate(0.8) !important;
-		}
+	html.a11y-filter-tritanopia {
+		filter: hue-rotate(90deg) saturate(0.8) !important;
+		-webkit-filter: hue-rotate(90deg) saturate(0.8) !important;
 	}
 
 	html.a11y-reduce-motion * {

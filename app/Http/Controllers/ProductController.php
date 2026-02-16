@@ -324,7 +324,7 @@ public function adminIndex(Request $request): View
 
         // PASO 4: Redirigir con mensaje de éxito
         return redirect()
-            ->route('admin.products.index')
+            ->route('products.show', $product->id)
             ->with('success', '¡Producto actualizado exitosamente!');
     }
 

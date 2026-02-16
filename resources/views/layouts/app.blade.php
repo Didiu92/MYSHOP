@@ -22,8 +22,7 @@
         <!-- Scripts -->
         @include('partials.head')
         @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
+        
         <!-- SVG Filters para accesibilidad (invisible pero disponible para filter property) -->
         <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" style="position:absolute;width:0;height:0;overflow:hidden">
             <defs>
@@ -38,6 +37,8 @@
                 </filter>
             </defs>
         </svg>
+    </head>
+    <body class="font-sans antialiased">
         <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-ebony focus:text-gold focus:px-4 focus:py-2 focus:rounded">
             Saltar al contenido principal
         </a>

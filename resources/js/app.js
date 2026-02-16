@@ -4,6 +4,20 @@ import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
 
+// Asegurar que Alpine esté completamente inicializado
+document.addEventListener('alpine:init', () => {
+    console.log('✓ Alpine.js está listo');
+});
+
+// Mover SVG con filtros al head si está en el body
+document.addEventListener('DOMContentLoaded', () => {
+    const svg = document.querySelector('svg[aria-hidden="true"] defs filter#a11y-deuteranopia')?.parentElement?.parentElement;
+    if (svg && svg.parentElement === document.body) {
+        console.log('🎯 Moviendo SVG al head');
+        document.head.insertAdjacentElement('afterbegin', svg);
+    }
+});
+
 Alpine.data('userForm', (initial = {}) => ({
     form: {
         name: initial.name || '',
@@ -175,16 +189,20 @@ Alpine.data('accessibilityPanel', () => ({
         reduceMotion: false,
     },
     init() {
+        console.log('✅ Panel de accesibilidad inicializado');
         const saved = localStorage.getItem('a11y-settings');
         if (saved) {
             try {
                 this.settings = { ...this.settings, ...JSON.parse(saved) };
+                console.log('📦 Settings cargados del localStorage:', this.settings);
             } catch (error) {
                 // Ignore invalid storage values.
+                console.error('❌ Error al cargar settings:', error);
             }
         }
         ['fontFamily', 'fontSize', 'filter', 'contrast', 'reduceMotion'].forEach((key) => {
             this.$watch(`settings.${key}`, () => {
+                console.log(`👁️ Cambio detectado en ${key}:`, this.settings[key]);
                 this.applyAndSave();
             });
         });
@@ -253,7 +271,11 @@ Alpine.data('accessibilityPanel', () => ({
         root.classList.remove('a11y-filter-deuteranopia', 'a11y-filter-protanopia', 'a11y-filter-tritanopia');
         if (this.settings.filter !== 'none') {
             root.classList.add(`a11y-filter-${this.settings.filter}`);
+            console.log('🔍 Filtro aplicado:', this.settings.filter, 'Clase añadida:', `a11y-filter-${this.settings.filter}`);
+        } else {
+            console.log('🔍 Filtro removido');
         }
+        console.log('📊 Clases en html:', root.className);
     },
 }));
 

@@ -1,7 +1,7 @@
 {{-- Sistema de Notificaciones Flash --}}
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6">
     @if (session('success'))
-        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md shadow-sm relative" role="alert">
+        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md shadow-sm relative flash-alert" role="alert">
             <button type="button" class="absolute top-2 right-2 text-green-700 hover:text-green-900 transition-colors" onclick="this.parentElement.remove()">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -13,7 +13,7 @@
     @endif
     
     @if (session('error'))
-        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md shadow-sm relative" role="alert">
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md shadow-sm relative flash-alert" role="alert">
             <button type="button" class="absolute top-2 right-2 text-red-700 hover:text-red-900 transition-colors" onclick="this.parentElement.remove()">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -25,7 +25,7 @@
     @endif
     
     @if (session('info'))
-        <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-md shadow-sm relative" role="alert">
+        <div class="bg-blue-100 border-l-4 border-blue-500 text-blue-700 p-4 rounded-md shadow-sm relative flash-alert" role="alert">
             <button type="button" class="absolute top-2 right-2 text-blue-700 hover:text-blue-900 transition-colors" onclick="this.parentElement.remove()">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -36,3 +36,19 @@
         </div>
     @endif
 </div>
+
+<script>
+    // Auto-desaparecer alertas después de 3 segundos
+    document.addEventListener('DOMContentLoaded', function() {
+        const alerts = document.querySelectorAll('.flash-alert');
+        alerts.forEach(alert => {
+            setTimeout(() => {
+                alert.style.opacity = '0';
+                alert.style.transition = 'opacity 0.3s ease-in-out';
+                setTimeout(() => {
+                    alert.remove();
+                }, 300);
+            }, 3000);
+        });
+    });
+</script>

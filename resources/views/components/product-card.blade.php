@@ -75,14 +75,31 @@
                 this.addingToCart = false;
                 if (data.success) {
                     const notification = document.createElement('div');
-                    notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #FFD700; color: #1a1a1a; padding: 16px 24px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 9999; display: flex; align-items: center; gap: 12px; font-weight: 600; animation: slideIn 0.3s ease-out;';
+                    notification.style.cssText = 'position: fixed; top: 20px; right: 20px; background: #FFD700; color: #1a1a1a; padding: 16px 24px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 9999; display: flex; align-items: center; gap: 16px; font-weight: 600; animation: slideIn 0.3s ease-out; max-width: 500px;';
+                    
+                    const contentContainer = document.createElement('div');
+                    contentContainer.style.cssText = 'display: flex; align-items: center; gap: 12px; flex: 1;';
+                    
                     const checkmark = document.createElement('span');
                     checkmark.textContent = '✓';
-                    checkmark.style.cssText = 'font-size: 24px; font-weight: bold;';
+                    checkmark.style.cssText = 'font-size: 24px; font-weight: bold; flex-shrink: 0;';
+                    
                     const text = document.createElement('span');
                     text.textContent = '¡Producto añadido al carrito!';
-                    notification.appendChild(checkmark);
-                    notification.appendChild(text);
+                    text.style.cssText = 'flex: 1;';
+                    
+                    contentContainer.appendChild(checkmark);
+                    contentContainer.appendChild(text);
+                    
+                    const button = document.createElement('a');
+                    button.href = '{{ route('cart.index') }}';
+                    button.textContent = 'Ver carrito';
+                    button.style.cssText = 'background: #1a1a1a; color: #FFD700; padding: 8px 16px; border-radius: 4px; text-decoration: none; font-size: 14px; white-space: nowrap; border: none; cursor: pointer; transition: background 0.2s; flex-shrink: 0;';
+                    button.onmouseover = () => button.style.background = '#2a2a2a';
+                    button.onmouseout = () => button.style.background = '#1a1a1a';
+                    
+                    notification.appendChild(contentContainer);
+                    notification.appendChild(button);
                     
                     const style = document.createElement('style');
                     style.textContent = '@keyframes slideIn { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }';
@@ -90,9 +107,10 @@
                     
                     document.body.appendChild(notification);
                     setTimeout(() => {
-                        notification.style.animation = 'slideIn 0.3s ease-out reverse';
+                        notification.style.opacity = '0';
+                        notification.style.transition = 'opacity 0.3s ease-out';
                         setTimeout(() => notification.remove(), 300);
-                    }, 2500);
+                    }, 4000);
                 } else {
                     alert(data.message || 'Error al añadir al carrito');
                 }

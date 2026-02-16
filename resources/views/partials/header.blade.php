@@ -31,20 +31,24 @@
             <!-- Navegación horizontal - Hidden on mobile/tablet, visible on desktop -->
             @include('partials.navigation')
 
-            <form method="POST" action="{{ route('currency.set') }}" class="hidden lg:flex items-center">
+            <form id="currency-form-desktop" method="POST" action="{{ route('currency.set') }}" class="hidden lg:flex items-center" style="display: flex !important;">
                 @csrf
                 <label for="currency" class="sr-only">Moneda</label>
                 <select
                     id="currency"
                     name="currency"
                     class="bg-ebony border border-gold/30 text-silver rounded-md px-2 py-1 text-sm focus:ring-2 focus:ring-gold focus:border-transparent"
-                    onchange="this.form.submit()"
                 >
                     @foreach($currencyOptions as $code => $label)
                         <option value="{{ $code }}" {{ $currency === $code ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
                 </select>
             </form>
+            <script>
+                document.getElementById('currency').addEventListener('change', function() {
+                    document.getElementById('currency-form-desktop').submit();
+                });
+            </script>
             
             <!-- User dropdown -->
             @auth
@@ -81,7 +85,7 @@
         </div>
         
         <!-- Mobile Menu - Shown when hamburger is clicked -->
-        <nav id="site-mobile-menu" x-show="mobileMenuOpen" x-transition class="lg:hidden mt-4 pb-4 border-t border-gold/20 pt-4 space-y-2" aria-label="Menu principal">
+        <nav id="site-mobile-menu" x-show="mobileMenuOpen" x-transition class="lg:hidden mt-4 pb-4 border-t border-gold/20 pt-4 space-y-2" role="navigation" aria-label="Menu principal" aria-hidden="false">
             @php($user = auth()->user())
             <a href="{{ route('welcome') }}" class="block px-4 py-2 rounded text-silver hover:text-gold hover:bg-ebony transition {{ request()->routeIs('welcome') ? 'text-gold font-semibold bg-ebony' : '' }}">
                 Tienda
@@ -126,20 +130,24 @@
                 🛒 Carrito
             </a>
 
-            <form method="POST" action="{{ route('currency.set') }}" class="pt-2">
+            <form id="currency-form-mobile" method="POST" action="{{ route('currency.set') }}" class="pt-2">
                 @csrf
                 <label for="currency-mobile" class="sr-only">Moneda</label>
                 <select
                     id="currency-mobile"
                     name="currency"
                     class="w-full bg-ebony border border-gold/30 text-silver rounded-md px-2 py-2 text-sm focus:ring-2 focus:ring-gold focus:border-transparent"
-                    onchange="this.form.submit()"
                 >
                     @foreach($currencyOptions as $code => $label)
                         <option value="{{ $code }}" {{ $currency === $code ? 'selected' : '' }}>{{ $label }}</option>
                     @endforeach
                 </select>
             </form>
+            <script>
+                document.getElementById('currency-mobile').addEventListener('change', function() {
+                    document.getElementById('currency-form-mobile').submit();
+                });
+            </script>
             
             @guest
                 <a href="{{ route('login') }}" class="block px-4 py-2 rounded text-silver hover:text-gold hover:bg-ebony transition {{ request()->routeIs('login') ? 'text-gold font-semibold bg-ebony' : '' }}">

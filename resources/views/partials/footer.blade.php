@@ -15,10 +15,10 @@
  <div>
  <h6 class="font-bold mb-4">Enlaces Rápidos</h6>
  <ul class="space-y-2 text-silver/70">
- <li><a href="{{ route('welcome') }}" class="hover:text-gold transition">Inicio</a></li>
- <li><a href="{{ route('products.index') }}" class="hover:text-gold transition">Productos</a></li>
- <li><a href="{{ route('categories.index') }}" class="hover:text-gold transition">Categorías</a></li>
- <li><a href="{{ route('contact') }}" class="hover:text-gold transition">Contacto</a></li>
+ <li><a href="{{ route('welcome') }}" class="hover:text-gold transition duration-200 inline-block">Inicio</a></li>
+ <li><a href="{{ route('products.index') }}" class="hover:text-gold transition duration-200 inline-block">Productos</a></li>
+ <li><a href="{{ route('categories.index') }}" class="hover:text-gold transition duration-200 inline-block">Categorías</a></li>
+ <li><a href="{{ route('contact') }}" class="hover:text-gold transition duration-200 inline-block">Contacto</a></li>
  </ul>
  </div>
  <div>
