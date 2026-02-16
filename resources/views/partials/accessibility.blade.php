@@ -1,4 +1,4 @@
-<div x-data="accessibilityPanel()" class="fixed bottom-6 right-6 z-50">
+<div x-data="accessibilityPanel()" x-cloak class="fixed bottom-6 right-6 z-50">
     <button
         type="button"
         @click="toggle()"

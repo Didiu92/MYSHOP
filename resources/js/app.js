@@ -4,11 +4,6 @@ import Alpine from 'alpinejs';
 
 window.Alpine = Alpine;
 
-// Asegurar que Alpine esté completamente inicializado
-document.addEventListener('alpine:init', () => {
-    console.log('✓ Alpine.js está listo');
-});
-
 // Mover SVG con filtros al head si está en el body
 document.addEventListener('DOMContentLoaded', () => {
     const svg = document.querySelector('svg[aria-hidden="true"] defs filter#a11y-deuteranopia')?.parentElement?.parentElement;

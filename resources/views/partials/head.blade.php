@@ -9,6 +9,11 @@
     link[rel="icon"] {
         border-radius: 50%;
     }
+    
+    /* Ocultar elementos Alpine hasta que esté completamente inicializado */
+    [x-cloak] {
+        display: none !important;
+    }
 </style>
 
 @stack('styles')
